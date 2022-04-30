@@ -31,6 +31,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitParameter(@NotNull HareParameter o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameterList(@NotNull HareParameterList o) {
+    visitPsiElement(o);
+  }
+
   public void visitType(@NotNull HareType o) {
     visitPsiElement(o);
   }

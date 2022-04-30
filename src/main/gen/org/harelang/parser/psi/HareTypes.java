@@ -13,9 +13,13 @@ public interface HareTypes {
   IElementType FUNCTION_DEFINITION = new HareElementType("FUNCTION_DEFINITION");
   IElementType IMPORT_DECL = new HareElementType("IMPORT_DECL");
   IElementType IMPORT_PATH = new HareElementType("IMPORT_PATH");
+  IElementType PARAMETER = new HareElementType("PARAMETER");
+  IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType TYPE = new HareElementType("TYPE");
 
   IElementType CHAR = new HareTokenType("char");
+  IElementType COLON = new HareTokenType("COLON");
+  IElementType COMMA = new HareTokenType("COMMA");
   IElementType EOS = new HareTokenType("EOS");
   IElementType EXPORT_KW = new HareTokenType("EXPORT_KW");
   IElementType FN_KW = new HareTokenType("FN_KW");
@@ -60,6 +64,12 @@ public interface HareTypes {
       }
       else if (type == IMPORT_PATH) {
         return new HareImportPathImpl(node);
+      }
+      else if (type == PARAMETER) {
+        return new HareParameterImpl(node);
+      }
+      else if (type == PARAMETER_LIST) {
+        return new HareParameterListImpl(node);
       }
       else if (type == TYPE) {
         return new HareTypeImpl(node);

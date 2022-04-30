@@ -60,13 +60,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LP RP
+  // LP parameter_list RP
   public static boolean function_args(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_args")) return false;
     if (!nextTokenIs(b, LP)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LP, RP);
+    r = consumeToken(b, LP);
+    r = r && parameter_list(b, l + 1);
+    r = r && consumeToken(b, RP);
     exit_section_(b, m, FUNCTION_ARGS, r);
     return r;
   }
@@ -154,6 +156,55 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = consumeTokens(b, 0, SCOPE, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER COLON type
+  public static boolean parameter(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, COLON);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, PARAMETER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // parameter COMMA parameter_list* | parameter
+  public static boolean parameter_list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_list")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = parameter_list_0(b, l + 1);
+    if (!r) r = parameter(b, l + 1);
+    exit_section_(b, m, PARAMETER_LIST, r);
+    return r;
+  }
+
+  // parameter COMMA parameter_list*
+  private static boolean parameter_list_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_list_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = parameter(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && parameter_list_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // parameter_list*
+  private static boolean parameter_list_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_list_0_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!parameter_list(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "parameter_list_0_2", c)) break;
+    }
+    return true;
   }
 
   /* ********************************************************** */

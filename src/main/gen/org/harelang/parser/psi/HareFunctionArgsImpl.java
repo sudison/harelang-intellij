@@ -26,4 +26,10 @@ public class HareFunctionArgsImpl extends ASTWrapperPsiElement implements HareFu
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public HareParameterList getParameterList() {
+    return findNotNullChildByClass(HareParameterList.class);
+  }
+
 }

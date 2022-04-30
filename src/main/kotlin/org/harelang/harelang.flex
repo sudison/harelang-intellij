@@ -29,6 +29,8 @@ WHITESPACE      = \s
 
 <YYINITIAL> {
     ";" {return HareTypes.EOS;}
+    "," {return HareTypes.COMMA;}
+    ":" {return HareTypes.COLON;}
     "(" { return HareTypes.LP; }
     ")" { return HareTypes.RP; }
     "{" { return HareTypes.LBR; }

@@ -24,7 +24,9 @@ import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 function_definition ::= EXPORT_KW? FN_KW IDENTIFIER function_args type function_block {
 pin = 2
 }
-function_args ::= LP RP
+function_args ::= LP parameter_list RP
 function_block ::= LBR RBR
+parameter_list ::= parameter COMMA parameter_list* | parameter
+parameter ::= IDENTIFIER COLON type
 type ::= buildin_type
 buildin_type ::= void | i8 | i16 | i32 | i64 | u8 | u16 | u32 | u64 | int | uint | size | uintptr | char

@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface HareFunctionArgs extends PsiElement {
 
+  @NotNull
+  HareParameterList getParameterList();
+
 }
