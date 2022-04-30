@@ -14,9 +14,17 @@
     psiImplUtilClass="org.harelang.parser.psi.HarePsiImplUtil"
 }
 
-translation_unit ::= import_decl*
+translation_unit ::= import_decl* function_definition*
 
 import_decl ::= USE_KW import_path EOS {
 pin=1
 }
 import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
+
+function_definition ::= EXPORT_KW? FN_KW IDENTIFIER function_args type function_block {
+pin = 2
+}
+function_args ::= LP RP
+function_block ::= LBR RBR
+type ::= buildin_type
+buildin_type ::= void | i8 | i16 | i32 | i64 | u8 | u16 | u32 | u64 | int | uint | size | uintptr | char

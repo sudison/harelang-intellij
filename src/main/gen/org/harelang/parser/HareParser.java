@@ -36,6 +36,78 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // void | i8 | i16 | i32 | i64 | u8 | u16 | u32 | u64 | int | uint | size | uintptr | char
+  public static boolean buildin_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "buildin_type")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, BUILDIN_TYPE, "<buildin type>");
+    r = consumeToken(b, VOID);
+    if (!r) r = consumeToken(b, I8);
+    if (!r) r = consumeToken(b, I16);
+    if (!r) r = consumeToken(b, I32);
+    if (!r) r = consumeToken(b, I64);
+    if (!r) r = consumeToken(b, U8);
+    if (!r) r = consumeToken(b, U16);
+    if (!r) r = consumeToken(b, U32);
+    if (!r) r = consumeToken(b, U64);
+    if (!r) r = consumeToken(b, INT);
+    if (!r) r = consumeToken(b, UINT);
+    if (!r) r = consumeToken(b, SIZE);
+    if (!r) r = consumeToken(b, UINTPTR);
+    if (!r) r = consumeToken(b, CHAR);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LP RP
+  public static boolean function_args(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_args")) return false;
+    if (!nextTokenIs(b, LP)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LP, RP);
+    exit_section_(b, m, FUNCTION_ARGS, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBR RBR
+  public static boolean function_block(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_block")) return false;
+    if (!nextTokenIs(b, LBR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LBR, RBR);
+    exit_section_(b, m, FUNCTION_BLOCK, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // EXPORT_KW? FN_KW IDENTIFIER function_args type function_block
+  public static boolean function_definition(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_definition")) return false;
+    if (!nextTokenIs(b, "<function definition>", EXPORT_KW, FN_KW)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, FUNCTION_DEFINITION, "<function definition>");
+    r = function_definition_0(b, l + 1);
+    r = r && consumeTokens(b, 1, FN_KW, IDENTIFIER);
+    p = r; // pin = 2
+    r = r && report_error_(b, function_args(b, l + 1));
+    r = p && report_error_(b, type(b, l + 1)) && r;
+    r = p && function_block(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // EXPORT_KW?
+  private static boolean function_definition_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_definition_0")) return false;
+    consumeToken(b, EXPORT_KW);
+    return true;
+  }
+
+  /* ********************************************************** */
   // USE_KW import_path EOS
   public static boolean import_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_decl")) return false;
@@ -85,15 +157,48 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // import_decl*
+  // import_decl* function_definition*
   static boolean translation_unit(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "translation_unit")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = translation_unit_0(b, l + 1);
+    r = r && translation_unit_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // import_decl*
+  private static boolean translation_unit_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "translation_unit_0")) return false;
     while (true) {
       int c = current_position_(b);
       if (!import_decl(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "translation_unit", c)) break;
+      if (!empty_element_parsed_guard_(b, "translation_unit_0", c)) break;
     }
     return true;
+  }
+
+  // function_definition*
+  private static boolean translation_unit_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "translation_unit_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!function_definition(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "translation_unit_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // buildin_type
+  public static boolean type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, TYPE, "<type>");
+    r = buildin_type(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
 }

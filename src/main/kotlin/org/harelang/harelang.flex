@@ -29,7 +29,28 @@ WHITESPACE      = \s
 
 <YYINITIAL> {
     ";" {return HareTypes.EOS;}
+    "(" { return HareTypes.LP; }
+    ")" { return HareTypes.RP; }
+    "{" { return HareTypes.LBR; }
+    "}" { return HareTypes.RBR; }
+    "i8" {return HareTypes.I8;}
+    "i16" {return HareTypes.I16;}
+    "i32" {return HareTypes.I32;}
+    "i64" {return HareTypes.I64;}
+    "u8" {return HareTypes.U8;}
+    "u16" {return HareTypes.U16;}
+    "u32" {return HareTypes.U32;}
+    "u64" {return HareTypes.U64;}
+    "int" {return HareTypes.INT;}
+    "uint" {return HareTypes.UINT;}
+    "size" {return HareTypes.SIZE;}
+    "uintptr" {return HareTypes.UINTPTR;}
+    "char" {return HareTypes.CHAR;}
+    "void" {return HareTypes.VOID;}
+    "fn" {return HareTypes.FN_KW;}
     "use" { return HareTypes.USE_KW; }
+    "export" {return HareTypes.EXPORT_KW;}
+
     "::" { return HareTypes.SCOPE; }
 
     {WHITESPACE} { return TokenType.WHITE_SPACE; }
