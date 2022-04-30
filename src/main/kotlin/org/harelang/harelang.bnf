@@ -1,0 +1,22 @@
+{
+    parserClass = "org.harelang.parser.HareParser"
+    extends = "com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix = "Hare"
+    psiImplClassSuffix = "Impl"
+    psiPackage = "org.harelang.parser.psi"
+    psiImplPackage = "org.harelang.parser.psi"
+
+    elementTypeHolderClass = "org.harelang.parser.psi.HareTypes"
+    elementTypeClass = "org.harelang.parser.psi.HareElementType"
+    tokenTypeClass = "org.harelang.parser.psi.HareTokenType"
+
+    psiImplUtilClass="org.harelang.parser.psi.HarePsiImplUtil"
+}
+
+translation_unit ::= import_decl*
+
+import_decl ::= USE_KW import_path EOS {
+pin=1
+}
+import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
