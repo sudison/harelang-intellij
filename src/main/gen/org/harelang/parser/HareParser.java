@@ -117,13 +117,52 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER ASSIGNMENT expression
+  // object_selector assignment_op expression
+  public static boolean assignment(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT, "<assignment>");
+    r = object_selector(b, l + 1);
+    r = r && assignment_op(b, l + 1);
+    r = r && expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | MULTIPLIES_ASSIGN | DIVIDES_ASSIGN |
+  // MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT_SHIFT_ASSIGN | LOGICAL_AND_ASSIGN |
+  // LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
+  public static boolean assignment_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_op")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT_OP, "<assignment op>");
+    r = consumeToken(b, ASSIGN);
+    if (!r) r = consumeToken(b, PLUS_ASSIGN);
+    if (!r) r = consumeToken(b, MINUS_ASSIGN);
+    if (!r) r = consumeToken(b, MULTIPLIES_ASSIGN);
+    if (!r) r = consumeToken(b, DIVIDES_ASSIGN);
+    if (!r) r = consumeToken(b, MODULUS_ASSIGN);
+    if (!r) r = consumeToken(b, AND_ASSIGN);
+    if (!r) r = consumeToken(b, OR_ASSIGN);
+    if (!r) r = consumeToken(b, XOR_ASSIGN);
+    if (!r) r = consumeToken(b, LEFT_SHIFT_ASSIGN);
+    if (!r) r = consumeToken(b, RIGHT_SHIFT_ASSIGN);
+    if (!r) r = consumeToken(b, LOGICAL_AND_ASSIGN);
+    if (!r) r = consumeToken(b, LOGICAL_OR_ASSIGN);
+    if (!r) r = consumeToken(b, LOGICAL_XOR_ASSIGN);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER ASSIGN expression
   public static boolean binding(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binding")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFIER, ASSIGNMENT);
+    r = consumeTokens(b, 0, IDENTIFIER, ASSIGN);
     r = r && expression(b, l + 1);
     exit_section_(b, m, BINDING, r);
     return r;
@@ -404,13 +443,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // logical_or_expression | binding_list
+  // assignment | binding_list | logical_or_expression
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _COLLAPSE_, EXPRESSION, "<expression>");
-    r = logical_or_expression(b, l + 1);
+    r = assignment(b, l + 1);
     if (!r) r = binding_list(b, l + 1);
+    if (!r) r = logical_or_expression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -560,6 +600,20 @@ public class HareParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "inclusive_or_expression_0_2", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // postfix_expression LB expression RB
+  public static boolean indexing_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "indexing_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, INDEXING_EXPRESSION, "<indexing expression>");
+    r = postfix_expression(b, l + 1);
+    r = r && consumeToken(b, LB);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RB);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */
@@ -783,6 +837,18 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // IDENTIFIER | indexing_expression
+  public static boolean object_selector(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_selector")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, OBJECT_SELECTOR, "<object selector>");
+    r = consumeToken(b, IDENTIFIER);
+    if (!r) r = indexing_expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // IDENTIFIER COLON type
   public static boolean parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter")) return false;
@@ -844,9 +910,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // nested_expression
+  // nested_expression | indexing_expression
   static boolean postfix_expression(PsiBuilder b, int l) {
-    return nested_expression(b, l + 1);
+    if (!recursion_guard_(b, l, "postfix_expression")) return false;
+    boolean r;
+    r = nested_expression(b, l + 1);
+    if (!r) r = indexing_expression(b, l + 1);
+    return r;
   }
 
   /* ********************************************************** */

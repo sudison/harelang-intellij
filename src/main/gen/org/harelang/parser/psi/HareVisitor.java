@@ -7,6 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public class HareVisitor extends PsiElementVisitor {
 
+  public void visitAssignment(@NotNull HareAssignment o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAssignmentOp(@NotNull HareAssignmentOp o) {
+    visitPsiElement(o);
+  }
+
   public void visitBinding(@NotNull HareBinding o) {
     visitPsiElement(o);
   }
@@ -51,11 +59,19 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIndexingExpression(@NotNull HareIndexingExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitIntegerConstant(@NotNull HareIntegerConstant o) {
     visitPsiElement(o);
   }
 
   public void visitIntegerSuffix(@NotNull HareIntegerSuffix o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjectSelector(@NotNull HareObjectSelector o) {
     visitPsiElement(o);
   }
 

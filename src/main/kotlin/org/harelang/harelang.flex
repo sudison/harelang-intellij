@@ -28,7 +28,7 @@ DECIMAL_DIGITS = \d+
 
 
 <YYINITIAL> {
-    "=" {return HareTypes.ASSIGNMENT;}
+    "=" {return HareTypes.ASSIGN;}
     "*" {return HareTypes.MULTIPLIES;}
     "/" {return HareTypes.DIVIDES;}
     "%" {return HareTypes.MODULUS;}
@@ -42,10 +42,20 @@ DECIMAL_DIGITS = \d+
     ";" {return HareTypes.EOS;}
     "," {return HareTypes.COMMA;}
     ":" {return HareTypes.COLON;}
+    "[" {return HareTypes.LB;}
+    "]" {return HareTypes.RB;}
     "(" { return HareTypes.LP; }
     ")" { return HareTypes.RP; }
     "{" { return HareTypes.LBR; }
     "}" { return HareTypes.RBR; }
+    "+=" {return HareTypes.PLUS_ASSIGN;}
+    "-=" {return HareTypes.MINUS_ASSIGN;}
+    "*=" {return HareTypes.MULTIPLIES_ASSIGN;}
+    "/=" {return HareTypes.DIVIDES_ASSIGN;}
+    "%=" {return HareTypes.MODULUS_ASSIGN;}
+    "&=" {return HareTypes.AND_ASSIGN;}
+    "|=" {return HareTypes.OR_ASSIGN;}
+    "^=" {return HareTypes.XOR_ASSIGN;}
     "&&" {return HareTypes.LOGICAL_AND;}
     "||" {return HareTypes.LOGICAL_OR;}
     "^^" {return HareTypes.LOGICAL_XOR;}
@@ -55,6 +65,11 @@ DECIMAL_DIGITS = \d+
     ">=" {return HareTypes.LARGER_EQUAL;}
     "<<" {return HareTypes.LEFT_SHIFT;}
     ">>" {return HareTypes.RIGHT_SHIFT;}
+    "<<=" {return HareTypes.LEFT_SHIFT_ASSIGN;}
+    ">>=" {return HareTypes.RIGHT_SHIFT_ASSIGN;}
+    "&&=" {return HareTypes.LOGICAL_AND_ASSIGN;}
+    "||=" {return HareTypes.LOGICAL_OR_ASSIGN;}
+    "^^=" {return HareTypes.LOGICAL_XOR_ASSIGN;}
     "i8" {return HareTypes.I8_KW;}
     "i16" {return HareTypes.I16_KW;}
     "i32" {return HareTypes.I32_KW;}

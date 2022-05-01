@@ -36,7 +36,7 @@ integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16"
 string_const ::= STRING_LITERAL
 
 
-expression ::= logical_or_expression | binding_list
+expression ::= assignment | binding_list | logical_or_expression
 
 private logical_or_expression ::= logical_xor_expression LOGICAL_OR logical_or_expression* | logical_xor_expression
 private logical_xor_expression ::= logical_and_expression LOGICAL_XOR logical_xor_expression* |logical_and_expression
@@ -57,10 +57,17 @@ private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
 private cast_expression ::= unary_expression
 private unary_expression ::= buildin_expression
 private buildin_expression ::= postfix_expression
-private postfix_expression ::= nested_expression
+private postfix_expression ::= nested_expression | indexing_expression
 private nested_expression ::= plan_expression | LP expression RP
 plan_expression ::= IDENTIFIER | constant
 
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
 bindings ::= binding COMMA bindings* | binding
-binding ::= IDENTIFIER ASSIGNMENT expression
+binding ::= IDENTIFIER ASSIGN expression
+
+assignment ::= object_selector assignment_op expression
+assignment_op ::=  ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | MULTIPLIES_ASSIGN | DIVIDES_ASSIGN |
+MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT_SHIFT_ASSIGN | LOGICAL_AND_ASSIGN |
+LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
+object_selector ::= IDENTIFIER | indexing_expression
+indexing_expression ::= postfix_expression LB expression RB

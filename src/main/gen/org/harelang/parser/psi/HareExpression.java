@@ -8,10 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface HareExpression extends PsiElement {
 
   @Nullable
+  HareAssignment getAssignment();
+
+  @Nullable
   HareBindingList getBindingList();
 
   @NotNull
   List<HareExpression> getExpressionList();
+
+  @NotNull
+  List<HareIndexingExpression> getIndexingExpressionList();
 
   @NotNull
   List<HarePlanExpression> getPlanExpressionList();
