@@ -28,6 +28,16 @@ DECIMAL_DIGITS = \d+
 
 
 <YYINITIAL> {
+    "*" {return HareTypes.MULTIPLIES;}
+    "/" {return HareTypes.DIVIDES;}
+    "%" {return HareTypes.MODULUS;}
+    "&" {return HareTypes.AND;}
+    "+" {return HareTypes.ADDS;}
+    "^" {return HareTypes.EXCLUSIVE_OR;}
+    "|" {return HareTypes.INCLUSIVE_OR;}
+    "<" {return HareTypes.LESSER_THAN;}
+    ">" {return HareTypes.LARGER_THAN;}
+    "-" {return HareTypes.SUBSTRACTS;}
     ";" {return HareTypes.EOS;}
     "," {return HareTypes.COMMA;}
     ":" {return HareTypes.COLON;}
@@ -35,6 +45,15 @@ DECIMAL_DIGITS = \d+
     ")" { return HareTypes.RP; }
     "{" { return HareTypes.LBR; }
     "}" { return HareTypes.RBR; }
+    "&&" {return HareTypes.LOGICAL_AND;}
+    "||" {return HareTypes.LOGICAL_OR;}
+    "^^" {return HareTypes.LOGICAL_XOR;}
+    "==" {return HareTypes.EQUAL;}
+    "!=" {return HareTypes.NOT_EQUAL;}
+    "<=" {return HareTypes.LESSER_EQUAL;}
+    ">=" {return HareTypes.LARGER_EQUAL;}
+    "<<" {return HareTypes.LEFT_SHIFT;}
+    ">>" {return HareTypes.RIGHT_SHIFT;}
     "i8" {return HareTypes.I8_KW;}
     "i16" {return HareTypes.I16_KW;}
     "i32" {return HareTypes.I32_KW;}

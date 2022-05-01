@@ -605,7 +605,7 @@ class HareLexer implements FlexLexer {
             // fall through
           case 64: break;
           case 12: 
-            { return HareTypes.LESSER_THAN;
+            { return HareTypes.LESS_THAN;
             } 
             // fall through
           case 65: break;
@@ -685,7 +685,7 @@ class HareLexer implements FlexLexer {
             // fall through
           case 80: break;
           case 28: 
-            { return HareTypes.LESSER_EQUAL;
+            { return HareTypes.LESS_EQUAL;
             } 
             // fall through
           case 81: break;
@@ -695,7 +695,7 @@ class HareLexer implements FlexLexer {
             // fall through
           case 82: break;
           case 30: 
-            { return HareTypes.LARGER_EQUAL;
+            { return HareTypes.LARGE_EQUAL;
             } 
             // fall through
           case 83: break;

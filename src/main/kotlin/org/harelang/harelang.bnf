@@ -25,7 +25,7 @@ function_definition ::= EXPORT_KW? FN_KW IDENTIFIER function_args type function_
 pin = 2
 }
 function_args ::= LP parameter_list RP
-function_block ::= LBR constant* RBR
+function_block ::= LBR expression* RBR
 parameter_list ::= parameter COMMA parameter_list* | parameter
 parameter ::= IDENTIFIER COLON type
 type ::= buildin_type
@@ -34,3 +34,29 @@ constant ::= integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VO
 integer_constant ::= DECIMAL_DIGITS integer_suffix?
 integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64"
 string_const ::= STRING_LITERAL
+
+
+expression ::= logical_or_expression
+
+private logical_or_expression ::= logical_xor_expression LOGICAL_OR logical_or_expression* | logical_xor_expression
+private logical_xor_expression ::= logical_and_expression LOGICAL_XOR logical_xor_expression* |logical_and_expression
+private logical_and_expression ::= equality_expression LOGICAL_AND logical_and_expression* | equality_expression
+private equality_expression ::= comparison_expression equality_operator equality_expression* | comparison_expression
+private equality_operator ::= EQUAL | NOT_EQUAL
+private comparison_expression ::= inclusive_or_expression comparison_operator comparison_expression* | inclusive_or_expression
+private comparison_operator ::= LESSER_THAN | LARGER_THAN | LESSER_EQUAL | LARGER_EQUAL
+private inclusive_or_expression ::= exclusive_or_expression INCLUSIVE_OR inclusive_or_expression* | exclusive_or_expression
+private exclusive_or_expression ::= and_expression EXCLUSIVE_OR exclusive_or_expression* | and_expression
+private and_expression ::= shift_expression AND and_expression* | shift_expression
+private shift_expression ::= additive_expression shift_operator shift_expression* | additive_expression
+private shift_operator ::= LEFT_SHIFT | RIGHT_SHIFT
+private additive_expression ::= multiplicative_expression additive_operator additive_expression* | multiplicative_expression
+private additive_operator ::= ADDS | SUBSTRACTS
+private multiplicative_expression ::= cast_expression multiplicative_operator multiplicative_expression+ | cast_expression
+private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
+private cast_expression ::= unary_expression
+private unary_expression ::= buildin_expression
+private buildin_expression ::= postfix_expression
+private postfix_expression ::= nested_expression
+private nested_expression ::= plan_expression | LP expression RP
+plan_expression ::= IDENTIFIER | constant

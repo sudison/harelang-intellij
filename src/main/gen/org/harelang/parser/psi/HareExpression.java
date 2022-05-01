@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareFunctionBlock extends PsiElement {
+public interface HareExpression extends PsiElement {
 
   @NotNull
   List<HareExpression> getExpressionList();
+
+  @NotNull
+  List<HarePlanExpression> getPlanExpressionList();
 
 }
