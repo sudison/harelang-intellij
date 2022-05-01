@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareFunctionBlock extends PsiElement {
-
-  @NotNull
-  List<HareConstant> getConstantList();
+public interface HareStringConst extends PsiElement {
 
 }

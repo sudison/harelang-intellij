@@ -37,28 +37,37 @@ class HareLexer implements FlexLexer {
 
   /** 
    * Translates characters to character classes
-   * Chosen bits are [7, 7, 7]
-   * Total runtime size is 1928 bytes
+   * Chosen bits are [10, 6, 5]
+   * Total runtime size is 4224 bytes
    */
   public static int ZZ_CMAP(int ch) {
-    return ZZ_CMAP_A[(ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>14]|((ch>>7)&0x7f)]<<7)|(ch&0x7f)];
+    return ZZ_CMAP_A[(ZZ_CMAP_Y[(ZZ_CMAP_Z[ch>>11]<<6)|((ch>>5)&0x3f)]<<5)|(ch&0x1f)];
   }
 
-  /* The ZZ_CMAP_Z table has 68 entries */
+  /* The ZZ_CMAP_Z table has 544 entries */
   static final char ZZ_CMAP_Z[] = zzUnpackCMap(
-    "\1\0\103\200");
+    "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\15\5\1\7\1\10\11\5\1\11\1\12\1\5\1\13\1\14\11"+
+    "\5\1\15\14\5\1\16\2\5\1\17\u01e2\5");
 
-  /* The ZZ_CMAP_Y table has 256 entries */
+  /* The ZZ_CMAP_Y table has 1024 entries */
   static final char ZZ_CMAP_Y[] = zzUnpackCMap(
-    "\1\0\1\1\53\2\1\3\22\2\1\4\37\2\1\3\237\2");
+    "\1\0\1\1\1\2\1\3\1\4\1\5\55\6\1\7\3\6\1\10\6\6\1\7\14\6\1\11\3\6\1\11\3\6"+
+    "\1\11\3\6\1\11\3\6\1\11\3\6\1\11\3\6\1\11\3\6\1\11\3\6\1\11\3\6\1\11\2\6\1"+
+    "\10\3\6\1\10\2\6\1\7\10\6\1\7\1\6\1\10\57\6\1\5\12\6\1\7\1\10\11\6\1\11\3"+
+    "\6\1\10\5\6\1\12\5\6\1\10\2\6\1\10\4\6\1\12\35\6\1\13\1\14\1\15\175\6\1\5"+
+    "\160\6\1\7\24\6\1\10\1\6\1\7\5\6\2\10\2\6\1\10\14\6\1\10\130\6\1\10\54\6\1"+
+    "\7\35\6\1\11\3\6\1\10\1\6\1\16\4\6\1\10\10\6\1\10\12\6\1\10\3\6\1\10\13\6"+
+    "\1\10\3\6\1\7\2\6\1\10\15\6\1\7\32\6\1\10\60\6\1\7\6\6\1\10\143\6\1\17\1\20"+
+    "\12\6\1\10\65\6");
 
-  /* The ZZ_CMAP_A table has 640 entries */
+  /* The ZZ_CMAP_A table has 544 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\7\1\4\3\6\22\0\1\7\1\0\1\5\5\0\1\13\1\14\2\0\1\11\2\0\1\3\1\2\1\21"+
-    "\1\24\1\23\1\25\1\2\1\22\1\2\1\20\1\2\1\12\1\10\5\0\32\1\4\0\1\1\1\0\1\40"+
-    "\1\1\1\36\1\43\1\33\1\44\1\1\1\37\1\17\4\1\1\27\1\42\1\34\1\1\1\35\1\31\1"+
-    "\30\1\26\1\41\1\1\1\45\1\1\1\32\1\15\1\0\1\16\7\0\1\6\32\0\1\7\337\0\1\7\177"+
-    "\0\13\7\35\0\2\6\5\0\1\7\57\0\1\7\40\0");
+    "\11\0\1\7\1\4\3\6\22\0\1\7\1\0\1\5\5\0\1\14\1\15\2\0\1\12\2\0\1\3\1\2\1\22"+
+    "\1\25\1\24\1\26\1\2\1\23\1\2\1\21\1\2\1\13\1\11\5\0\32\1\4\0\1\1\1\0\1\41"+
+    "\1\1\1\37\1\44\1\34\1\45\1\1\1\40\1\20\2\1\1\47\1\1\1\30\1\43\1\35\1\1\1\36"+
+    "\1\32\1\31\1\27\1\42\1\1\1\46\1\1\1\33\1\16\1\0\1\17\7\0\1\6\32\0\1\7\77\0"+
+    "\12\10\46\0\12\10\14\0\12\10\20\0\12\10\6\0\12\10\6\0\13\7\35\0\2\6\5\0\1"+
+    "\7\57\0\1\7\26\0\12\10\16\0\62\10");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -66,15 +75,15 @@ class HareLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\1\1\3\1\1\1\4\1\5"+
-    "\1\6\1\7\1\10\1\11\1\12\7\2\1\13\1\0"+
-    "\1\14\1\15\1\16\5\2\1\17\10\2\1\20\1\13"+
-    "\1\21\1\22\1\23\1\24\1\2\1\25\1\26\1\27"+
-    "\1\30\4\2\1\31\1\32\1\2\1\33\1\34\3\2"+
-    "\1\35\1\36";
+    "\1\0\1\1\1\2\1\3\1\1\1\4\1\1\1\5"+
+    "\1\6\1\7\1\10\1\11\1\12\1\13\11\2\1\14"+
+    "\1\0\1\15\1\16\1\17\5\2\1\20\12\2\1\21"+
+    "\1\2\1\14\1\22\1\23\1\24\1\25\1\2\1\26"+
+    "\1\27\1\30\1\31\7\2\1\32\1\33\1\34\1\35"+
+    "\1\2\1\36\1\37\3\2\1\40\1\2\1\41\1\42";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[64];
+    int [] result = new int[77];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -99,17 +108,19 @@ class HareLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\46\0\114\0\162\0\46\0\230\0\46\0\46"+
-    "\0\276\0\46\0\46\0\46\0\46\0\344\0\u010a\0\u0130"+
-    "\0\u0156\0\u017c\0\u01a2\0\u01c8\0\u01ee\0\230\0\230\0\46"+
-    "\0\114\0\u0214\0\u023a\0\u0260\0\u0286\0\u02ac\0\114\0\u02d2"+
-    "\0\u02f8\0\u031e\0\u0344\0\u036a\0\u0390\0\u03b6\0\u03dc\0\114"+
-    "\0\46\0\114\0\114\0\114\0\114\0\u0402\0\114\0\114"+
-    "\0\114\0\114\0\u0428\0\u044e\0\u0474\0\u049a\0\u04c0\0\114"+
-    "\0\u04e6\0\114\0\114\0\u050c\0\u0532\0\u0558\0\114\0\114";
+    "\0\0\0\50\0\120\0\170\0\240\0\50\0\310\0\50"+
+    "\0\50\0\360\0\50\0\50\0\50\0\50\0\u0118\0\u0140"+
+    "\0\u0168\0\u0190\0\u01b8\0\u01e0\0\u0208\0\u0230\0\u0258\0\u0280"+
+    "\0\310\0\310\0\50\0\120\0\u02a8\0\u02d0\0\u02f8\0\u0320"+
+    "\0\u0348\0\120\0\u0370\0\u0398\0\u03c0\0\u03e8\0\u0410\0\u0438"+
+    "\0\u0460\0\u0488\0\u04b0\0\u04d8\0\120\0\u0500\0\50\0\120"+
+    "\0\120\0\120\0\120\0\u0528\0\120\0\120\0\120\0\120"+
+    "\0\u0550\0\u0578\0\u05a0\0\u05c8\0\u05f0\0\u0618\0\u0640\0\u0668"+
+    "\0\120\0\120\0\120\0\u0690\0\120\0\120\0\u06b8\0\u06e0"+
+    "\0\u0708\0\120\0\u0730\0\120\0\120";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[64];
+    int [] result = new int[77];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -132,38 +143,46 @@ class HareLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\2\1\4\1\5\1\6\2\5\1\7"+
-    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\6\2"+
-    "\1\17\2\3\1\20\1\3\1\21\2\3\1\22\2\3"+
-    "\1\23\2\3\1\24\1\3\47\0\2\3\14\0\27\3"+
-    "\3\0\1\25\42\0\4\26\1\0\1\27\1\0\37\26"+
-    "\12\0\1\30\34\0\2\3\14\0\1\3\1\31\1\32"+
-    "\1\33\1\34\3\3\1\35\16\3\1\0\2\3\14\0"+
-    "\1\36\1\37\1\40\1\41\1\42\5\3\1\43\14\3"+
-    "\1\0\2\3\14\0\1\44\26\3\1\0\2\3\14\0"+
-    "\26\3\1\45\1\0\2\3\14\0\20\3\1\46\6\3"+
-    "\1\0\2\3\14\0\23\3\1\47\3\3\1\0\2\3"+
-    "\14\0\10\3\1\50\16\3\4\25\1\51\41\25\1\0"+
-    "\2\3\14\0\3\3\1\52\23\3\1\0\2\3\14\0"+
-    "\6\3\1\53\20\3\1\0\2\3\14\0\5\3\1\54"+
-    "\21\3\1\0\2\3\14\0\11\3\1\55\15\3\1\0"+
-    "\2\3\14\0\10\3\1\56\16\3\1\0\2\3\14\0"+
-    "\3\3\1\57\23\3\1\0\2\3\14\0\6\3\1\60"+
-    "\20\3\1\0\2\3\14\0\5\3\1\61\21\3\1\0"+
-    "\2\3\14\0\14\3\1\62\12\3\1\0\2\3\14\0"+
-    "\13\3\1\63\13\3\1\0\2\3\14\0\15\3\1\64"+
-    "\11\3\1\0\2\3\14\0\21\3\1\65\5\3\1\0"+
-    "\2\3\14\0\1\66\26\3\1\0\2\3\14\0\11\3"+
-    "\1\67\15\3\1\0\2\3\14\0\14\3\1\70\12\3"+
-    "\1\0\2\3\14\0\23\3\1\71\3\3\1\0\2\3"+
-    "\14\0\16\3\1\72\10\3\1\0\2\3\14\0\24\3"+
-    "\1\73\2\3\1\0\2\3\14\0\15\3\1\74\11\3"+
-    "\1\0\2\3\14\0\16\3\1\75\10\3\1\0\2\3"+
-    "\14\0\11\3\1\76\15\3\1\0\2\3\14\0\11\3"+
-    "\1\77\15\3\1\0\2\3\14\0\16\3\1\100\10\3";
+    "\1\2\1\3\1\4\1\5\1\6\1\7\2\6\1\4"+
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\6\4\1\20\1\21\1\22\1\23\1\3\1\24\2\3"+
+    "\1\25\2\3\1\26\2\3\1\27\2\3\51\0\2\3"+
+    "\15\0\30\3\2\0\1\4\5\0\1\4\10\0\6\4"+
+    "\24\0\1\30\44\0\4\31\1\0\1\32\1\0\41\31"+
+    "\13\0\1\33\35\0\2\3\15\0\1\3\1\34\1\35"+
+    "\1\36\1\37\3\3\1\40\17\3\1\0\2\3\15\0"+
+    "\1\41\1\42\1\43\1\44\1\45\5\3\1\46\15\3"+
+    "\1\0\2\3\15\0\7\3\1\47\20\3\1\0\2\3"+
+    "\15\0\16\3\1\50\11\3\1\0\2\3\15\0\1\51"+
+    "\27\3\1\0\2\3\15\0\26\3\1\52\1\3\1\0"+
+    "\2\3\15\0\20\3\1\53\7\3\1\0\2\3\15\0"+
+    "\23\3\1\54\4\3\1\0\2\3\15\0\10\3\1\55"+
+    "\10\3\1\56\6\3\4\30\1\57\43\30\1\0\2\3"+
+    "\15\0\3\3\1\60\24\3\1\0\2\3\15\0\6\3"+
+    "\1\61\21\3\1\0\2\3\15\0\5\3\1\62\22\3"+
+    "\1\0\2\3\15\0\11\3\1\63\16\3\1\0\2\3"+
+    "\15\0\10\3\1\64\17\3\1\0\2\3\15\0\3\3"+
+    "\1\65\24\3\1\0\2\3\15\0\6\3\1\66\21\3"+
+    "\1\0\2\3\15\0\5\3\1\67\22\3\1\0\2\3"+
+    "\15\0\14\3\1\70\13\3\1\0\2\3\15\0\27\3"+
+    "\1\71\1\0\2\3\15\0\7\3\1\72\20\3\1\0"+
+    "\2\3\15\0\13\3\1\73\14\3\1\0\2\3\15\0"+
+    "\15\3\1\74\12\3\1\0\2\3\15\0\21\3\1\75"+
+    "\6\3\1\0\2\3\15\0\1\76\27\3\1\0\2\3"+
+    "\15\0\27\3\1\77\1\0\2\3\15\0\11\3\1\100"+
+    "\16\3\1\0\2\3\15\0\27\3\1\101\1\0\2\3"+
+    "\15\0\14\3\1\102\13\3\1\0\2\3\15\0\14\3"+
+    "\1\103\13\3\1\0\2\3\15\0\23\3\1\104\4\3"+
+    "\1\0\2\3\15\0\16\3\1\105\11\3\1\0\2\3"+
+    "\15\0\24\3\1\106\3\3\1\0\2\3\15\0\12\3"+
+    "\1\107\15\3\1\0\2\3\15\0\15\3\1\110\12\3"+
+    "\1\0\2\3\15\0\16\3\1\111\11\3\1\0\2\3"+
+    "\15\0\14\3\1\112\13\3\1\0\2\3\15\0\11\3"+
+    "\1\113\16\3\1\0\2\3\15\0\11\3\1\114\16\3"+
+    "\1\0\2\3\15\0\16\3\1\115\11\3";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1406];
+    int [] result = new int[1880];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -201,11 +220,11 @@ class HareLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\2\1\1\11\1\1\2\11\1\1\4\11"+
-    "\10\1\1\0\1\1\1\11\20\1\1\11\27\1";
+    "\1\0\1\11\3\1\1\11\1\1\2\11\1\1\4\11"+
+    "\12\1\1\0\1\1\1\11\23\1\1\11\36\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[64];
+    int [] result = new int[77];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -522,152 +541,172 @@ class HareLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 31: break;
+          case 35: break;
           case 2: 
             { return HareTypes.IDENTIFIER;
             } 
             // fall through
-          case 32: break;
-          case 3: 
-            { return TokenType.WHITE_SPACE;
-            } 
-            // fall through
-          case 33: break;
-          case 4: 
-            { return HareTypes.EOS;
-            } 
-            // fall through
-          case 34: break;
-          case 5: 
-            { return HareTypes.COMMA;
-            } 
-            // fall through
-          case 35: break;
-          case 6: 
-            { return HareTypes.COLON;
-            } 
-            // fall through
           case 36: break;
-          case 7: 
-            { return HareTypes.LP;
+          case 3: 
+            { return HareTypes.DECIMAL_DIGITS;
             } 
             // fall through
           case 37: break;
-          case 8: 
-            { return HareTypes.RP;
+          case 4: 
+            { return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 38: break;
-          case 9: 
-            { return HareTypes.LBR;
+          case 5: 
+            { return HareTypes.EOS;
             } 
             // fall through
           case 39: break;
-          case 10: 
-            { return HareTypes.RBR;
+          case 6: 
+            { return HareTypes.COMMA;
             } 
             // fall through
           case 40: break;
-          case 11: 
-            { return HareElementType.Companion.getCOMMENT();
+          case 7: 
+            { return HareTypes.COLON;
             } 
             // fall through
           case 41: break;
-          case 12: 
-            { return HareElementType.Companion.getSTRING_LITERAL();
+          case 8: 
+            { return HareTypes.LP;
             } 
             // fall through
           case 42: break;
-          case 13: 
-            { return HareTypes.SCOPE;
+          case 9: 
+            { return HareTypes.RP;
             } 
             // fall through
           case 43: break;
-          case 14: 
-            { return HareTypes.I8;
+          case 10: 
+            { return HareTypes.LBR;
             } 
             // fall through
           case 44: break;
-          case 15: 
-            { return HareTypes.U8;
+          case 11: 
+            { return HareTypes.RBR;
             } 
             // fall through
           case 45: break;
-          case 16: 
-            { return HareTypes.FN_KW;
+          case 12: 
+            { return HareElementType.Companion.getCOMMENT();
             } 
             // fall through
           case 46: break;
-          case 17: 
-            { return HareTypes.I16;
+          case 13: 
+            { return HareTypes.STRING_LITERAL;
             } 
             // fall through
           case 47: break;
-          case 18: 
-            { return HareTypes.I64;
+          case 14: 
+            { return HareTypes.SCOPE;
             } 
             // fall through
           case 48: break;
-          case 19: 
-            { return HareTypes.I32;
+          case 15: 
+            { return HareTypes.I8_KW;
             } 
             // fall through
           case 49: break;
-          case 20: 
-            { return HareTypes.INT;
+          case 16: 
+            { return HareTypes.U8_KW;
             } 
             // fall through
           case 50: break;
-          case 21: 
-            { return HareTypes.U16;
+          case 17: 
+            { return HareTypes.FN_KW;
             } 
             // fall through
           case 51: break;
-          case 22: 
-            { return HareTypes.U64;
+          case 18: 
+            { return HareTypes.I16_KW;
             } 
             // fall through
           case 52: break;
-          case 23: 
-            { return HareTypes.U32;
+          case 19: 
+            { return HareTypes.I64_KW;
             } 
             // fall through
           case 53: break;
-          case 24: 
-            { return HareTypes.USE_KW;
+          case 20: 
+            { return HareTypes.I32_KW;
             } 
             // fall through
           case 54: break;
-          case 25: 
-            { return HareTypes.UINT;
+          case 21: 
+            { return HareTypes.INT_KW;
             } 
             // fall through
           case 55: break;
-          case 26: 
-            { return HareTypes.SIZE;
+          case 22: 
+            { return HareTypes.U16_KW;
             } 
             // fall through
           case 56: break;
-          case 27: 
-            { return HareTypes.CHAR;
+          case 23: 
+            { return HareTypes.U64_KW;
             } 
             // fall through
           case 57: break;
-          case 28: 
-            { return HareTypes.VOID;
+          case 24: 
+            { return HareTypes.U32_KW;
             } 
             // fall through
           case 58: break;
-          case 29: 
-            { return HareTypes.EXPORT_KW;
+          case 25: 
+            { return HareTypes.USE_KW;
             } 
             // fall through
           case 59: break;
-          case 30: 
-            { return HareTypes.UINTPTR;
+          case 26: 
+            { return HareTypes.UINT_KW;
             } 
             // fall through
           case 60: break;
+          case 27: 
+            { return HareTypes.NULL_KW;
+            } 
+            // fall through
+          case 61: break;
+          case 28: 
+            { return HareTypes.TRUE_KW;
+            } 
+            // fall through
+          case 62: break;
+          case 29: 
+            { return HareTypes.SIZE_KW;
+            } 
+            // fall through
+          case 63: break;
+          case 30: 
+            { return HareTypes.CHAR_KW;
+            } 
+            // fall through
+          case 64: break;
+          case 31: 
+            { return HareTypes.VOID_KW;
+            } 
+            // fall through
+          case 65: break;
+          case 32: 
+            { return HareTypes.FALSE_KW;
+            } 
+            // fall through
+          case 66: break;
+          case 33: 
+            { return HareTypes.EXPORT_KW;
+            } 
+            // fall through
+          case 67: break;
+          case 34: 
+            { return HareTypes.UINTPTR_KW;
+            } 
+            // fall through
+          case 68: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

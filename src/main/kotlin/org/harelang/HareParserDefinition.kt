@@ -17,7 +17,7 @@ class HareParserDefinition : ParserDefinition {
     companion object {
         private val FILE = IFileElementType(HareLang)
         private val Comment = TokenSet.create(HareElementType.COMMENT)
-        private val StringLiteral = TokenSet.create(HareElementType.STRING_LITERAL)
+        private val StringLiteral = TokenSet.create(HareTypes.STRING_LITERAL)
 
     }
 

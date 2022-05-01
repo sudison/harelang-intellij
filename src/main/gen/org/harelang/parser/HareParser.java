@@ -36,25 +36,41 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // void | i8 | i16 | i32 | i64 | u8 | u16 | u32 | u64 | int | uint | size | uintptr | char
+  // VOID_KW | I8_KW | I16_KW | I32_KW | I64_KW | U8_KW | U16_KW | U32_KW | U64_KW | INT_KW | UINT_KW | SIZE_KW | UINTPTR_KW | CHAR_KW
   public static boolean buildin_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "buildin_type")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BUILDIN_TYPE, "<buildin type>");
-    r = consumeToken(b, VOID);
-    if (!r) r = consumeToken(b, I8);
-    if (!r) r = consumeToken(b, I16);
-    if (!r) r = consumeToken(b, I32);
-    if (!r) r = consumeToken(b, I64);
-    if (!r) r = consumeToken(b, U8);
-    if (!r) r = consumeToken(b, U16);
-    if (!r) r = consumeToken(b, U32);
-    if (!r) r = consumeToken(b, U64);
-    if (!r) r = consumeToken(b, INT);
-    if (!r) r = consumeToken(b, UINT);
-    if (!r) r = consumeToken(b, SIZE);
-    if (!r) r = consumeToken(b, UINTPTR);
-    if (!r) r = consumeToken(b, CHAR);
+    r = consumeToken(b, VOID_KW);
+    if (!r) r = consumeToken(b, I8_KW);
+    if (!r) r = consumeToken(b, I16_KW);
+    if (!r) r = consumeToken(b, I32_KW);
+    if (!r) r = consumeToken(b, I64_KW);
+    if (!r) r = consumeToken(b, U8_KW);
+    if (!r) r = consumeToken(b, U16_KW);
+    if (!r) r = consumeToken(b, U32_KW);
+    if (!r) r = consumeToken(b, U64_KW);
+    if (!r) r = consumeToken(b, INT_KW);
+    if (!r) r = consumeToken(b, UINT_KW);
+    if (!r) r = consumeToken(b, SIZE_KW);
+    if (!r) r = consumeToken(b, UINTPTR_KW);
+    if (!r) r = consumeToken(b, CHAR_KW);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
+  public static boolean constant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "constant")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CONSTANT, "<constant>");
+    r = integer_constant(b, l + 1);
+    if (!r) r = string_const(b, l + 1);
+    if (!r) r = consumeToken(b, NULL_KW);
+    if (!r) r = consumeToken(b, TRUE_KW);
+    if (!r) r = consumeToken(b, FALSE_KW);
+    if (!r) r = consumeToken(b, VOID_KW);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -74,15 +90,28 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LBR RBR
+  // LBR constant* RBR
   public static boolean function_block(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_block")) return false;
     if (!nextTokenIs(b, LBR)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LBR, RBR);
+    r = consumeToken(b, LBR);
+    r = r && function_block_1(b, l + 1);
+    r = r && consumeToken(b, RBR);
     exit_section_(b, m, FUNCTION_BLOCK, r);
     return r;
+  }
+
+  // constant*
+  private static boolean function_block_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_block_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!constant(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "function_block_1", c)) break;
+    }
+    return true;
   }
 
   /* ********************************************************** */
@@ -159,6 +188,47 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // DECIMAL_DIGITS integer_suffix?
+  public static boolean integer_constant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_constant")) return false;
+    if (!nextTokenIs(b, DECIMAL_DIGITS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DECIMAL_DIGITS);
+    r = r && integer_constant_1(b, l + 1);
+    exit_section_(b, m, INTEGER_CONSTANT, r);
+    return r;
+  }
+
+  // integer_suffix?
+  private static boolean integer_constant_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_constant_1")) return false;
+    integer_suffix(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64"
+  public static boolean integer_suffix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_suffix")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, INTEGER_SUFFIX, "<integer suffix>");
+    r = consumeToken(b, "i");
+    if (!r) r = consumeToken(b, "u");
+    if (!r) r = consumeToken(b, "z");
+    if (!r) r = consumeToken(b, "i8");
+    if (!r) r = consumeToken(b, "i16");
+    if (!r) r = consumeToken(b, "i32");
+    if (!r) r = consumeToken(b, "i64");
+    if (!r) r = consumeToken(b, "u8");
+    if (!r) r = consumeToken(b, "u16");
+    if (!r) r = consumeToken(b, "u32");
+    if (!r) r = consumeToken(b, "u64");
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // IDENTIFIER COLON type
   public static boolean parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter")) return false;
@@ -205,6 +275,18 @@ public class HareParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "parameter_list_0_2", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // STRING_LITERAL
+  public static boolean string_const(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string_const")) return false;
+    if (!nextTokenIs(b, STRING_LITERAL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING_LITERAL);
+    exit_section_(b, m, STRING_CONST, r);
+    return r;
   }
 
   /* ********************************************************** */

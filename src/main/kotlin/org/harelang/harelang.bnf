@@ -25,8 +25,12 @@ function_definition ::= EXPORT_KW? FN_KW IDENTIFIER function_args type function_
 pin = 2
 }
 function_args ::= LP parameter_list RP
-function_block ::= LBR RBR
+function_block ::= LBR constant* RBR
 parameter_list ::= parameter COMMA parameter_list* | parameter
 parameter ::= IDENTIFIER COLON type
 type ::= buildin_type
-buildin_type ::= void | i8 | i16 | i32 | i64 | u8 | u16 | u32 | u64 | int | uint | size | uintptr | char
+buildin_type ::= VOID_KW | I8_KW | I16_KW | I32_KW | I64_KW | U8_KW | U16_KW | U32_KW | U64_KW | INT_KW | UINT_KW | SIZE_KW | UINTPTR_KW | CHAR_KW
+constant ::= integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
+integer_constant ::= DECIMAL_DIGITS integer_suffix?
+integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64"
+string_const ::= STRING_LITERAL

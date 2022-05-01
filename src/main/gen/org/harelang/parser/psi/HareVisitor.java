@@ -11,6 +11,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitConstant(@NotNull HareConstant o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionArgs(@NotNull HareFunctionArgs o) {
     visitPsiElement(o);
   }
@@ -31,11 +35,23 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIntegerConstant(@NotNull HareIntegerConstant o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIntegerSuffix(@NotNull HareIntegerSuffix o) {
+    visitPsiElement(o);
+  }
+
   public void visitParameter(@NotNull HareParameter o) {
     visitPsiElement(o);
   }
 
   public void visitParameterList(@NotNull HareParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStringConst(@NotNull HareStringConst o) {
     visitPsiElement(o);
   }
 

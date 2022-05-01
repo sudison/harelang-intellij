@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareFunctionBlockImpl extends ASTWrapperPsiElement implements HareFunctionBlock {
+public class HareIntegerConstantImpl extends ASTWrapperPsiElement implements HareIntegerConstant {
 
-  public HareFunctionBlockImpl(@NotNull ASTNode node) {
+  public HareIntegerConstantImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitFunctionBlock(this);
+    visitor.visitIntegerConstant(this);
   }
 
   @Override
@@ -27,9 +27,9 @@ public class HareFunctionBlockImpl extends ASTWrapperPsiElement implements HareF
   }
 
   @Override
-  @NotNull
-  public List<HareConstant> getConstantList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareConstant.class);
+  @Nullable
+  public HareIntegerSuffix getIntegerSuffix() {
+    return findChildByClass(HareIntegerSuffix.class);
   }
 
 }

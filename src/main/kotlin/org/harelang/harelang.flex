@@ -23,7 +23,7 @@ IDENTIFIER = {NON_DIGIT} {ALNUM}*
 COMMENT = "//" [^\n]* \n?
 STRING_LITERAL = \".*\"
 WHITESPACE      = \s
-
+DECIMAL_DIGITS = \d+
 %%
 
 
@@ -35,31 +35,35 @@ WHITESPACE      = \s
     ")" { return HareTypes.RP; }
     "{" { return HareTypes.LBR; }
     "}" { return HareTypes.RBR; }
-    "i8" {return HareTypes.I8;}
-    "i16" {return HareTypes.I16;}
-    "i32" {return HareTypes.I32;}
-    "i64" {return HareTypes.I64;}
-    "u8" {return HareTypes.U8;}
-    "u16" {return HareTypes.U16;}
-    "u32" {return HareTypes.U32;}
-    "u64" {return HareTypes.U64;}
-    "int" {return HareTypes.INT;}
-    "uint" {return HareTypes.UINT;}
-    "size" {return HareTypes.SIZE;}
-    "uintptr" {return HareTypes.UINTPTR;}
-    "char" {return HareTypes.CHAR;}
-    "void" {return HareTypes.VOID;}
+    "i8" {return HareTypes.I8_KW;}
+    "i16" {return HareTypes.I16_KW;}
+    "i32" {return HareTypes.I32_KW;}
+    "i64" {return HareTypes.I64_KW;}
+    "u8" {return HareTypes.U8_KW;}
+    "u16" {return HareTypes.U16_KW;}
+    "u32" {return HareTypes.U32_KW;}
+    "u64" {return HareTypes.U64_KW;}
+    "int" {return HareTypes.INT_KW;}
+    "uint" {return HareTypes.UINT_KW;}
+    "size" {return HareTypes.SIZE_KW;}
+    "uintptr" {return HareTypes.UINTPTR_KW;}
+    "char" {return HareTypes.CHAR_KW;}
+    "void" {return HareTypes.VOID_KW;}
     "fn" {return HareTypes.FN_KW;}
     "use" { return HareTypes.USE_KW; }
     "export" {return HareTypes.EXPORT_KW;}
+    "true" {return HareTypes.TRUE_KW;}
+    "false" {return HareTypes.FALSE_KW;}
+    "null" {return HareTypes.NULL_KW;}
 
     "::" { return HareTypes.SCOPE; }
 
     {WHITESPACE} { return TokenType.WHITE_SPACE; }
+    {DECIMAL_DIGITS} { return HareTypes.DECIMAL_DIGITS; }
 
     {IDENTIFIER} { return HareTypes.IDENTIFIER; }
     {COMMENT} {return HareElementType.Companion.getCOMMENT();}
-    {STRING_LITERAL} {return HareElementType.Companion.getSTRING_LITERAL();}
+    {STRING_LITERAL} {return HareTypes.STRING_LITERAL;}
 
 }
 
