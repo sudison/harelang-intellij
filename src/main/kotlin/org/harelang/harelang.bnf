@@ -36,7 +36,7 @@ integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16"
 string_const ::= STRING_LITERAL
 
 
-expression ::= assignment | binding_list | logical_or_expression
+expression ::= assignment | binding_list | logical_or_expression | if_expression
 
 private logical_or_expression ::= logical_xor_expression LOGICAL_OR logical_or_expression* | logical_xor_expression
 private logical_xor_expression ::= logical_and_expression LOGICAL_XOR logical_xor_expression* |logical_and_expression
@@ -71,3 +71,6 @@ MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT
 LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
 object_selector ::= IDENTIFIER | indexing_expression
 indexing_expression ::= postfix_expression LB expression RB
+
+if_expression ::= IF_KW conditional_branch | IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression
+conditional_branch ::= LP expression RP expression

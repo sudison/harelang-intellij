@@ -31,6 +31,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitConditionalBranch(@NotNull HareConditionalBranch o) {
+    visitPsiElement(o);
+  }
+
   public void visitConstant(@NotNull HareConstant o) {
     visitPsiElement(o);
   }
@@ -48,6 +52,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitFunctionDefinition(@NotNull HareFunctionDefinition o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIfExpression(@NotNull HareIfExpression o) {
     visitPsiElement(o);
   }
 

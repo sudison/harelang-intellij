@@ -13,11 +13,13 @@ public interface HareTypes {
   IElementType BINDINGS = new HareElementType("BINDINGS");
   IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
   IElementType BUILDIN_TYPE = new HareElementType("BUILDIN_TYPE");
+  IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType FUNCTION_ARGS = new HareElementType("FUNCTION_ARGS");
   IElementType FUNCTION_BLOCK = new HareElementType("FUNCTION_BLOCK");
   IElementType FUNCTION_DEFINITION = new HareElementType("FUNCTION_DEFINITION");
+  IElementType IF_EXPRESSION = new HareElementType("IF_EXPRESSION");
   IElementType IMPORT_DECL = new HareElementType("IMPORT_DECL");
   IElementType IMPORT_PATH = new HareElementType("IMPORT_PATH");
   IElementType INDEXING_EXPRESSION = new HareElementType("INDEXING_EXPRESSION");
@@ -41,6 +43,7 @@ public interface HareTypes {
   IElementType DECIMAL_DIGITS = new HareTokenType("DECIMAL_DIGITS");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
+  IElementType ELSE_KW = new HareTokenType("ELSE_KW");
   IElementType EOS = new HareTokenType("EOS");
   IElementType EQUAL = new HareTokenType("EQUAL");
   IElementType EXCLUSIVE_OR = new HareTokenType("EXCLUSIVE_OR");
@@ -52,6 +55,7 @@ public interface HareTypes {
   IElementType I64_KW = new HareTokenType("I64_KW");
   IElementType I8_KW = new HareTokenType("I8_KW");
   IElementType IDENTIFIER = new HareTokenType("IDENTIFIER");
+  IElementType IF_KW = new HareTokenType("IF_KW");
   IElementType INCLUSIVE_OR = new HareTokenType("INCLUSIVE_OR");
   IElementType INT_KW = new HareTokenType("INT_KW");
   IElementType LARGER_EQUAL = new HareTokenType("LARGER_EQUAL");
@@ -121,6 +125,9 @@ public interface HareTypes {
       else if (type == BUILDIN_TYPE) {
         return new HareBuildinTypeImpl(node);
       }
+      else if (type == CONDITIONAL_BRANCH) {
+        return new HareConditionalBranchImpl(node);
+      }
       else if (type == CONSTANT) {
         return new HareConstantImpl(node);
       }
@@ -135,6 +142,9 @@ public interface HareTypes {
       }
       else if (type == FUNCTION_DEFINITION) {
         return new HareFunctionDefinitionImpl(node);
+      }
+      else if (type == IF_EXPRESSION) {
+        return new HareIfExpressionImpl(node);
       }
       else if (type == IMPORT_DECL) {
         return new HareImportDeclImpl(node);

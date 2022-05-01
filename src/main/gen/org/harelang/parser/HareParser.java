@@ -346,6 +346,21 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LP expression RP expression
+  public static boolean conditional_branch(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "conditional_branch")) return false;
+    if (!nextTokenIs(b, LP)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, CONDITIONAL_BRANCH, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
@@ -443,7 +458,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // assignment | binding_list | logical_or_expression
+  // assignment | binding_list | logical_or_expression | if_expression
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
@@ -451,6 +466,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = assignment(b, l + 1);
     if (!r) r = binding_list(b, l + 1);
     if (!r) r = logical_or_expression(b, l + 1);
+    if (!r) r = if_expression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -516,6 +532,57 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "function_definition_0")) return false;
     consumeToken(b, EXPORT_KW);
     return true;
+  }
+
+  /* ********************************************************** */
+  // IF_KW conditional_branch | IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression
+  public static boolean if_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "if_expression")) return false;
+    if (!nextTokenIs(b, IF_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = if_expression_0(b, l + 1);
+    if (!r) r = if_expression_1(b, l + 1);
+    if (!r) r = if_expression_2(b, l + 1);
+    exit_section_(b, m, IF_EXPRESSION, r);
+    return r;
+  }
+
+  // IF_KW conditional_branch
+  private static boolean if_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "if_expression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IF_KW);
+    r = r && conditional_branch(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // IF_KW conditional_branch ELSE_KW if_expression
+  private static boolean if_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "if_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IF_KW);
+    r = r && conditional_branch(b, l + 1);
+    r = r && consumeToken(b, ELSE_KW);
+    r = r && if_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // IF_KW conditional_branch ELSE_KW expression
+  private static boolean if_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "if_expression_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IF_KW);
+    r = r && conditional_branch(b, l + 1);
+    r = r && consumeToken(b, ELSE_KW);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */

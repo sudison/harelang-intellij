@@ -45,6 +45,12 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
   }
 
   @Override
+  @Nullable
+  public HareIfExpression getIfExpression() {
+    return findChildByClass(HareIfExpression.class);
+  }
+
+  @Override
   @NotNull
   public List<HareIndexingExpression> getIndexingExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, HareIndexingExpression.class);

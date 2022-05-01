@@ -93,7 +93,8 @@ DECIMAL_DIGITS = \d+
     "static" {return HareTypes.STATIC_KW;}
     "let" {return HareTypes.LET_KW;}
     "const" {return HareTypes.CONST_KW;}
-
+     "if" {return HareTypes.IF_KW;}
+     "else" {return HareTypes.ELSE_KW;}
     "::" { return HareTypes.SCOPE; }
 
     {WHITESPACE} { return TokenType.WHITE_SPACE; }

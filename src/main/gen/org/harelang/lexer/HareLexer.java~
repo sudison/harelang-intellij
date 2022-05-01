@@ -592,7 +592,7 @@ class HareLexer implements FlexLexer {
             // fall through
           case 77: break;
           case 6: 
-            { return HareTypes.ASSIGNMENT;
+            { return HareTypes.ASSIGN;
             } 
             // fall through
           case 78: break;
