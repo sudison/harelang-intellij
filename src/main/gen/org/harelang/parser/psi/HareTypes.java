@@ -7,6 +7,9 @@ import com.intellij.lang.ASTNode;
 
 public interface HareTypes {
 
+  IElementType BINDING = new HareElementType("BINDING");
+  IElementType BINDINGS = new HareElementType("BINDINGS");
+  IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
   IElementType BUILDIN_TYPE = new HareElementType("BUILDIN_TYPE");
   IElementType CONSTANT = new HareElementType("CONSTANT");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
@@ -25,9 +28,11 @@ public interface HareTypes {
 
   IElementType ADDS = new HareTokenType("ADDS");
   IElementType AND = new HareTokenType("AND");
+  IElementType ASSIGNMENT = new HareTokenType("ASSIGNMENT");
   IElementType CHAR_KW = new HareTokenType("CHAR_KW");
   IElementType COLON = new HareTokenType("COLON");
   IElementType COMMA = new HareTokenType("COMMA");
+  IElementType CONST_KW = new HareTokenType("CONST_KW");
   IElementType DECIMAL_DIGITS = new HareTokenType("DECIMAL_DIGITS");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType EOS = new HareTokenType("EOS");
@@ -49,6 +54,7 @@ public interface HareTypes {
   IElementType LEFT_SHIFT = new HareTokenType("LEFT_SHIFT");
   IElementType LESSER_EQUAL = new HareTokenType("LESSER_EQUAL");
   IElementType LESSER_THAN = new HareTokenType("LESSER_THAN");
+  IElementType LET_KW = new HareTokenType("LET_KW");
   IElementType LOGICAL_AND = new HareTokenType("LOGICAL_AND");
   IElementType LOGICAL_OR = new HareTokenType("LOGICAL_OR");
   IElementType LOGICAL_XOR = new HareTokenType("LOGICAL_XOR");
@@ -62,6 +68,7 @@ public interface HareTypes {
   IElementType RP = new HareTokenType("RP");
   IElementType SCOPE = new HareTokenType("SCOPE");
   IElementType SIZE_KW = new HareTokenType("SIZE_KW");
+  IElementType STATIC_KW = new HareTokenType("STATIC_KW");
   IElementType STRING_LITERAL = new HareTokenType("STRING_LITERAL");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
@@ -77,7 +84,16 @@ public interface HareTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == BUILDIN_TYPE) {
+      if (type == BINDING) {
+        return new HareBindingImpl(node);
+      }
+      else if (type == BINDINGS) {
+        return new HareBindingsImpl(node);
+      }
+      else if (type == BINDING_LIST) {
+        return new HareBindingListImpl(node);
+      }
+      else if (type == BUILDIN_TYPE) {
         return new HareBuildinTypeImpl(node);
       }
       else if (type == CONSTANT) {

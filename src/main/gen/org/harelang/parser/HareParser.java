@@ -117,6 +117,113 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // IDENTIFIER ASSIGNMENT expression
+  public static boolean binding(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, ASSIGNMENT);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, BINDING, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
+  public static boolean binding_list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_list")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, BINDING_LIST, "<binding list>");
+    r = binding_list_0(b, l + 1);
+    if (!r) r = binding_list_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STATIC_KW* LET_KW bindings
+  private static boolean binding_list_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_list_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = binding_list_0_0(b, l + 1);
+    r = r && consumeToken(b, LET_KW);
+    r = r && bindings(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STATIC_KW*
+  private static boolean binding_list_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_list_0_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, STATIC_KW)) break;
+      if (!empty_element_parsed_guard_(b, "binding_list_0_0", c)) break;
+    }
+    return true;
+  }
+
+  // STATIC_KW* CONST_KW bindings
+  private static boolean binding_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_list_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = binding_list_1_0(b, l + 1);
+    r = r && consumeToken(b, CONST_KW);
+    r = r && bindings(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STATIC_KW*
+  private static boolean binding_list_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_list_1_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, STATIC_KW)) break;
+      if (!empty_element_parsed_guard_(b, "binding_list_1_0", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // binding COMMA bindings* | binding
+  public static boolean bindings(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bindings")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = bindings_0(b, l + 1);
+    if (!r) r = binding(b, l + 1);
+    exit_section_(b, m, BINDINGS, r);
+    return r;
+  }
+
+  // binding COMMA bindings*
+  private static boolean bindings_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bindings_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = binding(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && bindings_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // bindings*
+  private static boolean bindings_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bindings_0_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!bindings(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "bindings_0_2", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // postfix_expression
   static boolean buildin_expression(PsiBuilder b, int l) {
     return postfix_expression(b, l + 1);
@@ -297,12 +404,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // logical_or_expression
+  // logical_or_expression | binding_list
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _COLLAPSE_, EXPRESSION, "<expression>");
     r = logical_or_expression(b, l + 1);
+    if (!r) r = binding_list(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

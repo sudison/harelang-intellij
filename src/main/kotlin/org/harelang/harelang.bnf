@@ -36,7 +36,7 @@ integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16"
 string_const ::= STRING_LITERAL
 
 
-expression ::= logical_or_expression
+expression ::= logical_or_expression | binding_list
 
 private logical_or_expression ::= logical_xor_expression LOGICAL_OR logical_or_expression* | logical_xor_expression
 private logical_xor_expression ::= logical_and_expression LOGICAL_XOR logical_xor_expression* |logical_and_expression
@@ -60,3 +60,7 @@ private buildin_expression ::= postfix_expression
 private postfix_expression ::= nested_expression
 private nested_expression ::= plan_expression | LP expression RP
 plan_expression ::= IDENTIFIER | constant
+
+binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
+bindings ::= binding COMMA bindings* | binding
+binding ::= IDENTIFIER ASSIGNMENT expression

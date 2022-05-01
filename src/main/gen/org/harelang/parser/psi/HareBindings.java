@@ -5,15 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareExpression extends PsiElement {
-
-  @Nullable
-  HareBindingList getBindingList();
+public interface HareBindings extends PsiElement {
 
   @NotNull
-  List<HareExpression> getExpressionList();
+  HareBinding getBinding();
 
   @NotNull
-  List<HarePlanExpression> getPlanExpressionList();
+  List<HareBindings> getBindingsList();
 
 }

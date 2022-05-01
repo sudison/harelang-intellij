@@ -28,6 +28,7 @@ DECIMAL_DIGITS = \d+
 
 
 <YYINITIAL> {
+    "=" {return HareTypes.ASSIGNMENT;}
     "*" {return HareTypes.MULTIPLIES;}
     "/" {return HareTypes.DIVIDES;}
     "%" {return HareTypes.MODULUS;}
@@ -74,6 +75,9 @@ DECIMAL_DIGITS = \d+
     "true" {return HareTypes.TRUE_KW;}
     "false" {return HareTypes.FALSE_KW;}
     "null" {return HareTypes.NULL_KW;}
+    "static" {return HareTypes.STATIC_KW;}
+    "let" {return HareTypes.LET_KW;}
+    "const" {return HareTypes.CONST_KW;}
 
     "::" { return HareTypes.SCOPE; }
 

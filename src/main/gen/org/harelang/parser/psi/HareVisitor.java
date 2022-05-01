@@ -7,6 +7,18 @@ import com.intellij.psi.PsiElement;
 
 public class HareVisitor extends PsiElementVisitor {
 
+  public void visitBinding(@NotNull HareBinding o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBindingList(@NotNull HareBindingList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBindings(@NotNull HareBindings o) {
+    visitPsiElement(o);
+  }
+
   public void visitBuildinType(@NotNull HareBuildinType o) {
     visitPsiElement(o);
   }
