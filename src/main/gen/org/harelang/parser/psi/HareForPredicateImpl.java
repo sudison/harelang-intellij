@@ -10,26 +10,20 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpression {
+public class HareForPredicateImpl extends ASTWrapperPsiElement implements HareForPredicate {
 
-  public HareExpressionImpl(@NotNull ASTNode node) {
+  public HareForPredicateImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitExpression(this);
+    visitor.visitForPredicate(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof HareVisitor) accept((HareVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public HareAssignment getAssignment() {
-    return findChildByClass(HareAssignment.class);
   }
 
   @Override
@@ -42,30 +36,6 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
   @NotNull
   public List<HareExpression> getExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public HareForLoop getForLoop() {
-    return findChildByClass(HareForLoop.class);
-  }
-
-  @Override
-  @Nullable
-  public HareIfExpression getIfExpression() {
-    return findChildByClass(HareIfExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<HareIndexingExpression> getIndexingExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareIndexingExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<HarePlanExpression> getPlanExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HarePlanExpression.class);
   }
 
 }

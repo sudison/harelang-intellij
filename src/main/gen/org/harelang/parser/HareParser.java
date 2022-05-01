@@ -458,7 +458,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // assignment | binding_list | logical_or_expression | if_expression
+  // assignment | binding_list | logical_or_expression | if_expression | for_loop
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
@@ -467,7 +467,75 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = binding_list(b, l + 1);
     if (!r) r = logical_or_expression(b, l + 1);
     if (!r) r = if_expression(b, l + 1);
+    if (!r) r = for_loop(b, l + 1);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // FOR_KW LP for_predicate RP expression
+  public static boolean for_loop(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_loop")) return false;
+    if (!nextTokenIs(b, FOR_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, FOR_KW, LP);
+    r = r && for_predicate(b, l + 1);
+    r = r && consumeToken(b, RP);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, FOR_LOOP, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // binding_list EOS expression EOS expression | binding_list EOS expression | expression EOS expression | expression
+  public static boolean for_predicate(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_predicate")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, FOR_PREDICATE, "<for predicate>");
+    r = for_predicate_0(b, l + 1);
+    if (!r) r = for_predicate_1(b, l + 1);
+    if (!r) r = for_predicate_2(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // binding_list EOS expression EOS expression
+  private static boolean for_predicate_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_predicate_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = binding_list(b, l + 1);
+    r = r && consumeToken(b, EOS);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, EOS);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // binding_list EOS expression
+  private static boolean for_predicate_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_predicate_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = binding_list(b, l + 1);
+    r = r && consumeToken(b, EOS);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression EOS expression
+  private static boolean for_predicate_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_predicate_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, EOS);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 

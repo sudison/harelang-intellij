@@ -43,6 +43,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitForLoop(@NotNull HareForLoop o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForPredicate(@NotNull HareForPredicate o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionArgs(@NotNull HareFunctionArgs o) {
     visitPsiElement(o);
   }

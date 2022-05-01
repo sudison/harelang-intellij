@@ -16,6 +16,8 @@ public interface HareTypes {
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
+  IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
+  IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_ARGS = new HareElementType("FUNCTION_ARGS");
   IElementType FUNCTION_BLOCK = new HareElementType("FUNCTION_BLOCK");
   IElementType FUNCTION_DEFINITION = new HareElementType("FUNCTION_DEFINITION");
@@ -50,6 +52,7 @@ public interface HareTypes {
   IElementType EXPORT_KW = new HareTokenType("EXPORT_KW");
   IElementType FALSE_KW = new HareTokenType("FALSE_KW");
   IElementType FN_KW = new HareTokenType("FN_KW");
+  IElementType FOR_KW = new HareTokenType("FOR_KW");
   IElementType I16_KW = new HareTokenType("I16_KW");
   IElementType I32_KW = new HareTokenType("I32_KW");
   IElementType I64_KW = new HareTokenType("I64_KW");
@@ -133,6 +136,12 @@ public interface HareTypes {
       }
       else if (type == EXPRESSION) {
         return new HareExpressionImpl(node);
+      }
+      else if (type == FOR_LOOP) {
+        return new HareForLoopImpl(node);
+      }
+      else if (type == FOR_PREDICATE) {
+        return new HareForPredicateImpl(node);
       }
       else if (type == FUNCTION_ARGS) {
         return new HareFunctionArgsImpl(node);
