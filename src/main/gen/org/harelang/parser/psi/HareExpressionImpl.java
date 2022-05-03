@@ -40,6 +40,12 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
 
   @Override
   @NotNull
+  public List<HareCompoundExpression> getCompoundExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareCompoundExpression.class);
+  }
+
+  @Override
+  @NotNull
   public List<HareExpression> getExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
   }
@@ -54,12 +60,6 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
   @Nullable
   public HareIfExpression getIfExpression() {
     return findChildByClass(HareIfExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<HareIndexingExpression> getIndexingExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareIndexingExpression.class);
   }
 
   @Override

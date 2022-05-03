@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface HareBindings extends PsiElement {
 
   @NotNull
-  HareBinding getBinding();
-
-  @NotNull
-  List<HareBindings> getBindingsList();
+  List<HareBinding> getBindingList();
 
 }

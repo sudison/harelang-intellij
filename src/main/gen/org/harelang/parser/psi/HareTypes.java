@@ -13,9 +13,11 @@ public interface HareTypes {
   IElementType BINDINGS = new HareElementType("BINDINGS");
   IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
   IElementType BUILDIN_TYPE = new HareElementType("BUILDIN_TYPE");
+  IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
+  IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_ARGS = new HareElementType("FUNCTION_ARGS");
@@ -128,6 +130,9 @@ public interface HareTypes {
       else if (type == BUILDIN_TYPE) {
         return new HareBuildinTypeImpl(node);
       }
+      else if (type == COMPOUND_EXPRESSION) {
+        return new HareCompoundExpressionImpl(node);
+      }
       else if (type == CONDITIONAL_BRANCH) {
         return new HareConditionalBranchImpl(node);
       }
@@ -136,6 +141,9 @@ public interface HareTypes {
       }
       else if (type == EXPRESSION) {
         return new HareExpressionImpl(node);
+      }
+      else if (type == EXPRESSION_LIST) {
+        return new HareExpressionListImpl(node);
       }
       else if (type == FOR_LOOP) {
         return new HareForLoopImpl(node);

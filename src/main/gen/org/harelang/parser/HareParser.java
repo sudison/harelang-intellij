@@ -36,38 +36,37 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // multiplicative_expression additive_operator additive_expression* | multiplicative_expression
+  // multiplicative_expression (additive_operator multiplicative_expression)*
   static boolean additive_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = additive_expression_0(b, l + 1);
-    if (!r) r = multiplicative_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // multiplicative_expression additive_operator additive_expression*
-  private static boolean additive_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = multiplicative_expression(b, l + 1);
-    r = r && additive_operator(b, l + 1);
-    r = r && additive_expression_0_2(b, l + 1);
+    r = r && additive_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // additive_expression*
-  private static boolean additive_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression_0_2")) return false;
+  // (additive_operator multiplicative_expression)*
+  private static boolean additive_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "additive_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!additive_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "additive_expression_0_2", c)) break;
+      if (!additive_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "additive_expression_1", c)) break;
     }
     return true;
+  }
+
+  // additive_operator multiplicative_expression
+  private static boolean additive_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "additive_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = additive_operator(b, l + 1);
+    r = r && multiplicative_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -82,38 +81,37 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // shift_expression AND and_expression* | shift_expression
+  // shift_expression (AND shift_expression)*
   static boolean and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "and_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = and_expression_0(b, l + 1);
-    if (!r) r = shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // shift_expression AND and_expression*
-  private static boolean and_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "and_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, AND);
-    r = r && and_expression_0_2(b, l + 1);
+    r = r && and_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // and_expression*
-  private static boolean and_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "and_expression_0_2")) return false;
+  // (AND shift_expression)*
+  private static boolean and_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "and_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!and_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "and_expression_0_2", c)) break;
+      if (!and_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "and_expression_1", c)) break;
     }
     return true;
+  }
+
+  // AND shift_expression
+  private static boolean and_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "and_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, AND);
+    r = r && shift_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -227,39 +225,38 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // binding COMMA bindings* | binding
+  // binding (COMMA binding)*
   public static boolean bindings(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bindings")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = bindings_0(b, l + 1);
-    if (!r) r = binding(b, l + 1);
+    r = binding(b, l + 1);
+    r = r && bindings_1(b, l + 1);
     exit_section_(b, m, BINDINGS, r);
     return r;
   }
 
-  // binding COMMA bindings*
-  private static boolean bindings_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bindings_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = binding(b, l + 1);
-    r = r && consumeToken(b, COMMA);
-    r = r && bindings_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // bindings*
-  private static boolean bindings_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bindings_0_2")) return false;
+  // (COMMA binding)*
+  private static boolean bindings_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bindings_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!bindings(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "bindings_0_2", c)) break;
+      if (!bindings_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "bindings_1", c)) break;
     }
     return true;
+  }
+
+  // COMMA binding
+  private static boolean bindings_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bindings_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && binding(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -299,38 +296,37 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // inclusive_or_expression comparison_operator comparison_expression* | inclusive_or_expression
+  // inclusive_or_expression (comparison_operator inclusive_or_expression)*
   static boolean comparison_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = comparison_expression_0(b, l + 1);
-    if (!r) r = inclusive_or_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // inclusive_or_expression comparison_operator comparison_expression*
-  private static boolean comparison_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "comparison_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = inclusive_or_expression(b, l + 1);
-    r = r && comparison_operator(b, l + 1);
-    r = r && comparison_expression_0_2(b, l + 1);
+    r = r && comparison_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // comparison_expression*
-  private static boolean comparison_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "comparison_expression_0_2")) return false;
+  // (comparison_operator inclusive_or_expression)*
+  private static boolean comparison_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!comparison_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "comparison_expression_0_2", c)) break;
+      if (!comparison_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "comparison_expression_1", c)) break;
     }
     return true;
+  }
+
+  // comparison_operator inclusive_or_expression
+  private static boolean comparison_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = comparison_operator(b, l + 1);
+    r = r && inclusive_or_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -342,6 +338,20 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, LARGER_THAN);
     if (!r) r = consumeToken(b, LESSER_EQUAL);
     if (!r) r = consumeToken(b, LARGER_EQUAL);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBR expression_list RBR
+  public static boolean compound_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "compound_expression")) return false;
+    if (!nextTokenIs(b, LBR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBR);
+    r = r && expression_list(b, l + 1);
+    r = r && consumeToken(b, RBR);
+    exit_section_(b, m, COMPOUND_EXPRESSION, r);
     return r;
   }
 
@@ -377,38 +387,37 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comparison_expression equality_operator equality_expression* | comparison_expression
+  // comparison_expression (equality_operator comparison_expression)*
   static boolean equality_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equality_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = equality_expression_0(b, l + 1);
-    if (!r) r = comparison_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // comparison_expression equality_operator equality_expression*
-  private static boolean equality_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "equality_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = comparison_expression(b, l + 1);
-    r = r && equality_operator(b, l + 1);
-    r = r && equality_expression_0_2(b, l + 1);
+    r = r && equality_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // equality_expression*
-  private static boolean equality_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "equality_expression_0_2")) return false;
+  // (equality_operator comparison_expression)*
+  private static boolean equality_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equality_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!equality_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "equality_expression_0_2", c)) break;
+      if (!equality_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "equality_expression_1", c)) break;
     }
     return true;
+  }
+
+  // equality_operator comparison_expression
+  private static boolean equality_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equality_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = equality_operator(b, l + 1);
+    r = r && comparison_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -423,38 +432,37 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // and_expression EXCLUSIVE_OR exclusive_or_expression* | and_expression
+  // and_expression (EXCLUSIVE_OR and_expression)*
   static boolean exclusive_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exclusive_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = exclusive_or_expression_0(b, l + 1);
-    if (!r) r = and_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // and_expression EXCLUSIVE_OR exclusive_or_expression*
-  private static boolean exclusive_or_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "exclusive_or_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = and_expression(b, l + 1);
-    r = r && consumeToken(b, EXCLUSIVE_OR);
-    r = r && exclusive_or_expression_0_2(b, l + 1);
+    r = r && exclusive_or_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // exclusive_or_expression*
-  private static boolean exclusive_or_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "exclusive_or_expression_0_2")) return false;
+  // (EXCLUSIVE_OR and_expression)*
+  private static boolean exclusive_or_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exclusive_or_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!exclusive_or_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "exclusive_or_expression_0_2", c)) break;
+      if (!exclusive_or_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "exclusive_or_expression_1", c)) break;
     }
     return true;
+  }
+
+  // EXCLUSIVE_OR and_expression
+  private static boolean exclusive_or_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exclusive_or_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EXCLUSIVE_OR);
+    r = r && and_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -469,6 +477,33 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = if_expression(b, l + 1);
     if (!r) r = for_loop(b, l + 1);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (expression EOS)+
+  public static boolean expression_list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_list")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPRESSION_LIST, "<expression list>");
+    r = expression_list_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!expression_list_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "expression_list", c)) break;
+    }
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // expression EOS
+  private static boolean expression_list_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_list_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, EOS);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -703,38 +738,37 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // exclusive_or_expression INCLUSIVE_OR inclusive_or_expression* | exclusive_or_expression
+  // exclusive_or_expression (INCLUSIVE_OR exclusive_or_expression)*
   static boolean inclusive_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "inclusive_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = inclusive_or_expression_0(b, l + 1);
-    if (!r) r = exclusive_or_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // exclusive_or_expression INCLUSIVE_OR inclusive_or_expression*
-  private static boolean inclusive_or_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "inclusive_or_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = exclusive_or_expression(b, l + 1);
-    r = r && consumeToken(b, INCLUSIVE_OR);
-    r = r && inclusive_or_expression_0_2(b, l + 1);
+    r = r && inclusive_or_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // inclusive_or_expression*
-  private static boolean inclusive_or_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "inclusive_or_expression_0_2")) return false;
+  // (INCLUSIVE_OR exclusive_or_expression)*
+  private static boolean inclusive_or_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "inclusive_or_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!inclusive_or_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "inclusive_or_expression_0_2", c)) break;
+      if (!inclusive_or_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "inclusive_or_expression_1", c)) break;
     }
     return true;
+  }
+
+  // INCLUSIVE_OR exclusive_or_expression
+  private static boolean inclusive_or_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "inclusive_or_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, INCLUSIVE_OR);
+    r = r && exclusive_or_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -793,145 +827,137 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // equality_expression LOGICAL_AND logical_and_expression* | equality_expression
+  // equality_expression (LOGICAL_AND equality_expression)*
   static boolean logical_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = logical_and_expression_0(b, l + 1);
-    if (!r) r = equality_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // equality_expression LOGICAL_AND logical_and_expression*
-  private static boolean logical_and_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "logical_and_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = equality_expression(b, l + 1);
-    r = r && consumeToken(b, LOGICAL_AND);
-    r = r && logical_and_expression_0_2(b, l + 1);
+    r = r && logical_and_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // logical_and_expression*
-  private static boolean logical_and_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "logical_and_expression_0_2")) return false;
+  // (LOGICAL_AND equality_expression)*
+  private static boolean logical_and_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_and_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!logical_and_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "logical_and_expression_0_2", c)) break;
+      if (!logical_and_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "logical_and_expression_1", c)) break;
     }
     return true;
   }
 
+  // LOGICAL_AND equality_expression
+  private static boolean logical_and_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_and_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LOGICAL_AND);
+    r = r && equality_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   /* ********************************************************** */
-  // logical_xor_expression LOGICAL_OR logical_or_expression* | logical_xor_expression
+  // logical_xor_expression (LOGICAL_OR logical_xor_expression)*
   static boolean logical_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = logical_or_expression_0(b, l + 1);
-    if (!r) r = logical_xor_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // logical_xor_expression LOGICAL_OR logical_or_expression*
-  private static boolean logical_or_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "logical_or_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = logical_xor_expression(b, l + 1);
-    r = r && consumeToken(b, LOGICAL_OR);
-    r = r && logical_or_expression_0_2(b, l + 1);
+    r = r && logical_or_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // logical_or_expression*
-  private static boolean logical_or_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "logical_or_expression_0_2")) return false;
+  // (LOGICAL_OR logical_xor_expression)*
+  private static boolean logical_or_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_or_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!logical_or_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "logical_or_expression_0_2", c)) break;
+      if (!logical_or_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "logical_or_expression_1", c)) break;
     }
     return true;
   }
 
+  // LOGICAL_OR logical_xor_expression
+  private static boolean logical_or_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_or_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LOGICAL_OR);
+    r = r && logical_xor_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   /* ********************************************************** */
-  // logical_and_expression LOGICAL_XOR logical_xor_expression* |logical_and_expression
+  // logical_and_expression (LOGICAL_XOR logical_and_expression)*
   static boolean logical_xor_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_xor_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = logical_xor_expression_0(b, l + 1);
-    if (!r) r = logical_and_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // logical_and_expression LOGICAL_XOR logical_xor_expression*
-  private static boolean logical_xor_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "logical_xor_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = logical_and_expression(b, l + 1);
-    r = r && consumeToken(b, LOGICAL_XOR);
-    r = r && logical_xor_expression_0_2(b, l + 1);
+    r = r && logical_xor_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // logical_xor_expression*
-  private static boolean logical_xor_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "logical_xor_expression_0_2")) return false;
+  // (LOGICAL_XOR logical_and_expression)*
+  private static boolean logical_xor_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_xor_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!logical_xor_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "logical_xor_expression_0_2", c)) break;
+      if (!logical_xor_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "logical_xor_expression_1", c)) break;
     }
     return true;
   }
 
+  // LOGICAL_XOR logical_and_expression
+  private static boolean logical_xor_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_xor_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LOGICAL_XOR);
+    r = r && logical_and_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   /* ********************************************************** */
-  // cast_expression multiplicative_operator multiplicative_expression+ | cast_expression
+  // cast_expression (multiplicative_operator cast_expression)*
   static boolean multiplicative_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = multiplicative_expression_0(b, l + 1);
-    if (!r) r = cast_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // cast_expression multiplicative_operator multiplicative_expression+
-  private static boolean multiplicative_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = cast_expression(b, l + 1);
-    r = r && multiplicative_operator(b, l + 1);
-    r = r && multiplicative_expression_0_2(b, l + 1);
+    r = r && multiplicative_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // multiplicative_expression+
-  private static boolean multiplicative_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_0_2")) return false;
+  // (multiplicative_operator cast_expression)*
+  private static boolean multiplicative_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiplicative_expression_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!multiplicative_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "multiplicative_expression_1", c)) break;
+    }
+    return true;
+  }
+
+  // multiplicative_operator cast_expression
+  private static boolean multiplicative_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiplicative_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = multiplicative_expression(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!multiplicative_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "multiplicative_expression_0_2", c)) break;
-    }
+    r = multiplicative_operator(b, l + 1);
+    r = r && cast_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1045,48 +1071,43 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // nested_expression | indexing_expression
+  // nested_expression
   static boolean postfix_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "postfix_expression")) return false;
-    boolean r;
-    r = nested_expression(b, l + 1);
-    if (!r) r = indexing_expression(b, l + 1);
-    return r;
+    return nested_expression(b, l + 1);
   }
 
   /* ********************************************************** */
-  // additive_expression shift_operator shift_expression* | additive_expression
+  // additive_expression (shift_operator additive_expression)*
   static boolean shift_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "shift_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = shift_expression_0(b, l + 1);
-    if (!r) r = additive_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // additive_expression shift_operator shift_expression*
-  private static boolean shift_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shift_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = additive_expression(b, l + 1);
-    r = r && shift_operator(b, l + 1);
-    r = r && shift_expression_0_2(b, l + 1);
+    r = r && shift_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // shift_expression*
-  private static boolean shift_expression_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shift_expression_0_2")) return false;
+  // (shift_operator additive_expression)*
+  private static boolean shift_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "shift_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!shift_expression(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "shift_expression_0_2", c)) break;
+      if (!shift_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "shift_expression_1", c)) break;
     }
     return true;
+  }
+
+  // shift_operator additive_expression
+  private static boolean shift_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "shift_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = shift_operator(b, l + 1);
+    r = r && additive_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -1158,9 +1179,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // buildin_expression
+  // buildin_expression | compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
-    return buildin_expression(b, l + 1);
+    if (!recursion_guard_(b, l, "unary_expression")) return false;
+    boolean r;
+    r = buildin_expression(b, l + 1);
+    if (!r) r = compound_expression(b, l + 1);
+    return r;
   }
 
 }

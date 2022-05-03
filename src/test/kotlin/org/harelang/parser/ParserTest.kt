@@ -15,7 +15,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         println(name)
 
         myFile = createPsiFile(
-            testName, """export fn main(a: i8, b: i32) i32 {  for (let a = b; a < 1; true) false}"""
+            testName, """export fn main(a: i8, b: i32) i32 {  for (let a = b; a < 1; true) {let a = 1, b =2;}}"""
         )
         ensureParsed(myFile)
         println(toParseTreeText(myFile, skipSpaces(), includeRanges()))

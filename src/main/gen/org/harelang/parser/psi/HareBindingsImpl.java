@@ -28,14 +28,8 @@ public class HareBindingsImpl extends ASTWrapperPsiElement implements HareBindin
 
   @Override
   @NotNull
-  public HareBinding getBinding() {
-    return findNotNullChildByClass(HareBinding.class);
-  }
-
-  @Override
-  @NotNull
-  public List<HareBindings> getBindingsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareBindings.class);
+  public List<HareBinding> getBindingList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareBinding.class);
   }
 
 }

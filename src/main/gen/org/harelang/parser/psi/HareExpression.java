@@ -14,6 +14,9 @@ public interface HareExpression extends PsiElement {
   HareBindingList getBindingList();
 
   @NotNull
+  List<HareCompoundExpression> getCompoundExpressionList();
+
+  @NotNull
   List<HareExpression> getExpressionList();
 
   @Nullable
@@ -21,9 +24,6 @@ public interface HareExpression extends PsiElement {
 
   @Nullable
   HareIfExpression getIfExpression();
-
-  @NotNull
-  List<HareIndexingExpression> getIndexingExpressionList();
 
   @NotNull
   List<HarePlanExpression> getPlanExpressionList();
