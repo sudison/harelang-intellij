@@ -689,18 +689,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // USE_KW import_path EOS
-  public static boolean import_decl(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "import_decl")) return false;
-    if (!nextTokenIs(b, USE_KW)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, IMPORT_DECL, null);
-    r = consumeToken(b, USE_KW);
-    p = r; // pin = 1
-    r = r && report_error_(b, import_path(b, l + 1));
-    r = p && consumeToken(b, EOS) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
+  // IDENTIFIER ASSIGN
+  public static boolean import_alias(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_alias")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, ASSIGN);
+    exit_section_(b, m, IMPORT_ALIAS, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -734,6 +731,32 @@ public class HareParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, SCOPE, IDENTIFIER);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (use_statement_member_list | use_statement)+
+  public static boolean imports(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "imports")) return false;
+    if (!nextTokenIs(b, USE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = imports_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!imports_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "imports", c)) break;
+    }
+    exit_section_(b, m, IMPORTS, r);
+    return r;
+  }
+
+  // use_statement_member_list | use_statement
+  private static boolean imports_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "imports_0")) return false;
+    boolean r;
+    r = use_statement_member_list(b, l + 1);
+    if (!r) r = use_statement(b, l + 1);
     return r;
   }
 
@@ -924,6 +947,54 @@ public class HareParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, LOGICAL_XOR);
     r = r && logical_and_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER ASSIGN IDENTIFIER | IDENTIFIER
+  public static boolean member(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "member")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = parseTokens(b, 0, IDENTIFIER, ASSIGN, IDENTIFIER);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, m, MEMBER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // member (COMMA member)*
+  public static boolean member_list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "member_list")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = member(b, l + 1);
+    r = r && member_list_1(b, l + 1);
+    exit_section_(b, m, MEMBER_LIST, r);
+    return r;
+  }
+
+  // (COMMA member)*
+  private static boolean member_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "member_list_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!member_list_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "member_list_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA member
+  private static boolean member_list_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "member_list_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && member(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1134,35 +1205,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // import_decl* function_definition*
+  // imports*
   static boolean translation_unit(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "translation_unit")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = translation_unit_0(b, l + 1);
-    r = r && translation_unit_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // import_decl*
-  private static boolean translation_unit_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "translation_unit_0")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!import_decl(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "translation_unit_0", c)) break;
-    }
-    return true;
-  }
-
-  // function_definition*
-  private static boolean translation_unit_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "translation_unit_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!function_definition(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "translation_unit_1", c)) break;
+      if (!imports(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "translation_unit", c)) break;
     }
     return true;
   }
@@ -1186,6 +1235,80 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
     return r;
+  }
+
+  /* ********************************************************** */
+  // USE_KW import_alias* import_path (SCOPE "*")? EOS
+  public static boolean use_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_statement")) return false;
+    if (!nextTokenIs(b, USE_KW)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, USE_STATEMENT, null);
+    r = consumeToken(b, USE_KW);
+    p = r; // pin = 1
+    r = r && report_error_(b, use_statement_1(b, l + 1));
+    r = p && report_error_(b, import_path(b, l + 1)) && r;
+    r = p && report_error_(b, use_statement_3(b, l + 1)) && r;
+    r = p && consumeToken(b, EOS) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // import_alias*
+  private static boolean use_statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_statement_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!import_alias(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "use_statement_1", c)) break;
+    }
+    return true;
+  }
+
+  // (SCOPE "*")?
+  private static boolean use_statement_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_statement_3")) return false;
+    use_statement_3_0(b, l + 1);
+    return true;
+  }
+
+  // SCOPE "*"
+  private static boolean use_statement_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_statement_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SCOPE);
+    r = r && consumeToken(b, "*");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // USE_KW import_alias* import_path SCOPE LBR member_list RBR EOS
+  public static boolean use_statement_member_list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_statement_member_list")) return false;
+    if (!nextTokenIs(b, USE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, USE_KW);
+    r = r && use_statement_member_list_1(b, l + 1);
+    r = r && import_path(b, l + 1);
+    r = r && consumeTokens(b, 0, SCOPE, LBR);
+    r = r && member_list(b, l + 1);
+    r = r && consumeTokens(b, 0, RBR, EOS);
+    exit_section_(b, m, USE_STATEMENT_MEMBER_LIST, r);
+    return r;
+  }
+
+  // import_alias*
+  private static boolean use_statement_member_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_statement_member_list_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!import_alias(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "use_statement_member_list_1", c)) break;
+    }
+    return true;
   }
 
 }

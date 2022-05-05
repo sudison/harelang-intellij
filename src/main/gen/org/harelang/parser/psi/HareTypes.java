@@ -24,17 +24,22 @@ public interface HareTypes {
   IElementType FUNCTION_BLOCK = new HareElementType("FUNCTION_BLOCK");
   IElementType FUNCTION_DEFINITION = new HareElementType("FUNCTION_DEFINITION");
   IElementType IF_EXPRESSION = new HareElementType("IF_EXPRESSION");
-  IElementType IMPORT_DECL = new HareElementType("IMPORT_DECL");
+  IElementType IMPORTS = new HareElementType("IMPORTS");
+  IElementType IMPORT_ALIAS = new HareElementType("IMPORT_ALIAS");
   IElementType IMPORT_PATH = new HareElementType("IMPORT_PATH");
   IElementType INDEXING_EXPRESSION = new HareElementType("INDEXING_EXPRESSION");
   IElementType INTEGER_CONSTANT = new HareElementType("INTEGER_CONSTANT");
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
+  IElementType MEMBER = new HareElementType("MEMBER");
+  IElementType MEMBER_LIST = new HareElementType("MEMBER_LIST");
   IElementType OBJECT_SELECTOR = new HareElementType("OBJECT_SELECTOR");
   IElementType PARAMETER = new HareElementType("PARAMETER");
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType PLAN_EXPRESSION = new HareElementType("PLAN_EXPRESSION");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
   IElementType TYPE = new HareElementType("TYPE");
+  IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
+  IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
 
   IElementType ADDS = new HareTokenType("ADDS");
   IElementType AND = new HareTokenType("AND");
@@ -163,8 +168,11 @@ public interface HareTypes {
       else if (type == IF_EXPRESSION) {
         return new HareIfExpressionImpl(node);
       }
-      else if (type == IMPORT_DECL) {
-        return new HareImportDeclImpl(node);
+      else if (type == IMPORTS) {
+        return new HareImportsImpl(node);
+      }
+      else if (type == IMPORT_ALIAS) {
+        return new HareImportAliasImpl(node);
       }
       else if (type == IMPORT_PATH) {
         return new HareImportPathImpl(node);
@@ -177,6 +185,12 @@ public interface HareTypes {
       }
       else if (type == INTEGER_SUFFIX) {
         return new HareIntegerSuffixImpl(node);
+      }
+      else if (type == MEMBER) {
+        return new HareMemberImpl(node);
+      }
+      else if (type == MEMBER_LIST) {
+        return new HareMemberListImpl(node);
       }
       else if (type == OBJECT_SELECTOR) {
         return new HareObjectSelectorImpl(node);
@@ -195,6 +209,12 @@ public interface HareTypes {
       }
       else if (type == TYPE) {
         return new HareTypeImpl(node);
+      }
+      else if (type == USE_STATEMENT) {
+        return new HareUseStatementImpl(node);
+      }
+      else if (type == USE_STATEMENT_MEMBER_LIST) {
+        return new HareUseStatementMemberListImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

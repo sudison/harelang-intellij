@@ -75,11 +75,15 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitImportDecl(@NotNull HareImportDecl o) {
+  public void visitImportAlias(@NotNull HareImportAlias o) {
     visitPsiElement(o);
   }
 
   public void visitImportPath(@NotNull HareImportPath o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImports(@NotNull HareImports o) {
     visitPsiElement(o);
   }
 
@@ -92,6 +96,14 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitIntegerSuffix(@NotNull HareIntegerSuffix o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMember(@NotNull HareMember o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMemberList(@NotNull HareMemberList o) {
     visitPsiElement(o);
   }
 
@@ -116,6 +128,14 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitType(@NotNull HareType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUseStatement(@NotNull HareUseStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUseStatementMemberList(@NotNull HareUseStatementMemberList o) {
     visitPsiElement(o);
   }
 

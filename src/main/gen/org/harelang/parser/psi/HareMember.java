@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareImportDecl extends PsiElement {
-
-  @Nullable
-  HareImportPath getImportPath();
+public interface HareMember extends PsiElement {
 
 }
