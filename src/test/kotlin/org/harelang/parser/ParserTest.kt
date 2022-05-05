@@ -64,4 +64,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         """.trimIndent())
     }
 
+    @Test
+    fun testParseTypeDef() {
+        doCodeTest("""
+            type a = i32; type a::b = i16, c = i32;
+        """.trimIndent())
+    }
+
 }

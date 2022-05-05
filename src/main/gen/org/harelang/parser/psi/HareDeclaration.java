@@ -16,4 +16,7 @@ public interface HareDeclaration extends PsiElement {
   @Nullable
   HareGlobalDeclaration getGlobalDeclaration();
 
+  @Nullable
+  HareTypeDeclaration getTypeDeclaration();
+
 }

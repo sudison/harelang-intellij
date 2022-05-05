@@ -44,4 +44,10 @@ public class HareDeclarationImpl extends ASTWrapperPsiElement implements HareDec
     return findChildByClass(HareGlobalDeclaration.class);
   }
 
+  @Override
+  @Nullable
+  public HareTypeDeclaration getTypeDeclaration() {
+    return findChildByClass(HareTypeDeclaration.class);
+  }
+
 }

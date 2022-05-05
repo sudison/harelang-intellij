@@ -94,6 +94,7 @@ DECIMAL_DIGITS = \d+
     "let" {return HareTypes.LET_KW;}
     "const" {return HareTypes.CONST_KW;}
     "def" {return HareTypes.DEF_KW;}
+    "type" {return HareTypes.TYPE_KW;}
     "if" {return HareTypes.IF_KW;}
     "else" {return HareTypes.ELSE_KW;}
     "for" {return HareTypes.FOR_KW;}

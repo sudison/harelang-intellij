@@ -451,7 +451,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // function_declaration | global_declaration | constant_declaration
+  // function_declaration | global_declaration | constant_declaration | type_declaration
   public static boolean declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declaration")) return false;
     boolean r;
@@ -459,6 +459,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = function_declaration(b, l + 1);
     if (!r) r = global_declaration(b, l + 1);
     if (!r) r = constant_declaration(b, l + 1);
+    if (!r) r = type_declaration(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1488,6 +1489,68 @@ public class HareParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, TYPE, "<type>");
     r = buildin_type(b, l + 1);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // identifier_path ASSIGN type
+  public static boolean type_binding(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_binding")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = identifier_path(b, l + 1);
+    r = r && consumeToken(b, ASSIGN);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, TYPE_BINDING, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // type_binding (COMMA type_binding)*
+  public static boolean type_bindings(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_bindings")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = type_binding(b, l + 1);
+    r = r && type_bindings_1(b, l + 1);
+    exit_section_(b, m, TYPE_BINDINGS, r);
+    return r;
+  }
+
+  // (COMMA type_binding)*
+  private static boolean type_bindings_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_bindings_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!type_bindings_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "type_bindings_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA type_binding
+  private static boolean type_bindings_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_bindings_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && type_binding(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // TYPE_KW type_bindings
+  public static boolean type_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_declaration")) return false;
+    if (!nextTokenIs(b, TYPE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, TYPE_KW);
+    r = r && type_bindings(b, l + 1);
+    exit_section_(b, m, TYPE_DECLARATION, r);
     return r;
   }
 

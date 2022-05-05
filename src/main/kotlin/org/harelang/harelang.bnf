@@ -28,7 +28,7 @@ import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 
 declarations ::= (EXPORT_KW? declaration EOS)+
-declaration ::= function_declaration | global_declaration | constant_declaration
+declaration ::= function_declaration | global_declaration | constant_declaration | type_declaration
 
 global_declaration ::= LET_KW global_bindings | CONST_KW global_bindings
 global_bindings ::= global_binding (COMMA global_binding)*
@@ -38,6 +38,9 @@ constant_declaration ::= DEF_KW constant_bindings
 constant_bindings ::= constant_binding (COMMA constant_binding)*
 constant_binding ::= identifier_path COLON type ASSIGN expression
 
+type_declaration ::= TYPE_KW type_bindings
+type_bindings ::= type_binding (COMMA type_binding)*
+type_binding ::= identifier_path ASSIGN type
 function_declaration ::= FN_KW identifier_path prototype (ASSIGN expression)? {
 pin=1
 }

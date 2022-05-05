@@ -46,6 +46,9 @@ public interface HareTypes {
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
   IElementType TYPE = new HareElementType("TYPE");
+  IElementType TYPE_BINDING = new HareElementType("TYPE_BINDING");
+  IElementType TYPE_BINDINGS = new HareElementType("TYPE_BINDINGS");
+  IElementType TYPE_DECLARATION = new HareElementType("TYPE_DECLARATION");
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
 
@@ -113,6 +116,7 @@ public interface HareTypes {
   IElementType STRING_LITERAL = new HareTokenType("STRING_LITERAL");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
+  IElementType TYPE_KW = new HareTokenType("TYPE_KW");
   IElementType U16_KW = new HareTokenType("U16_KW");
   IElementType U32_KW = new HareTokenType("U32_KW");
   IElementType U64_KW = new HareTokenType("U64_KW");
@@ -242,6 +246,15 @@ public interface HareTypes {
       }
       else if (type == TYPE) {
         return new HareTypeImpl(node);
+      }
+      else if (type == TYPE_BINDING) {
+        return new HareTypeBindingImpl(node);
+      }
+      else if (type == TYPE_BINDINGS) {
+        return new HareTypeBindingsImpl(node);
+      }
+      else if (type == TYPE_DECLARATION) {
+        return new HareTypeDeclarationImpl(node);
       }
       else if (type == USE_STATEMENT) {
         return new HareUseStatementImpl(node);
