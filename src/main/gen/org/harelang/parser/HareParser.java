@@ -1613,7 +1613,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type
+  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | STR_TYPE
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1623,6 +1623,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = tuple_type(b, l + 1);
     if (!r) r = tagged_union_type(b, l + 1);
     if (!r) r = slice_array_type(b, l + 1);
+    if (!r) r = consumeToken(b, STR_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

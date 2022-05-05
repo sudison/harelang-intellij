@@ -138,6 +138,7 @@ public interface HareTypes {
   IElementType STATIC_KW = new HareTokenType("STATIC_KW");
   IElementType STRING_LITERAL = new HareTokenType("STRING_LITERAL");
   IElementType STRUCT_KW = new HareTokenType("STRUCT_KW");
+  IElementType STR_TYPE = new HareTokenType("STR_TYPE");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
   IElementType TYPE_KW = new HareTokenType("TYPE_KW");

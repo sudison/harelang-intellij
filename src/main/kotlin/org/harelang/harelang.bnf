@@ -51,7 +51,7 @@ prototype ::= LP parameter_list? RP type
 parameter_list ::= parameter COMMA parameter_list* | parameter
 parameter ::= IDENTIFIER COLON type
 type ::= CONST_KW? BANG? storage_class
-storage_class ::= scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type
+storage_class ::= scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | STR_TYPE
 
 scala_type ::= integer_type | floating_type | enum_type  | pointer_type | RUNE_KW | BOOL_TYPE | VALIST_TYPE |  VOID_TYPE
 
