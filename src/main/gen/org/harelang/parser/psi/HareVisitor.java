@@ -43,6 +43,18 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitConstantBinding(@NotNull HareConstantBinding o) {
+    visitPsiElement(o);
+  }
+
+  public void visitConstantBindings(@NotNull HareConstantBindings o) {
+    visitPsiElement(o);
+  }
+
+  public void visitConstantDeclaration(@NotNull HareConstantDeclaration o) {
+    visitPsiElement(o);
+  }
+
   public void visitDeclaration(@NotNull HareDeclaration o) {
     visitPsiElement(o);
   }

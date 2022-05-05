@@ -7,7 +7,7 @@ import org.harelang.HareParserDefinition
 import org.junit.Test
 
 class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParserDefinition()) {
-    override fun getTestDataPath() = "src/testdata/parsing"
+    override fun getTestDataPath() = "src/test/testdata/parsing"
 
     override fun skipSpaces() = true
 
@@ -54,6 +54,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         doCodeTest("""
             let a:i32 = 1;
             const a:i64 = 1232;
+        """.trimIndent())
+    }
+
+    @Test
+    fun testParseDef() {
+        doCodeTest("""
+            def a: i32 = i;
         """.trimIndent())
     }
 

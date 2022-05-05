@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface HareDeclaration extends PsiElement {
 
   @Nullable
+  HareConstantDeclaration getConstantDeclaration();
+
+  @Nullable
   HareFunctionDeclaration getFunctionDeclaration();
 
   @Nullable

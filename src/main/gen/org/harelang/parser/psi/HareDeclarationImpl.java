@@ -28,6 +28,12 @@ public class HareDeclarationImpl extends ASTWrapperPsiElement implements HareDec
 
   @Override
   @Nullable
+  public HareConstantDeclaration getConstantDeclaration() {
+    return findChildByClass(HareConstantDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public HareFunctionDeclaration getFunctionDeclaration() {
     return findChildByClass(HareFunctionDeclaration.class);
   }

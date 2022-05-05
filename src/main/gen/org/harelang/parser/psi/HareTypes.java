@@ -16,6 +16,9 @@ public interface HareTypes {
   IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
+  IElementType CONSTANT_BINDING = new HareElementType("CONSTANT_BINDING");
+  IElementType CONSTANT_BINDINGS = new HareElementType("CONSTANT_BINDINGS");
+  IElementType CONSTANT_DECLARATION = new HareElementType("CONSTANT_DECLARATION");
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
@@ -55,6 +58,7 @@ public interface HareTypes {
   IElementType COMMA = new HareTokenType("COMMA");
   IElementType CONST_KW = new HareTokenType("CONST_KW");
   IElementType DECIMAL_DIGITS = new HareTokenType("DECIMAL_DIGITS");
+  IElementType DEF_KW = new HareTokenType("DEF_KW");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
   IElementType ELSE_KW = new HareTokenType("ELSE_KW");
@@ -148,6 +152,15 @@ public interface HareTypes {
       }
       else if (type == CONSTANT) {
         return new HareConstantImpl(node);
+      }
+      else if (type == CONSTANT_BINDING) {
+        return new HareConstantBindingImpl(node);
+      }
+      else if (type == CONSTANT_BINDINGS) {
+        return new HareConstantBindingsImpl(node);
+      }
+      else if (type == CONSTANT_DECLARATION) {
+        return new HareConstantDeclarationImpl(node);
       }
       else if (type == DECLARATION) {
         return new HareDeclarationImpl(node);

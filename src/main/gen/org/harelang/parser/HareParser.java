@@ -387,13 +387,78 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // function_declaration | global_declaration
+  // identifier_path COLON type ASSIGN expression
+  public static boolean constant_binding(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "constant_binding")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = identifier_path(b, l + 1);
+    r = r && consumeToken(b, COLON);
+    r = r && type(b, l + 1);
+    r = r && consumeToken(b, ASSIGN);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, CONSTANT_BINDING, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // constant_binding (COMMA constant_binding)*
+  public static boolean constant_bindings(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "constant_bindings")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = constant_binding(b, l + 1);
+    r = r && constant_bindings_1(b, l + 1);
+    exit_section_(b, m, CONSTANT_BINDINGS, r);
+    return r;
+  }
+
+  // (COMMA constant_binding)*
+  private static boolean constant_bindings_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "constant_bindings_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!constant_bindings_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "constant_bindings_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA constant_binding
+  private static boolean constant_bindings_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "constant_bindings_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && constant_binding(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // DEF_KW constant_bindings
+  public static boolean constant_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "constant_declaration")) return false;
+    if (!nextTokenIs(b, DEF_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DEF_KW);
+    r = r && constant_bindings(b, l + 1);
+    exit_section_(b, m, CONSTANT_DECLARATION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // function_declaration | global_declaration | constant_declaration
   public static boolean declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declaration")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECLARATION, "<declaration>");
     r = function_declaration(b, l + 1);
     if (!r) r = global_declaration(b, l + 1);
+    if (!r) r = constant_declaration(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
