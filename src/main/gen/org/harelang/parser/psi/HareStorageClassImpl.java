@@ -34,6 +34,12 @@ public class HareStorageClassImpl extends ASTWrapperPsiElement implements HareSt
 
   @Override
   @Nullable
+  public HareSliceArrayType getSliceArrayType() {
+    return findChildByClass(HareSliceArrayType.class);
+  }
+
+  @Override
+  @Nullable
   public HareStructUnionType getStructUnionType() {
     return findChildByClass(HareStructUnionType.class);
   }

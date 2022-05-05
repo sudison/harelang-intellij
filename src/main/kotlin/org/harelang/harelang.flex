@@ -28,6 +28,7 @@ DECIMAL_DIGITS = \d+
 
 
 <YYINITIAL> {
+    "_" {return HareTypes.UNDERSCORE;}
     "=" {return HareTypes.ASSIGN;}
     "*" {return HareTypes.MULTIPLIES;}
     "/" {return HareTypes.DIVIDES;}

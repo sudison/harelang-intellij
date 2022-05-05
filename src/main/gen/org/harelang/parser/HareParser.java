@@ -1581,7 +1581,39 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type | struct_union_type | tuple_type | tagged_union_type
+  // LB (expression | MULTIPLIES | UNDERSCORE)? RB type
+  public static boolean slice_array_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slice_array_type")) return false;
+    if (!nextTokenIs(b, LB)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LB);
+    r = r && slice_array_type_1(b, l + 1);
+    r = r && consumeToken(b, RB);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, SLICE_ARRAY_TYPE, r);
+    return r;
+  }
+
+  // (expression | MULTIPLIES | UNDERSCORE)?
+  private static boolean slice_array_type_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slice_array_type_1")) return false;
+    slice_array_type_1_0(b, l + 1);
+    return true;
+  }
+
+  // expression | MULTIPLIES | UNDERSCORE
+  private static boolean slice_array_type_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slice_array_type_1_0")) return false;
+    boolean r;
+    r = expression(b, l + 1);
+    if (!r) r = consumeToken(b, MULTIPLIES);
+    if (!r) r = consumeToken(b, UNDERSCORE);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1590,6 +1622,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = struct_union_type(b, l + 1);
     if (!r) r = tuple_type(b, l + 1);
     if (!r) r = tagged_union_type(b, l + 1);
+    if (!r) r = slice_array_type(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

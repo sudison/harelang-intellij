@@ -51,6 +51,7 @@ public interface HareTypes {
   IElementType POINTER_TYPE = new HareElementType("POINTER_TYPE");
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
+  IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
   IElementType STRUCT_UNION_FIELD = new HareElementType("STRUCT_UNION_FIELD");
@@ -146,6 +147,7 @@ public interface HareTypes {
   IElementType U8_TYPE = new HareTokenType("U8_TYPE");
   IElementType UINTPTR_TYPE = new HareTokenType("UINTPTR_TYPE");
   IElementType UINT_TYPE = new HareTokenType("UINT_TYPE");
+  IElementType UNDERSCORE = new HareTokenType("UNDERSCORE");
   IElementType UNION_KW = new HareTokenType("UNION_KW");
   IElementType USE_KW = new HareTokenType("USE_KW");
   IElementType VALIST_TYPE = new HareTokenType("VALIST_TYPE");
@@ -287,6 +289,9 @@ public interface HareTypes {
       }
       else if (type == SCALA_TYPE) {
         return new HareScalaTypeImpl(node);
+      }
+      else if (type == SLICE_ARRAY_TYPE) {
+        return new HareSliceArrayTypeImpl(node);
       }
       else if (type == STORAGE_CLASS) {
         return new HareStorageClassImpl(node);

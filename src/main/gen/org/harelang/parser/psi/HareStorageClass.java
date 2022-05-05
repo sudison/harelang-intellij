@@ -11,6 +11,9 @@ public interface HareStorageClass extends PsiElement {
   HareScalaType getScalaType();
 
   @Nullable
+  HareSliceArrayType getSliceArrayType();
+
+  @Nullable
   HareStructUnionType getStructUnionType();
 
   @Nullable
