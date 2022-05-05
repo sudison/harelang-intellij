@@ -1518,7 +1518,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // integer_type | floating_type | enum_type  | pointer_type | VOID_TYPE
+  // integer_type | floating_type | enum_type  | pointer_type | RUNE_KW | BOOL_TYPE | VALIST_TYPE |  VOID_TYPE
   public static boolean scala_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "scala_type")) return false;
     boolean r;
@@ -1527,6 +1527,9 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = floating_type(b, l + 1);
     if (!r) r = enum_type(b, l + 1);
     if (!r) r = pointer_type(b, l + 1);
+    if (!r) r = consumeToken(b, RUNE_KW);
+    if (!r) r = consumeToken(b, BOOL_TYPE);
+    if (!r) r = consumeToken(b, VALIST_TYPE);
     if (!r) r = consumeToken(b, VOID_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;

@@ -83,6 +83,8 @@ DECIMAL_DIGITS = \d+
     "uint" {return HareTypes.UINT_TYPE;}
     "size" {return HareTypes.SIZE_TYPE;}
     "uintptr" {return HareTypes.UINTPTR_TYPE;}
+    "bool" {return HareTypes.BOOL_TYPE;}
+    "valist" {return HareTypes.VALIST_TYPE;}
     "char" {return HareTypes.CHAR_TYPE;}
     "void" {return HareTypes.VOID_TYPE;}
     "f32" {return HareTypes.F32_TYPE;}

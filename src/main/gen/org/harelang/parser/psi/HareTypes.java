@@ -65,6 +65,7 @@ public interface HareTypes {
   IElementType AND_ASSIGN = new HareTokenType("AND_ASSIGN");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType BANG = new HareTokenType("BANG");
+  IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
   IElementType CHAR_TYPE = new HareTokenType("CHAR_TYPE");
   IElementType COLON = new HareTokenType("COLON");
   IElementType COMMA = new HareTokenType("COMMA");
@@ -138,6 +139,7 @@ public interface HareTypes {
   IElementType UINTPTR_TYPE = new HareTokenType("UINTPTR_TYPE");
   IElementType UINT_TYPE = new HareTokenType("UINT_TYPE");
   IElementType USE_KW = new HareTokenType("USE_KW");
+  IElementType VALIST_TYPE = new HareTokenType("VALIST_TYPE");
   IElementType VOID_KW = new HareTokenType("VOID_KW");
   IElementType VOID_TYPE = new HareTokenType("VOID_TYPE");
   IElementType XOR_ASSIGN = new HareTokenType("XOR_ASSIGN");

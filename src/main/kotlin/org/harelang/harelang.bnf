@@ -53,7 +53,7 @@ parameter ::= IDENTIFIER COLON type
 type ::= CONST_KW? BANG? storage_class
 storage_class ::= scala_type
 
-scala_type ::= integer_type | floating_type | enum_type  | pointer_type | VOID_TYPE
+scala_type ::= integer_type | floating_type | enum_type  | pointer_type | RUNE_KW | BOOL_TYPE | VALIST_TYPE |  VOID_TYPE
 integer_type ::= I8_TYPE | I16_TYPE | I32_TYPE | I64_TYPE | U8_TYPE | U16_TYPE | U32_TYPE | U64_TYPE | INT_TYPE | UINT_TYPE | SIZE_TYPE | UINTPTR_TYPE | CHAR_TYPE
 floating_type ::= F32_TYPE | F64_TYPE
 enum_type ::= ENUM_KW enum_storage? LBR enum_values RBR
