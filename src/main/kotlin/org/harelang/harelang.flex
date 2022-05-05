@@ -102,6 +102,7 @@ DECIMAL_DIGITS = \d+
     "else" {return HareTypes.ELSE_KW;}
     "for" {return HareTypes.FOR_KW;}
     "enum" {return HareTypes.ENUM_KW;}
+    "nullable" {return HareTypes.NULLABLE_KW;}
     "rune" {return HareTypes.RUNE_KW;}
 
     "::" { return HareTypes.SCOPE; }

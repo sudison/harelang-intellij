@@ -1469,6 +1469,27 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // NULLABLE_KW? MULTIPLIES type
+  public static boolean pointer_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pointer_type")) return false;
+    if (!nextTokenIs(b, "<pointer type>", MULTIPLIES, NULLABLE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, POINTER_TYPE, "<pointer type>");
+    r = pointer_type_0(b, l + 1);
+    r = r && consumeToken(b, MULTIPLIES);
+    r = r && type(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // NULLABLE_KW?
+  private static boolean pointer_type_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pointer_type_0")) return false;
+    consumeToken(b, NULLABLE_KW);
+    return true;
+  }
+
+  /* ********************************************************** */
   // nested_expression
   static boolean postfix_expression(PsiBuilder b, int l) {
     return nested_expression(b, l + 1);
@@ -1497,7 +1518,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // integer_type | floating_type | enum_type | VOID_TYPE
+  // integer_type | floating_type | enum_type  | pointer_type | VOID_TYPE
   public static boolean scala_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "scala_type")) return false;
     boolean r;
@@ -1505,6 +1526,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = integer_type(b, l + 1);
     if (!r) r = floating_type(b, l + 1);
     if (!r) r = enum_type(b, l + 1);
+    if (!r) r = pointer_type(b, l + 1);
     if (!r) r = consumeToken(b, VOID_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;

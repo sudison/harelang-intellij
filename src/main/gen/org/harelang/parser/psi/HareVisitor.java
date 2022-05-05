@@ -171,6 +171,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitPointerType(@NotNull HarePointerType o) {
+    visitPsiElement(o);
+  }
+
   public void visitPrototype(@NotNull HarePrototype o) {
     visitPsiElement(o);
   }

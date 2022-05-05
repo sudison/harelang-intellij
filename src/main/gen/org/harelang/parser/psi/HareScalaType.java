@@ -16,4 +16,7 @@ public interface HareScalaType extends PsiElement {
   @Nullable
   HareIntegerType getIntegerType();
 
+  @Nullable
+  HarePointerType getPointerType();
+
 }

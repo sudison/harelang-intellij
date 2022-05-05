@@ -48,6 +48,7 @@ public interface HareTypes {
   IElementType PARAMETER = new HareElementType("PARAMETER");
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType PLAN_EXPRESSION = new HareElementType("PLAN_EXPRESSION");
+  IElementType POINTER_TYPE = new HareElementType("POINTER_TYPE");
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
@@ -113,6 +114,7 @@ public interface HareTypes {
   IElementType MULTIPLIES = new HareTokenType("MULTIPLIES");
   IElementType MULTIPLIES_ASSIGN = new HareTokenType("MULTIPLIES_ASSIGN");
   IElementType NOT_EQUAL = new HareTokenType("NOT_EQUAL");
+  IElementType NULLABLE_KW = new HareTokenType("NULLABLE_KW");
   IElementType NULL_KW = new HareTokenType("NULL_KW");
   IElementType OR_ASSIGN = new HareTokenType("OR_ASSIGN");
   IElementType PLUS_ASSIGN = new HareTokenType("PLUS_ASSIGN");
@@ -265,6 +267,9 @@ public interface HareTypes {
       }
       else if (type == PLAN_EXPRESSION) {
         return new HarePlanExpressionImpl(node);
+      }
+      else if (type == POINTER_TYPE) {
+        return new HarePointerTypeImpl(node);
       }
       else if (type == PROTOTYPE) {
         return new HarePrototypeImpl(node);
