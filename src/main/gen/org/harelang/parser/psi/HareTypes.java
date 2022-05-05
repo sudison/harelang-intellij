@@ -56,6 +56,8 @@ public interface HareTypes {
   IElementType STRUCT_UNION_FIELD = new HareElementType("STRUCT_UNION_FIELD");
   IElementType STRUCT_UNION_FIELDS = new HareElementType("STRUCT_UNION_FIELDS");
   IElementType STRUCT_UNION_TYPE = new HareElementType("STRUCT_UNION_TYPE");
+  IElementType TUPLE_TYPE = new HareElementType("TUPLE_TYPE");
+  IElementType TUPLE_TYPES = new HareElementType("TUPLE_TYPES");
   IElementType TYPE = new HareElementType("TYPE");
   IElementType TYPE_BINDING = new HareElementType("TYPE_BINDING");
   IElementType TYPE_BINDINGS = new HareElementType("TYPE_BINDINGS");
@@ -298,6 +300,12 @@ public interface HareTypes {
       }
       else if (type == STRUCT_UNION_TYPE) {
         return new HareStructUnionTypeImpl(node);
+      }
+      else if (type == TUPLE_TYPE) {
+        return new HareTupleTypeImpl(node);
+      }
+      else if (type == TUPLE_TYPES) {
+        return new HareTupleTypesImpl(node);
       }
       else if (type == TYPE) {
         return new HareTypeImpl(node);

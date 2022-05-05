@@ -98,4 +98,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             type a = union {i : i32, b : union { i : i64}, a::bc};
         """.trimIndent())
     }
+
+    @Test
+    fun testParseTuple() {
+        doCodeTest("""
+            type a = (i32, i8, f64);
+        """.trimIndent())
+    }
 }

@@ -1581,13 +1581,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type | struct_union_type
+  // scala_type | struct_union_type | tuple_type
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STORAGE_CLASS, "<storage class>");
     r = scala_type(b, l + 1);
     if (!r) r = struct_union_type(b, l + 1);
+    if (!r) r = tuple_type(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1718,6 +1719,58 @@ public class HareParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "translation_unit_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // LP tuple_types RP
+  public static boolean tuple_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_type")) return false;
+    if (!nextTokenIs(b, LP)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LP);
+    r = r && tuple_types(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, TUPLE_TYPE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // type (COMMA type)+
+  public static boolean tuple_types(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_types")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, TUPLE_TYPES, "<tuple types>");
+    r = type(b, l + 1);
+    r = r && tuple_types_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (COMMA type)+
+  private static boolean tuple_types_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_types_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = tuple_types_1_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!tuple_types_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "tuple_types_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA type
+  private static boolean tuple_types_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_types_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
