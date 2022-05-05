@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareScalaTypeImpl extends ASTWrapperPsiElement implements HareScalaType {
+public class HareEnumTypeImpl extends ASTWrapperPsiElement implements HareEnumType {
 
-  public HareScalaTypeImpl(@NotNull ASTNode node) {
+  public HareEnumTypeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitScalaType(this);
+    visitor.visitEnumType(this);
   }
 
   @Override
@@ -28,20 +28,14 @@ public class HareScalaTypeImpl extends ASTWrapperPsiElement implements HareScala
 
   @Override
   @Nullable
-  public HareEnumType getEnumType() {
-    return findChildByClass(HareEnumType.class);
+  public HareEnumStorage getEnumStorage() {
+    return findChildByClass(HareEnumStorage.class);
   }
 
   @Override
-  @Nullable
-  public HareFloatingType getFloatingType() {
-    return findChildByClass(HareFloatingType.class);
-  }
-
-  @Override
-  @Nullable
-  public HareIntegerType getIntegerType() {
-    return findChildByClass(HareIntegerType.class);
+  @NotNull
+  public HareEnumValues getEnumValues() {
+    return findNotNullChildByClass(HareEnumValues.class);
   }
 
 }

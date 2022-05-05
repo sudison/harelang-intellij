@@ -59,6 +59,22 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitEnumStorage(@NotNull HareEnumStorage o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEnumType(@NotNull HareEnumType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEnumValue(@NotNull HareEnumValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEnumValues(@NotNull HareEnumValues o) {
+    visitPsiElement(o);
+  }
+
   public void visitExpression(@NotNull HareExpression o) {
     visitPsiElement(o);
   }

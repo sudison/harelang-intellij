@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareScalaType extends PsiElement {
+public interface HareEnumValue extends PsiElement {
 
   @Nullable
-  HareEnumType getEnumType();
-
-  @Nullable
-  HareFloatingType getFloatingType();
-
-  @Nullable
-  HareIntegerType getIntegerType();
+  HareExpression getExpression();
 
 }

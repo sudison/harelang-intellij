@@ -20,6 +20,10 @@ public interface HareTypes {
   IElementType CONSTANT_DECLARATION = new HareElementType("CONSTANT_DECLARATION");
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
+  IElementType ENUM_STORAGE = new HareElementType("ENUM_STORAGE");
+  IElementType ENUM_TYPE = new HareElementType("ENUM_TYPE");
+  IElementType ENUM_VALUE = new HareElementType("ENUM_VALUE");
+  IElementType ENUM_VALUES = new HareElementType("ENUM_VALUES");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
   IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
@@ -69,6 +73,7 @@ public interface HareTypes {
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
   IElementType ELSE_KW = new HareTokenType("ELSE_KW");
+  IElementType ENUM_KW = new HareTokenType("ENUM_KW");
   IElementType EOS = new HareTokenType("EOS");
   IElementType EQUAL = new HareTokenType("EQUAL");
   IElementType EXCLUSIVE_OR = new HareTokenType("EXCLUSIVE_OR");
@@ -116,6 +121,7 @@ public interface HareTypes {
   IElementType RIGHT_SHIFT = new HareTokenType("RIGHT_SHIFT");
   IElementType RIGHT_SHIFT_ASSIGN = new HareTokenType("RIGHT_SHIFT_ASSIGN");
   IElementType RP = new HareTokenType("RP");
+  IElementType RUNE_KW = new HareTokenType("RUNE_KW");
   IElementType SCOPE = new HareTokenType("SCOPE");
   IElementType SIZE_TYPE = new HareTokenType("SIZE_TYPE");
   IElementType STATIC_KW = new HareTokenType("STATIC_KW");
@@ -175,6 +181,18 @@ public interface HareTypes {
       }
       else if (type == DECLARATIONS) {
         return new HareDeclarationsImpl(node);
+      }
+      else if (type == ENUM_STORAGE) {
+        return new HareEnumStorageImpl(node);
+      }
+      else if (type == ENUM_TYPE) {
+        return new HareEnumTypeImpl(node);
+      }
+      else if (type == ENUM_VALUE) {
+        return new HareEnumValueImpl(node);
+      }
+      else if (type == ENUM_VALUES) {
+        return new HareEnumValuesImpl(node);
       }
       else if (type == EXPRESSION) {
         return new HareExpressionImpl(node);

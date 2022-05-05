@@ -71,4 +71,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         """.trimIndent())
     }
 
+    @Test
+    fun testParseEnum() {
+        doCodeTest("""
+            type a = enum { a, b, c = 1}; type b = enum i32 {a = 1};
+        """.trimIndent())
+    }
+
 }

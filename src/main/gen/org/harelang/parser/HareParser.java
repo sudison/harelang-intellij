@@ -476,6 +476,100 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // integer_type | RUNE_KW
+  public static boolean enum_storage(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_storage")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ENUM_STORAGE, "<enum storage>");
+    r = integer_type(b, l + 1);
+    if (!r) r = consumeToken(b, RUNE_KW);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ENUM_KW enum_storage? LBR enum_values RBR
+  public static boolean enum_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_type")) return false;
+    if (!nextTokenIs(b, ENUM_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ENUM_KW);
+    r = r && enum_type_1(b, l + 1);
+    r = r && consumeToken(b, LBR);
+    r = r && enum_values(b, l + 1);
+    r = r && consumeToken(b, RBR);
+    exit_section_(b, m, ENUM_TYPE, r);
+    return r;
+  }
+
+  // enum_storage?
+  private static boolean enum_type_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_type_1")) return false;
+    enum_storage(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER ASSIGN expression | IDENTIFIER
+  public static boolean enum_value(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_value")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = enum_value_0(b, l + 1);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, m, ENUM_VALUE, r);
+    return r;
+  }
+
+  // IDENTIFIER ASSIGN expression
+  private static boolean enum_value_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_value_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, ASSIGN);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // enum_value (COMMA enum_value)*
+  public static boolean enum_values(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_values")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = enum_value(b, l + 1);
+    r = r && enum_values_1(b, l + 1);
+    exit_section_(b, m, ENUM_VALUES, r);
+    return r;
+  }
+
+  // (COMMA enum_value)*
+  private static boolean enum_values_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_values_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!enum_values_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "enum_values_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA enum_value
+  private static boolean enum_values_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_values_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && enum_value(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // comparison_expression (equality_operator comparison_expression)*
   static boolean equality_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equality_expression")) return false;
@@ -1403,13 +1497,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // integer_type | floating_type | VOID_TYPE
+  // integer_type | floating_type | enum_type | VOID_TYPE
   public static boolean scala_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "scala_type")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, SCALA_TYPE, "<scala type>");
     r = integer_type(b, l + 1);
     if (!r) r = floating_type(b, l + 1);
+    if (!r) r = enum_type(b, l + 1);
     if (!r) r = consumeToken(b, VOID_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;
