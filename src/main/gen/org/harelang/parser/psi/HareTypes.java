@@ -16,13 +16,14 @@ public interface HareTypes {
   IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
+  IElementType DECLARATION = new HareElementType("DECLARATION");
+  IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
-  IElementType FUNCTION_ARGS = new HareElementType("FUNCTION_ARGS");
-  IElementType FUNCTION_BLOCK = new HareElementType("FUNCTION_BLOCK");
-  IElementType FUNCTION_DEFINITION = new HareElementType("FUNCTION_DEFINITION");
+  IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
+  IElementType IDENTIFIER_PATH = new HareElementType("IDENTIFIER_PATH");
   IElementType IF_EXPRESSION = new HareElementType("IF_EXPRESSION");
   IElementType IMPORTS = new HareElementType("IMPORTS");
   IElementType IMPORT_ALIAS = new HareElementType("IMPORT_ALIAS");
@@ -36,6 +37,7 @@ public interface HareTypes {
   IElementType PARAMETER = new HareElementType("PARAMETER");
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType PLAN_EXPRESSION = new HareElementType("PLAN_EXPRESSION");
+  IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
   IElementType TYPE = new HareElementType("TYPE");
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
@@ -144,6 +146,12 @@ public interface HareTypes {
       else if (type == CONSTANT) {
         return new HareConstantImpl(node);
       }
+      else if (type == DECLARATION) {
+        return new HareDeclarationImpl(node);
+      }
+      else if (type == DECLARATIONS) {
+        return new HareDeclarationsImpl(node);
+      }
       else if (type == EXPRESSION) {
         return new HareExpressionImpl(node);
       }
@@ -156,14 +164,11 @@ public interface HareTypes {
       else if (type == FOR_PREDICATE) {
         return new HareForPredicateImpl(node);
       }
-      else if (type == FUNCTION_ARGS) {
-        return new HareFunctionArgsImpl(node);
+      else if (type == FUNCTION_DECLARATION) {
+        return new HareFunctionDeclarationImpl(node);
       }
-      else if (type == FUNCTION_BLOCK) {
-        return new HareFunctionBlockImpl(node);
-      }
-      else if (type == FUNCTION_DEFINITION) {
-        return new HareFunctionDefinitionImpl(node);
+      else if (type == IDENTIFIER_PATH) {
+        return new HareIdentifierPathImpl(node);
       }
       else if (type == IF_EXPRESSION) {
         return new HareIfExpressionImpl(node);
@@ -203,6 +208,9 @@ public interface HareTypes {
       }
       else if (type == PLAN_EXPRESSION) {
         return new HarePlanExpressionImpl(node);
+      }
+      else if (type == PROTOTYPE) {
+        return new HarePrototypeImpl(node);
       }
       else if (type == STRING_CONST) {
         return new HareStringConstImpl(node);

@@ -11,18 +11,42 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
 
     override fun skipSpaces() = true
 
-    private fun printTree() {
+    private fun printTree(code: String) {
         println(name)
 
         myFile = createPsiFile(
-            testName, """use a::b::c; use a::b::{a}; use a::b::*; use a::b::{a, b, c = d};"""
+            testName, code
         )
         ensureParsed(myFile)
         println(toParseTreeText(myFile, skipSpaces(), includeRanges()))
     }
 
     @Test
-    fun testComments() {
-        printTree()
+    fun testPrintParseImports() {
+        printTree("""use a::b::c; use a::b::{a}; use a::b::*; use a::b::{a, b, c = d};""")
     }
+
+    @Test
+    fun testParseImports() {
+        doCodeTest("""use a::b::c; use a::b::{a}; use a::b::*; use a::b::{a, b, c = d};""")
+    }
+
+    @Test
+    fun testParseFunction() {
+        doCodeTest(
+            """fn huh(a:int) void = {
+       let i = 0;
+        let s = "";
+        i = s;
+    };"""
+        )
+    }
+
+    @Test
+    fun testParseFunction2() {
+        doCodeTest(
+            """fn huh(a:int) void; fn a::b::foo() i32;"""
+        )
+    }
+
 }

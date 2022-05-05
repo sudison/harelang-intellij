@@ -5,15 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareFunctionDefinition extends PsiElement {
+public interface HarePrototype extends PsiElement {
 
   @Nullable
-  HareFunctionArgs getFunctionArgs();
+  HareParameterList getParameterList();
 
-  @Nullable
-  HareFunctionBlock getFunctionBlock();
-
-  @Nullable
+  @NotNull
   HareType getType();
 
 }

@@ -14,7 +14,7 @@
     psiImplUtilClass="org.harelang.parser.psi.HarePsiImplUtil"
 }
 
-translation_unit ::= imports*
+translation_unit ::= imports* declarations*
 
 imports ::= (use_statement_member_list | use_statement)+
 use_statement ::= USE_KW import_alias* import_path (SCOPE "*")? EOS {
@@ -25,12 +25,18 @@ member_list ::= member (COMMA member)*
 member ::= IDENTIFIER ASSIGN IDENTIFIER | IDENTIFIER
 import_alias ::= IDENTIFIER ASSIGN
 import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
+identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 
-function_definition ::= EXPORT_KW? FN_KW IDENTIFIER function_args type function_block {
-pin = 2
+declarations ::= (EXPORT_KW? declaration EOS)+
+declaration ::= function_declaration
+
+function_declaration ::= FN_KW identifier_path prototype (ASSIGN expression)? {
+pin=1
 }
-function_args ::= LP parameter_list RP
-function_block ::= LBR expression* RBR
+
+prototype ::= LP parameter_list? RP type
+
+
 parameter_list ::= parameter COMMA parameter_list* | parameter
 parameter ::= IDENTIFIER COLON type
 type ::= buildin_type
