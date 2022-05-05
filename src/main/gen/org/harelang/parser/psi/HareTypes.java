@@ -23,6 +23,9 @@ public interface HareTypes {
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
+  IElementType GLOBAL_BINDING = new HareElementType("GLOBAL_BINDING");
+  IElementType GLOBAL_BINDINGS = new HareElementType("GLOBAL_BINDINGS");
+  IElementType GLOBAL_DECLARATION = new HareElementType("GLOBAL_DECLARATION");
   IElementType IDENTIFIER_PATH = new HareElementType("IDENTIFIER_PATH");
   IElementType IF_EXPRESSION = new HareElementType("IF_EXPRESSION");
   IElementType IMPORTS = new HareElementType("IMPORTS");
@@ -166,6 +169,15 @@ public interface HareTypes {
       }
       else if (type == FUNCTION_DECLARATION) {
         return new HareFunctionDeclarationImpl(node);
+      }
+      else if (type == GLOBAL_BINDING) {
+        return new HareGlobalBindingImpl(node);
+      }
+      else if (type == GLOBAL_BINDINGS) {
+        return new HareGlobalBindingsImpl(node);
+      }
+      else if (type == GLOBAL_DECLARATION) {
+        return new HareGlobalDeclarationImpl(node);
       }
       else if (type == IDENTIFIER_PATH) {
         return new HareIdentifierPathImpl(node);

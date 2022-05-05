@@ -49,4 +49,12 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         )
     }
 
+    @Test
+    fun testParseGlobalBinding() {
+        doCodeTest("""
+            let a:i32 = 1;
+            const a:i64 = 1232;
+        """.trimIndent())
+    }
+
 }

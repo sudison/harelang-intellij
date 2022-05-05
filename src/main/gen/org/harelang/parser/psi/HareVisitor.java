@@ -71,6 +71,18 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitGlobalBinding(@NotNull HareGlobalBinding o) {
+    visitPsiElement(o);
+  }
+
+  public void visitGlobalBindings(@NotNull HareGlobalBindings o) {
+    visitPsiElement(o);
+  }
+
+  public void visitGlobalDeclaration(@NotNull HareGlobalDeclaration o) {
+    visitPsiElement(o);
+  }
+
   public void visitIdentifierPath(@NotNull HareIdentifierPath o) {
     visitPsiElement(o);
   }

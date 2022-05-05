@@ -387,14 +387,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // function_declaration
+  // function_declaration | global_declaration
   public static boolean declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declaration")) return false;
-    if (!nextTokenIs(b, FN_KW)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, DECLARATION, "<declaration>");
     r = function_declaration(b, l + 1);
-    exit_section_(b, m, DECLARATION, r);
+    if (!r) r = global_declaration(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -402,7 +402,6 @@ public class HareParser implements PsiParser, LightPsiParser {
   // (EXPORT_KW? declaration EOS)+
   public static boolean declarations(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declarations")) return false;
-    if (!nextTokenIs(b, "<declarations>", EXPORT_KW, FN_KW)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECLARATIONS, "<declarations>");
     r = declarations_0(b, l + 1);
@@ -652,6 +651,109 @@ public class HareParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, ASSIGN);
     r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // identifier_path COLON type (ASSIGN expression)?
+  public static boolean global_binding(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_binding")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = identifier_path(b, l + 1);
+    r = r && consumeToken(b, COLON);
+    r = r && type(b, l + 1);
+    r = r && global_binding_3(b, l + 1);
+    exit_section_(b, m, GLOBAL_BINDING, r);
+    return r;
+  }
+
+  // (ASSIGN expression)?
+  private static boolean global_binding_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_binding_3")) return false;
+    global_binding_3_0(b, l + 1);
+    return true;
+  }
+
+  // ASSIGN expression
+  private static boolean global_binding_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_binding_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ASSIGN);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // global_binding (COMMA global_binding)*
+  public static boolean global_bindings(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_bindings")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = global_binding(b, l + 1);
+    r = r && global_bindings_1(b, l + 1);
+    exit_section_(b, m, GLOBAL_BINDINGS, r);
+    return r;
+  }
+
+  // (COMMA global_binding)*
+  private static boolean global_bindings_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_bindings_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!global_bindings_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "global_bindings_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA global_binding
+  private static boolean global_bindings_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_bindings_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && global_binding(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LET_KW global_bindings | CONST_KW global_bindings
+  public static boolean global_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_declaration")) return false;
+    if (!nextTokenIs(b, "<global declaration>", CONST_KW, LET_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, GLOBAL_DECLARATION, "<global declaration>");
+    r = global_declaration_0(b, l + 1);
+    if (!r) r = global_declaration_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LET_KW global_bindings
+  private static boolean global_declaration_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_declaration_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LET_KW);
+    r = r && global_bindings(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // CONST_KW global_bindings
+  private static boolean global_declaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_declaration_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CONST_KW);
+    r = r && global_bindings(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
