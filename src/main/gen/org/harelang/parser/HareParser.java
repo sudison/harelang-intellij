@@ -266,30 +266,6 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // VOID_KW | I8_KW | I16_KW | I32_KW | I64_KW | U8_KW | U16_KW | U32_KW | U64_KW | INT_KW | UINT_KW | SIZE_KW | UINTPTR_KW | CHAR_KW
-  public static boolean buildin_type(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "buildin_type")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BUILDIN_TYPE, "<buildin type>");
-    r = consumeToken(b, VOID_KW);
-    if (!r) r = consumeToken(b, I8_KW);
-    if (!r) r = consumeToken(b, I16_KW);
-    if (!r) r = consumeToken(b, I32_KW);
-    if (!r) r = consumeToken(b, I64_KW);
-    if (!r) r = consumeToken(b, U8_KW);
-    if (!r) r = consumeToken(b, U16_KW);
-    if (!r) r = consumeToken(b, U32_KW);
-    if (!r) r = consumeToken(b, U64_KW);
-    if (!r) r = consumeToken(b, INT_KW);
-    if (!r) r = consumeToken(b, UINT_KW);
-    if (!r) r = consumeToken(b, SIZE_KW);
-    if (!r) r = consumeToken(b, UINTPTR_KW);
-    if (!r) r = consumeToken(b, CHAR_KW);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
   // unary_expression
   static boolean cast_expression(PsiBuilder b, int l) {
     return unary_expression(b, l + 1);
@@ -617,6 +593,19 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = expression(b, l + 1);
     r = r && consumeToken(b, EOS);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // F32_TYPE | F64_TYPE
+  public static boolean floating_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_type")) return false;
+    if (!nextTokenIs(b, "<floating type>", F32_TYPE, F64_TYPE)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, FLOATING_TYPE, "<floating type>");
+    r = consumeToken(b, F32_TYPE);
+    if (!r) r = consumeToken(b, F64_TYPE);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1071,6 +1060,29 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // I8_TYPE | I16_TYPE | I32_TYPE | I64_TYPE | U8_TYPE | U16_TYPE | U32_TYPE | U64_TYPE | INT_TYPE | UINT_TYPE | SIZE_TYPE | UINTPTR_TYPE | CHAR_TYPE
+  public static boolean integer_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_type")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, INTEGER_TYPE, "<integer type>");
+    r = consumeToken(b, I8_TYPE);
+    if (!r) r = consumeToken(b, I16_TYPE);
+    if (!r) r = consumeToken(b, I32_TYPE);
+    if (!r) r = consumeToken(b, I64_TYPE);
+    if (!r) r = consumeToken(b, U8_TYPE);
+    if (!r) r = consumeToken(b, U16_TYPE);
+    if (!r) r = consumeToken(b, U32_TYPE);
+    if (!r) r = consumeToken(b, U64_TYPE);
+    if (!r) r = consumeToken(b, INT_TYPE);
+    if (!r) r = consumeToken(b, UINT_TYPE);
+    if (!r) r = consumeToken(b, SIZE_TYPE);
+    if (!r) r = consumeToken(b, UINTPTR_TYPE);
+    if (!r) r = consumeToken(b, CHAR_TYPE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // equality_expression (LOGICAL_AND equality_expression)*
   static boolean logical_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression")) return false;
@@ -1391,6 +1403,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // integer_type | floating_type | VOID_TYPE
+  public static boolean scala_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "scala_type")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SCALA_TYPE, "<scala type>");
+    r = integer_type(b, l + 1);
+    if (!r) r = floating_type(b, l + 1);
+    if (!r) r = consumeToken(b, VOID_TYPE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // additive_expression (shift_operator additive_expression)*
   static boolean shift_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "shift_expression")) return false;
@@ -1432,6 +1457,17 @@ public class HareParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, LEFT_SHIFT);
     if (!r) r = consumeToken(b, RIGHT_SHIFT);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // scala_type
+  public static boolean storage_class(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "storage_class")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STORAGE_CLASS, "<storage class>");
+    r = scala_type(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1482,14 +1518,30 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // buildin_type
+  // CONST_KW? BANG? storage_class
   public static boolean type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TYPE, "<type>");
-    r = buildin_type(b, l + 1);
+    r = type_0(b, l + 1);
+    r = r && type_1(b, l + 1);
+    r = r && storage_class(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // CONST_KW?
+  private static boolean type_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_0")) return false;
+    consumeToken(b, CONST_KW);
+    return true;
+  }
+
+  // BANG?
+  private static boolean type_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_1")) return false;
+    consumeToken(b, BANG);
+    return true;
   }
 
   /* ********************************************************** */

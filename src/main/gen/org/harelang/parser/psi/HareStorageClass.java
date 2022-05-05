@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareBuildinType extends PsiElement {
+public interface HareStorageClass extends PsiElement {
+
+  @NotNull
+  HareScalaType getScalaType();
 
 }

@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareBuildinTypeImpl extends ASTWrapperPsiElement implements HareBuildinType {
+public class HareFloatingTypeImpl extends ASTWrapperPsiElement implements HareFloatingType {
 
-  public HareBuildinTypeImpl(@NotNull ASTNode node) {
+  public HareFloatingTypeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitBuildinType(this);
+    visitor.visitFloatingType(this);
   }
 
   @Override

@@ -12,7 +12,6 @@ public interface HareTypes {
   IElementType BINDING = new HareElementType("BINDING");
   IElementType BINDINGS = new HareElementType("BINDINGS");
   IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
-  IElementType BUILDIN_TYPE = new HareElementType("BUILDIN_TYPE");
   IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
@@ -23,6 +22,7 @@ public interface HareTypes {
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
+  IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
@@ -37,6 +37,7 @@ public interface HareTypes {
   IElementType INDEXING_EXPRESSION = new HareElementType("INDEXING_EXPRESSION");
   IElementType INTEGER_CONSTANT = new HareElementType("INTEGER_CONSTANT");
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
+  IElementType INTEGER_TYPE = new HareElementType("INTEGER_TYPE");
   IElementType MEMBER = new HareElementType("MEMBER");
   IElementType MEMBER_LIST = new HareElementType("MEMBER_LIST");
   IElementType OBJECT_SELECTOR = new HareElementType("OBJECT_SELECTOR");
@@ -44,6 +45,8 @@ public interface HareTypes {
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType PLAN_EXPRESSION = new HareElementType("PLAN_EXPRESSION");
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
+  IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
+  IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
   IElementType TYPE = new HareElementType("TYPE");
   IElementType TYPE_BINDING = new HareElementType("TYPE_BINDING");
@@ -56,7 +59,8 @@ public interface HareTypes {
   IElementType AND = new HareTokenType("AND");
   IElementType AND_ASSIGN = new HareTokenType("AND_ASSIGN");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
-  IElementType CHAR_KW = new HareTokenType("CHAR_KW");
+  IElementType BANG = new HareTokenType("BANG");
+  IElementType CHAR_TYPE = new HareTokenType("CHAR_TYPE");
   IElementType COLON = new HareTokenType("COLON");
   IElementType COMMA = new HareTokenType("COMMA");
   IElementType CONST_KW = new HareTokenType("CONST_KW");
@@ -69,17 +73,19 @@ public interface HareTypes {
   IElementType EQUAL = new HareTokenType("EQUAL");
   IElementType EXCLUSIVE_OR = new HareTokenType("EXCLUSIVE_OR");
   IElementType EXPORT_KW = new HareTokenType("EXPORT_KW");
+  IElementType F32_TYPE = new HareTokenType("F32_TYPE");
+  IElementType F64_TYPE = new HareTokenType("F64_TYPE");
   IElementType FALSE_KW = new HareTokenType("FALSE_KW");
   IElementType FN_KW = new HareTokenType("FN_KW");
   IElementType FOR_KW = new HareTokenType("FOR_KW");
-  IElementType I16_KW = new HareTokenType("I16_KW");
-  IElementType I32_KW = new HareTokenType("I32_KW");
-  IElementType I64_KW = new HareTokenType("I64_KW");
-  IElementType I8_KW = new HareTokenType("I8_KW");
+  IElementType I16_TYPE = new HareTokenType("I16_TYPE");
+  IElementType I32_TYPE = new HareTokenType("I32_TYPE");
+  IElementType I64_TYPE = new HareTokenType("I64_TYPE");
+  IElementType I8_TYPE = new HareTokenType("I8_TYPE");
   IElementType IDENTIFIER = new HareTokenType("IDENTIFIER");
   IElementType IF_KW = new HareTokenType("IF_KW");
   IElementType INCLUSIVE_OR = new HareTokenType("INCLUSIVE_OR");
-  IElementType INT_KW = new HareTokenType("INT_KW");
+  IElementType INT_TYPE = new HareTokenType("INT_TYPE");
   IElementType LARGER_EQUAL = new HareTokenType("LARGER_EQUAL");
   IElementType LARGER_THAN = new HareTokenType("LARGER_THAN");
   IElementType LB = new HareTokenType("LB");
@@ -111,20 +117,21 @@ public interface HareTypes {
   IElementType RIGHT_SHIFT_ASSIGN = new HareTokenType("RIGHT_SHIFT_ASSIGN");
   IElementType RP = new HareTokenType("RP");
   IElementType SCOPE = new HareTokenType("SCOPE");
-  IElementType SIZE_KW = new HareTokenType("SIZE_KW");
+  IElementType SIZE_TYPE = new HareTokenType("SIZE_TYPE");
   IElementType STATIC_KW = new HareTokenType("STATIC_KW");
   IElementType STRING_LITERAL = new HareTokenType("STRING_LITERAL");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
   IElementType TYPE_KW = new HareTokenType("TYPE_KW");
-  IElementType U16_KW = new HareTokenType("U16_KW");
-  IElementType U32_KW = new HareTokenType("U32_KW");
-  IElementType U64_KW = new HareTokenType("U64_KW");
-  IElementType U8_KW = new HareTokenType("U8_KW");
-  IElementType UINTPTR_KW = new HareTokenType("UINTPTR_KW");
-  IElementType UINT_KW = new HareTokenType("UINT_KW");
+  IElementType U16_TYPE = new HareTokenType("U16_TYPE");
+  IElementType U32_TYPE = new HareTokenType("U32_TYPE");
+  IElementType U64_TYPE = new HareTokenType("U64_TYPE");
+  IElementType U8_TYPE = new HareTokenType("U8_TYPE");
+  IElementType UINTPTR_TYPE = new HareTokenType("UINTPTR_TYPE");
+  IElementType UINT_TYPE = new HareTokenType("UINT_TYPE");
   IElementType USE_KW = new HareTokenType("USE_KW");
   IElementType VOID_KW = new HareTokenType("VOID_KW");
+  IElementType VOID_TYPE = new HareTokenType("VOID_TYPE");
   IElementType XOR_ASSIGN = new HareTokenType("XOR_ASSIGN");
 
   class Factory {
@@ -144,9 +151,6 @@ public interface HareTypes {
       }
       else if (type == BINDING_LIST) {
         return new HareBindingListImpl(node);
-      }
-      else if (type == BUILDIN_TYPE) {
-        return new HareBuildinTypeImpl(node);
       }
       else if (type == COMPOUND_EXPRESSION) {
         return new HareCompoundExpressionImpl(node);
@@ -177,6 +181,9 @@ public interface HareTypes {
       }
       else if (type == EXPRESSION_LIST) {
         return new HareExpressionListImpl(node);
+      }
+      else if (type == FLOATING_TYPE) {
+        return new HareFloatingTypeImpl(node);
       }
       else if (type == FOR_LOOP) {
         return new HareForLoopImpl(node);
@@ -220,6 +227,9 @@ public interface HareTypes {
       else if (type == INTEGER_SUFFIX) {
         return new HareIntegerSuffixImpl(node);
       }
+      else if (type == INTEGER_TYPE) {
+        return new HareIntegerTypeImpl(node);
+      }
       else if (type == MEMBER) {
         return new HareMemberImpl(node);
       }
@@ -240,6 +250,12 @@ public interface HareTypes {
       }
       else if (type == PROTOTYPE) {
         return new HarePrototypeImpl(node);
+      }
+      else if (type == SCALA_TYPE) {
+        return new HareScalaTypeImpl(node);
+      }
+      else if (type == STORAGE_CLASS) {
+        return new HareStorageClassImpl(node);
       }
       else if (type == STRING_CONST) {
         return new HareStringConstImpl(node);
