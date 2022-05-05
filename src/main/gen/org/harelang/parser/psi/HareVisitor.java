@@ -191,6 +191,18 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitStructUnionField(@NotNull HareStructUnionField o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStructUnionFields(@NotNull HareStructUnionFields o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStructUnionType(@NotNull HareStructUnionType o) {
+    visitPsiElement(o);
+  }
+
   public void visitType(@NotNull HareType o) {
     visitPsiElement(o);
   }

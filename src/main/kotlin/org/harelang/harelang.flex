@@ -106,6 +106,8 @@ DECIMAL_DIGITS = \d+
     "enum" {return HareTypes.ENUM_KW;}
     "nullable" {return HareTypes.NULLABLE_KW;}
     "rune" {return HareTypes.RUNE_KW;}
+    "struct" {return HareTypes.STRUCT_KW;}
+    "union" {return HareTypes.UNION_KW;}
 
     "::" { return HareTypes.SCOPE; }
 

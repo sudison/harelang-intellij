@@ -1581,12 +1581,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type
+  // scala_type | struct_union_type
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STORAGE_CLASS, "<storage class>");
     r = scala_type(b, l + 1);
+    if (!r) r = struct_union_type(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1600,6 +1601,88 @@ public class HareParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, STRING_LITERAL);
     exit_section_(b, m, STRING_CONST, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER COLON type | struct_union_type | identifier_path
+  public static boolean struct_union_field(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_field")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STRUCT_UNION_FIELD, "<struct union field>");
+    r = struct_union_field_0(b, l + 1);
+    if (!r) r = struct_union_type(b, l + 1);
+    if (!r) r = identifier_path(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // IDENTIFIER COLON type
+  private static boolean struct_union_field_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_field_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, COLON);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // struct_union_field (COMMA struct_union_field)*
+  public static boolean struct_union_fields(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_fields")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STRUCT_UNION_FIELDS, "<struct union fields>");
+    r = struct_union_field(b, l + 1);
+    r = r && struct_union_fields_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (COMMA struct_union_field)*
+  private static boolean struct_union_fields_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_fields_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!struct_union_fields_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "struct_union_fields_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA struct_union_field
+  private static boolean struct_union_fields_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_fields_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && struct_union_field(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (STRUCT_KW | UNION_KW) LBR struct_union_fields RBR
+  public static boolean struct_union_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_type")) return false;
+    if (!nextTokenIs(b, "<struct union type>", STRUCT_KW, UNION_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STRUCT_UNION_TYPE, "<struct union type>");
+    r = struct_union_type_0(b, l + 1);
+    r = r && consumeToken(b, LBR);
+    r = r && struct_union_fields(b, l + 1);
+    r = r && consumeToken(b, RBR);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STRUCT_KW | UNION_KW
+  private static boolean struct_union_type_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_type_0")) return false;
+    boolean r;
+    r = consumeToken(b, STRUCT_KW);
+    if (!r) r = consumeToken(b, UNION_KW);
     return r;
   }
 

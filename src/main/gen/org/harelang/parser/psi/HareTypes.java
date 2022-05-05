@@ -53,6 +53,9 @@ public interface HareTypes {
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
+  IElementType STRUCT_UNION_FIELD = new HareElementType("STRUCT_UNION_FIELD");
+  IElementType STRUCT_UNION_FIELDS = new HareElementType("STRUCT_UNION_FIELDS");
+  IElementType STRUCT_UNION_TYPE = new HareElementType("STRUCT_UNION_TYPE");
   IElementType TYPE = new HareElementType("TYPE");
   IElementType TYPE_BINDING = new HareElementType("TYPE_BINDING");
   IElementType TYPE_BINDINGS = new HareElementType("TYPE_BINDINGS");
@@ -129,6 +132,7 @@ public interface HareTypes {
   IElementType SIZE_TYPE = new HareTokenType("SIZE_TYPE");
   IElementType STATIC_KW = new HareTokenType("STATIC_KW");
   IElementType STRING_LITERAL = new HareTokenType("STRING_LITERAL");
+  IElementType STRUCT_KW = new HareTokenType("STRUCT_KW");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
   IElementType TYPE_KW = new HareTokenType("TYPE_KW");
@@ -138,6 +142,7 @@ public interface HareTypes {
   IElementType U8_TYPE = new HareTokenType("U8_TYPE");
   IElementType UINTPTR_TYPE = new HareTokenType("UINTPTR_TYPE");
   IElementType UINT_TYPE = new HareTokenType("UINT_TYPE");
+  IElementType UNION_KW = new HareTokenType("UNION_KW");
   IElementType USE_KW = new HareTokenType("USE_KW");
   IElementType VALIST_TYPE = new HareTokenType("VALIST_TYPE");
   IElementType VOID_KW = new HareTokenType("VOID_KW");
@@ -284,6 +289,15 @@ public interface HareTypes {
       }
       else if (type == STRING_CONST) {
         return new HareStringConstImpl(node);
+      }
+      else if (type == STRUCT_UNION_FIELD) {
+        return new HareStructUnionFieldImpl(node);
+      }
+      else if (type == STRUCT_UNION_FIELDS) {
+        return new HareStructUnionFieldsImpl(node);
+      }
+      else if (type == STRUCT_UNION_TYPE) {
+        return new HareStructUnionTypeImpl(node);
       }
       else if (type == TYPE) {
         return new HareTypeImpl(node);

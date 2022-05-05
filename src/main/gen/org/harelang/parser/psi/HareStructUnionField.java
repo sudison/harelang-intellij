@@ -5,12 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareStorageClass extends PsiElement {
+public interface HareStructUnionField extends PsiElement {
 
   @Nullable
-  HareScalaType getScalaType();
+  HareIdentifierPath getIdentifierPath();
 
   @Nullable
   HareStructUnionType getStructUnionType();
+
+  @Nullable
+  HareType getType();
 
 }

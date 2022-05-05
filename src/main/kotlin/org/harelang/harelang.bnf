@@ -51,7 +51,7 @@ prototype ::= LP parameter_list? RP type
 parameter_list ::= parameter COMMA parameter_list* | parameter
 parameter ::= IDENTIFIER COLON type
 type ::= CONST_KW? BANG? storage_class
-storage_class ::= scala_type
+storage_class ::= scala_type | struct_union_type
 
 scala_type ::= integer_type | floating_type | enum_type  | pointer_type | RUNE_KW | BOOL_TYPE | VALIST_TYPE |  VOID_TYPE
 integer_type ::= I8_TYPE | I16_TYPE | I32_TYPE | I64_TYPE | U8_TYPE | U16_TYPE | U32_TYPE | U64_TYPE | INT_TYPE | UINT_TYPE | SIZE_TYPE | UINTPTR_TYPE | CHAR_TYPE
@@ -60,8 +60,10 @@ enum_type ::= ENUM_KW enum_storage? LBR enum_values RBR
 enum_values ::= enum_value (COMMA enum_value)*
 enum_value ::= IDENTIFIER ASSIGN expression | IDENTIFIER
 enum_storage ::= integer_type | RUNE_KW
-
 pointer_type ::= NULLABLE_KW? MULTIPLIES type
+struct_union_type ::= (STRUCT_KW | UNION_KW) LBR struct_union_fields RBR
+struct_union_fields ::= struct_union_field (COMMA struct_union_field)*
+struct_union_field ::= IDENTIFIER COLON type | struct_union_type | identifier_path
 
 constant ::= integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
 integer_constant ::= DECIMAL_DIGITS integer_suffix?
