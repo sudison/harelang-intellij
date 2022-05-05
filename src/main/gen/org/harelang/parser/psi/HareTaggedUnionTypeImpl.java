@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareStorageClassImpl extends ASTWrapperPsiElement implements HareStorageClass {
+public class HareTaggedUnionTypeImpl extends ASTWrapperPsiElement implements HareTaggedUnionType {
 
-  public HareStorageClassImpl(@NotNull ASTNode node) {
+  public HareTaggedUnionTypeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitStorageClass(this);
+    visitor.visitTaggedUnionType(this);
   }
 
   @Override
@@ -27,27 +27,9 @@ public class HareStorageClassImpl extends ASTWrapperPsiElement implements HareSt
   }
 
   @Override
-  @Nullable
-  public HareScalaType getScalaType() {
-    return findChildByClass(HareScalaType.class);
-  }
-
-  @Override
-  @Nullable
-  public HareStructUnionType getStructUnionType() {
-    return findChildByClass(HareStructUnionType.class);
-  }
-
-  @Override
-  @Nullable
-  public HareTaggedUnionType getTaggedUnionType() {
-    return findChildByClass(HareTaggedUnionType.class);
-  }
-
-  @Override
-  @Nullable
-  public HareTupleType getTupleType() {
-    return findChildByClass(HareTupleType.class);
+  @NotNull
+  public HareTaggedTypes getTaggedTypes() {
+    return findNotNullChildByClass(HareTaggedTypes.class);
   }
 
 }

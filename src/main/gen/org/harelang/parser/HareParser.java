@@ -1581,7 +1581,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type | struct_union_type | tuple_type
+  // scala_type | struct_union_type | tuple_type | tagged_union_type
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1589,6 +1589,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = scala_type(b, l + 1);
     if (!r) r = struct_union_type(b, l + 1);
     if (!r) r = tuple_type(b, l + 1);
+    if (!r) r = tagged_union_type(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1684,6 +1685,58 @@ public class HareParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, STRUCT_KW);
     if (!r) r = consumeToken(b, UNION_KW);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // type (INCLUSIVE_OR type)+
+  public static boolean tagged_types(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tagged_types")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, TAGGED_TYPES, "<tagged types>");
+    r = type(b, l + 1);
+    r = r && tagged_types_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (INCLUSIVE_OR type)+
+  private static boolean tagged_types_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tagged_types_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = tagged_types_1_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!tagged_types_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "tagged_types_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // INCLUSIVE_OR type
+  private static boolean tagged_types_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tagged_types_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, INCLUSIVE_OR);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LP tagged_types RP
+  public static boolean tagged_union_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tagged_union_type")) return false;
+    if (!nextTokenIs(b, LP)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LP);
+    r = r && tagged_types(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, TAGGED_UNION_TYPE, r);
     return r;
   }
 

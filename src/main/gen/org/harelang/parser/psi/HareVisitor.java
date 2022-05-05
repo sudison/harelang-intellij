@@ -203,6 +203,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTaggedTypes(@NotNull HareTaggedTypes o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTaggedUnionType(@NotNull HareTaggedUnionType o) {
+    visitPsiElement(o);
+  }
+
   public void visitTupleType(@NotNull HareTupleType o) {
     visitPsiElement(o);
   }
