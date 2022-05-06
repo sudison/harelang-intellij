@@ -81,6 +81,18 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // identifier_path
+  public static boolean alias_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alias_type")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = identifier_path(b, l + 1);
+    exit_section_(b, m, ALIAS_TYPE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // shift_expression (AND shift_expression)*
   static boolean and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "and_expression")) return false;
@@ -1663,7 +1675,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | function_type| STR_TYPE
+  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | function_type | alias_type | unwrapped_alias | STR_TYPE
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1674,6 +1686,8 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = tagged_union_type(b, l + 1);
     if (!r) r = slice_array_type(b, l + 1);
     if (!r) r = function_type(b, l + 1);
+    if (!r) r = alias_type(b, l + 1);
+    if (!r) r = unwrapped_alias(b, l + 1);
     if (!r) r = consumeToken(b, STR_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -2007,6 +2021,19 @@ public class HareParser implements PsiParser, LightPsiParser {
     boolean r;
     r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // DOTDOTDOT identifier_path
+  public static boolean unwrapped_alias(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "unwrapped_alias")) return false;
+    if (!nextTokenIs(b, DOTDOTDOT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOTDOTDOT);
+    r = r && identifier_path(b, l + 1);
+    exit_section_(b, m, UNWRAPPED_ALIAS, r);
     return r;
   }
 

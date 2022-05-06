@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface HareStorageClass extends PsiElement {
 
   @Nullable
+  HareAliasType getAliasType();
+
+  @Nullable
   HareFunctionType getFunctionType();
 
   @Nullable
@@ -24,5 +27,8 @@ public interface HareStorageClass extends PsiElement {
 
   @Nullable
   HareTupleType getTupleType();
+
+  @Nullable
+  HareUnwrappedAlias getUnwrappedAlias();
 
 }

@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class HareVisitor extends PsiElementVisitor {
 
+  public void visitAliasType(@NotNull HareAliasType o) {
+    visitPsiElement(o);
+  }
+
   public void visitAssignment(@NotNull HareAssignment o) {
     visitPsiElement(o);
   }
@@ -244,6 +248,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitTypeDeclaration(@NotNull HareTypeDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUnwrappedAlias(@NotNull HareUnwrappedAlias o) {
     visitPsiElement(o);
   }
 

@@ -7,6 +7,7 @@ import com.intellij.lang.ASTNode;
 
 public interface HareTypes {
 
+  IElementType ALIAS_TYPE = new HareElementType("ALIAS_TYPE");
   IElementType ASSIGNMENT = new HareElementType("ASSIGNMENT");
   IElementType ASSIGNMENT_OP = new HareElementType("ASSIGNMENT_OP");
   IElementType BINDING = new HareElementType("BINDING");
@@ -67,6 +68,7 @@ public interface HareTypes {
   IElementType TYPE_BINDING = new HareElementType("TYPE_BINDING");
   IElementType TYPE_BINDINGS = new HareElementType("TYPE_BINDINGS");
   IElementType TYPE_DECLARATION = new HareElementType("TYPE_DECLARATION");
+  IElementType UNWRAPPED_ALIAS = new HareElementType("UNWRAPPED_ALIAS");
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
 
@@ -162,7 +164,10 @@ public interface HareTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == ASSIGNMENT) {
+      if (type == ALIAS_TYPE) {
+        return new HareAliasTypeImpl(node);
+      }
+      else if (type == ASSIGNMENT) {
         return new HareAssignmentImpl(node);
       }
       else if (type == ASSIGNMENT_OP) {
@@ -341,6 +346,9 @@ public interface HareTypes {
       }
       else if (type == TYPE_DECLARATION) {
         return new HareTypeDeclarationImpl(node);
+      }
+      else if (type == UNWRAPPED_ALIAS) {
+        return new HareUnwrappedAliasImpl(node);
       }
       else if (type == USE_STATEMENT) {
         return new HareUseStatementImpl(node);
