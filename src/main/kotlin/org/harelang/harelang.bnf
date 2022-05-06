@@ -47,11 +47,11 @@ pin=1
 
 prototype ::= LP parameter_list? RP type
 
-
-parameter_list ::= parameter COMMA parameter_list* | parameter
-parameter ::= IDENTIFIER COLON type
+parameter_list ::= parameters COMMA? DOTDOTDOT?
+parameters ::= parameter (COMMA parameter)*
+parameter ::= (IDENTIFIER | UNDERSCORE) COLON type
 type ::= CONST_KW? BANG? storage_class
-storage_class ::= scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | STR_TYPE
+storage_class ::= scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | function_type| STR_TYPE
 
 scala_type ::= integer_type | floating_type | enum_type  | pointer_type | RUNE_KW | BOOL_TYPE | VALIST_TYPE |  VOID_TYPE
 
@@ -77,6 +77,8 @@ tagged_union_type ::= LP tagged_types RP
 tagged_types ::= type (INCLUSIVE_OR type)+
 
 slice_array_type ::= LB (expression | MULTIPLIES | UNDERSCORE)? RB type
+
+function_type ::= FN_KW prototype
 
 constant ::= integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
 integer_constant ::= DECIMAL_DIGITS integer_suffix?

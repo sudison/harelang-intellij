@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareParameterList extends PsiElement {
+public interface HareParameters extends PsiElement {
 
   @NotNull
-  HareParameters getParameters();
+  List<HareParameter> getParameterList();
 
 }

@@ -99,6 +99,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFunctionType(@NotNull HareFunctionType o) {
+    visitPsiElement(o);
+  }
+
   public void visitGlobalBinding(@NotNull HareGlobalBinding o) {
     visitPsiElement(o);
   }
@@ -164,6 +168,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitParameterList(@NotNull HareParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameters(@NotNull HareParameters o) {
     visitPsiElement(o);
   }
 

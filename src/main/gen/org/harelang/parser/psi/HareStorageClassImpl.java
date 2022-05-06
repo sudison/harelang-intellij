@@ -28,6 +28,12 @@ public class HareStorageClassImpl extends ASTWrapperPsiElement implements HareSt
 
   @Override
   @Nullable
+  public HareFunctionType getFunctionType() {
+    return findChildByClass(HareFunctionType.class);
+  }
+
+  @Override
+  @Nullable
   public HareScalaType getScalaType() {
     return findChildByClass(HareScalaType.class);
   }

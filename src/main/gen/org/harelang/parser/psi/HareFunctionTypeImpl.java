@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareParameterListImpl extends ASTWrapperPsiElement implements HareParameterList {
+public class HareFunctionTypeImpl extends ASTWrapperPsiElement implements HareFunctionType {
 
-  public HareParameterListImpl(@NotNull ASTNode node) {
+  public HareFunctionTypeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitParameterList(this);
+    visitor.visitFunctionType(this);
   }
 
   @Override
@@ -28,8 +28,8 @@ public class HareParameterListImpl extends ASTWrapperPsiElement implements HareP
 
   @Override
   @NotNull
-  public HareParameters getParameters() {
-    return findNotNullChildByClass(HareParameters.class);
+  public HarePrototype getPrototype() {
+    return findNotNullChildByClass(HarePrototype.class);
   }
 
 }

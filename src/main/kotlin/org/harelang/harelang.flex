@@ -110,6 +110,8 @@ DECIMAL_DIGITS = \d+
     "struct" {return HareTypes.STRUCT_KW;}
     "str" {return HareTypes.STR_TYPE;}
     "union" {return HareTypes.UNION_KW;}
+    "..." {return HareTypes.DOTDOTDOT;}
+
 
     "::" { return HareTypes.SCOPE; }
 

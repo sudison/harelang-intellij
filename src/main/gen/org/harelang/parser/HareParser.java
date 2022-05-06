@@ -805,6 +805,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // FN_KW prototype
+  public static boolean function_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_type")) return false;
+    if (!nextTokenIs(b, FN_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FN_KW);
+    r = r && prototype(b, l + 1);
+    exit_section_(b, m, FUNCTION_TYPE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // identifier_path COLON type (ASSIGN expression)?
   public static boolean global_binding(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_binding")) return false;
@@ -1408,52 +1421,89 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER COLON type
+  // (IDENTIFIER | UNDERSCORE) COLON type
   public static boolean parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, "<parameter>", IDENTIFIER, UNDERSCORE)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFIER, COLON);
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER, "<parameter>");
+    r = parameter_0(b, l + 1);
+    r = r && consumeToken(b, COLON);
     r = r && type(b, l + 1);
-    exit_section_(b, m, PARAMETER, r);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // IDENTIFIER | UNDERSCORE
+  private static boolean parameter_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_0")) return false;
+    boolean r;
+    r = consumeToken(b, IDENTIFIER);
+    if (!r) r = consumeToken(b, UNDERSCORE);
     return r;
   }
 
   /* ********************************************************** */
-  // parameter COMMA parameter_list* | parameter
+  // parameters COMMA? DOTDOTDOT?
   public static boolean parameter_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter_list")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, "<parameter list>", IDENTIFIER, UNDERSCORE)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = parameter_list_0(b, l + 1);
-    if (!r) r = parameter(b, l + 1);
-    exit_section_(b, m, PARAMETER_LIST, r);
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER_LIST, "<parameter list>");
+    r = parameters(b, l + 1);
+    r = r && parameter_list_1(b, l + 1);
+    r = r && parameter_list_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // parameter COMMA parameter_list*
-  private static boolean parameter_list_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "parameter_list_0")) return false;
+  // COMMA?
+  private static boolean parameter_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_list_1")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
+  // DOTDOTDOT?
+  private static boolean parameter_list_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_list_2")) return false;
+    consumeToken(b, DOTDOTDOT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // parameter (COMMA parameter)*
+  public static boolean parameters(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameters")) return false;
+    if (!nextTokenIs(b, "<parameters>", IDENTIFIER, UNDERSCORE)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, PARAMETERS, "<parameters>");
     r = parameter(b, l + 1);
-    r = r && consumeToken(b, COMMA);
-    r = r && parameter_list_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = r && parameters_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // parameter_list*
-  private static boolean parameter_list_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "parameter_list_0_2")) return false;
+  // (COMMA parameter)*
+  private static boolean parameters_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameters_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!parameter_list(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "parameter_list_0_2", c)) break;
+      if (!parameters_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "parameters_1", c)) break;
     }
     return true;
+  }
+
+  // COMMA parameter
+  private static boolean parameters_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameters_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && parameter(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -1613,7 +1663,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | STR_TYPE
+  // scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | function_type| STR_TYPE
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1623,6 +1673,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = tuple_type(b, l + 1);
     if (!r) r = tagged_union_type(b, l + 1);
     if (!r) r = slice_array_type(b, l + 1);
+    if (!r) r = function_type(b, l + 1);
     if (!r) r = consumeToken(b, STR_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;

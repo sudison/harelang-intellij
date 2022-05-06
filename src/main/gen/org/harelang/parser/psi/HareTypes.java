@@ -30,6 +30,7 @@ public interface HareTypes {
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
+  IElementType FUNCTION_TYPE = new HareElementType("FUNCTION_TYPE");
   IElementType GLOBAL_BINDING = new HareElementType("GLOBAL_BINDING");
   IElementType GLOBAL_BINDINGS = new HareElementType("GLOBAL_BINDINGS");
   IElementType GLOBAL_DECLARATION = new HareElementType("GLOBAL_DECLARATION");
@@ -46,6 +47,7 @@ public interface HareTypes {
   IElementType MEMBER_LIST = new HareElementType("MEMBER_LIST");
   IElementType OBJECT_SELECTOR = new HareElementType("OBJECT_SELECTOR");
   IElementType PARAMETER = new HareElementType("PARAMETER");
+  IElementType PARAMETERS = new HareElementType("PARAMETERS");
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType PLAN_EXPRESSION = new HareElementType("PLAN_EXPRESSION");
   IElementType POINTER_TYPE = new HareElementType("POINTER_TYPE");
@@ -82,6 +84,7 @@ public interface HareTypes {
   IElementType DEF_KW = new HareTokenType("DEF_KW");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
+  IElementType DOTDOTDOT = new HareTokenType("DOTDOTDOT");
   IElementType ELSE_KW = new HareTokenType("ELSE_KW");
   IElementType ENUM_KW = new HareTokenType("ENUM_KW");
   IElementType EOS = new HareTokenType("EOS");
@@ -228,6 +231,9 @@ public interface HareTypes {
       else if (type == FUNCTION_DECLARATION) {
         return new HareFunctionDeclarationImpl(node);
       }
+      else if (type == FUNCTION_TYPE) {
+        return new HareFunctionTypeImpl(node);
+      }
       else if (type == GLOBAL_BINDING) {
         return new HareGlobalBindingImpl(node);
       }
@@ -275,6 +281,9 @@ public interface HareTypes {
       }
       else if (type == PARAMETER) {
         return new HareParameterImpl(node);
+      }
+      else if (type == PARAMETERS) {
+        return new HareParametersImpl(node);
       }
       else if (type == PARAMETER_LIST) {
         return new HareParameterListImpl(node);
