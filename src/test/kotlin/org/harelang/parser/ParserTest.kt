@@ -158,4 +158,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseStructLiteral() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = struct {x = 1, y:int = 2}, b = coords {x = 1, y: int = 2}, c = coords {...}, d = coords {x = 1, ...};
+            };
+        """.trimIndent())
+    }
 }

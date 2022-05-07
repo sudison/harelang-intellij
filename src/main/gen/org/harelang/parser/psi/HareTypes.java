@@ -32,6 +32,8 @@ public interface HareTypes {
   IElementType ENUM_VALUES = new HareElementType("ENUM_VALUES");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
+  IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
+  IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
   IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
@@ -62,6 +64,8 @@ public interface HareTypes {
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
+  IElementType STRUCT_INITIALIZER = new HareElementType("STRUCT_INITIALIZER");
+  IElementType STRUCT_LITERAL = new HareElementType("STRUCT_LITERAL");
   IElementType STRUCT_UNION_FIELD = new HareElementType("STRUCT_UNION_FIELD");
   IElementType STRUCT_UNION_FIELDS = new HareElementType("STRUCT_UNION_FIELDS");
   IElementType STRUCT_UNION_TYPE = new HareElementType("STRUCT_UNION_TYPE");
@@ -244,6 +248,12 @@ public interface HareTypes {
       else if (type == EXPRESSION_LIST) {
         return new HareExpressionListImpl(node);
       }
+      else if (type == FIELD_VALUE) {
+        return new HareFieldValueImpl(node);
+      }
+      else if (type == FIELD_VALUES) {
+        return new HareFieldValuesImpl(node);
+      }
       else if (type == FLOATING_TYPE) {
         return new HareFloatingTypeImpl(node);
       }
@@ -333,6 +343,12 @@ public interface HareTypes {
       }
       else if (type == STRING_CONST) {
         return new HareStringConstImpl(node);
+      }
+      else if (type == STRUCT_INITIALIZER) {
+        return new HareStructInitializerImpl(node);
+      }
+      else if (type == STRUCT_LITERAL) {
+        return new HareStructLiteralImpl(node);
       }
       else if (type == STRUCT_UNION_FIELD) {
         return new HareStructUnionFieldImpl(node);

@@ -107,6 +107,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFieldValue(@NotNull HareFieldValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFieldValues(@NotNull HareFieldValues o) {
+    visitPsiElement(o);
+  }
+
   public void visitFloatingType(@NotNull HareFloatingType o) {
     visitPsiElement(o);
   }
@@ -224,6 +232,14 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitStringConst(@NotNull HareStringConst o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStructInitializer(@NotNull HareStructInitializer o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStructLiteral(@NotNull HareStructLiteral o) {
     visitPsiElement(o);
   }
 
