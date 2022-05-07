@@ -8,11 +8,15 @@ import com.intellij.lang.ASTNode;
 public interface HareTypes {
 
   IElementType ALIAS_TYPE = new HareElementType("ALIAS_TYPE");
+  IElementType ARGUMENT_LIST = new HareElementType("ARGUMENT_LIST");
+  IElementType ARRAY_LITERAL = new HareElementType("ARRAY_LITERAL");
+  IElementType ARRAY_MEMBERS = new HareElementType("ARRAY_MEMBERS");
   IElementType ASSIGNMENT = new HareElementType("ASSIGNMENT");
   IElementType ASSIGNMENT_OP = new HareElementType("ASSIGNMENT_OP");
   IElementType BINDING = new HareElementType("BINDING");
   IElementType BINDINGS = new HareElementType("BINDINGS");
   IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
+  IElementType CALL_EXPRESSION = new HareElementType("CALL_EXPRESSION");
   IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
@@ -167,6 +171,15 @@ public interface HareTypes {
       if (type == ALIAS_TYPE) {
         return new HareAliasTypeImpl(node);
       }
+      else if (type == ARGUMENT_LIST) {
+        return new HareArgumentListImpl(node);
+      }
+      else if (type == ARRAY_LITERAL) {
+        return new HareArrayLiteralImpl(node);
+      }
+      else if (type == ARRAY_MEMBERS) {
+        return new HareArrayMembersImpl(node);
+      }
       else if (type == ASSIGNMENT) {
         return new HareAssignmentImpl(node);
       }
@@ -181,6 +194,9 @@ public interface HareTypes {
       }
       else if (type == BINDING_LIST) {
         return new HareBindingListImpl(node);
+      }
+      else if (type == CALL_EXPRESSION) {
+        return new HareCallExpressionImpl(node);
       }
       else if (type == COMPOUND_EXPRESSION) {
         return new HareCompoundExpressionImpl(node);

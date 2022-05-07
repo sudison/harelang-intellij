@@ -111,8 +111,9 @@ private unary_expression ::= buildin_expression | compound_expression
 private buildin_expression ::= postfix_expression
 private postfix_expression ::= nested_expression
 private nested_expression ::= plan_expression | LP expression RP
-plan_expression ::= IDENTIFIER | constant
-
+plan_expression ::= IDENTIFIER | constant | array_literal
+array_literal ::= LB array_members RB
+array_members ::= expression DOTDOTDOT | expression COMMA array_members | expression
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
@@ -131,3 +132,6 @@ conditional_branch ::= LP expression RP expression
 
 for_loop ::= FOR_KW LP for_predicate RP expression
 for_predicate ::= binding_list EOS expression EOS expression | binding_list EOS expression | expression EOS expression | expression
+
+call_expression ::= postfix_expression LP argument_list? RP
+argument_list ::= expression DOTDOTDOT | expression | expression COMMA argument_list

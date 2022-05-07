@@ -140,4 +140,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             type s = a, b = a::b, c = ... a;
         """.trimIndent())
     }
+
+    @Test
+    fun testParseArrayLiteral() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = [1,2,3], b = [1...], c = [1,2,3...];
+            };
+        """.trimIndent())
+    }
 }

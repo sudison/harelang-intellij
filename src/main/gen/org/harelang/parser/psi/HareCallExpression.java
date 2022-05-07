@@ -5,12 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HarePlanExpression extends PsiElement {
+public interface HareCallExpression extends PsiElement {
 
   @Nullable
-  HareArrayLiteral getArrayLiteral();
+  HareArgumentList getArgumentList();
 
   @Nullable
-  HareConstant getConstant();
+  HareExpression getExpression();
+
+  @Nullable
+  HarePlanExpression getPlanExpression();
 
 }

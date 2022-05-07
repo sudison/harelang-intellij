@@ -11,6 +11,18 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitArgumentList(@NotNull HareArgumentList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayLiteral(@NotNull HareArrayLiteral o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayMembers(@NotNull HareArrayMembers o) {
+    visitPsiElement(o);
+  }
+
   public void visitAssignment(@NotNull HareAssignment o) {
     visitPsiElement(o);
   }
@@ -28,6 +40,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitBindings(@NotNull HareBindings o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCallExpression(@NotNull HareCallExpression o) {
     visitPsiElement(o);
   }
 

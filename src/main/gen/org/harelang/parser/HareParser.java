@@ -127,6 +127,92 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // expression DOTDOTDOT | expression | expression COMMA argument_list
+  public static boolean argument_list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ARGUMENT_LIST, "<argument list>");
+    r = argument_list_0(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    if (!r) r = argument_list_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // expression DOTDOTDOT
+  private static boolean argument_list_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, DOTDOTDOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression COMMA argument_list
+  private static boolean argument_list_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && argument_list(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LB array_members RB
+  public static boolean array_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_literal")) return false;
+    if (!nextTokenIs(b, LB)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LB);
+    r = r && array_members(b, l + 1);
+    r = r && consumeToken(b, RB);
+    exit_section_(b, m, ARRAY_LITERAL, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // expression DOTDOTDOT | expression COMMA array_members | expression
+  public static boolean array_members(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ARRAY_MEMBERS, "<array members>");
+    r = array_members_0(b, l + 1);
+    if (!r) r = array_members_1(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // expression DOTDOTDOT
+  private static boolean array_members_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, DOTDOTDOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression COMMA array_members
+  private static boolean array_members_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && array_members(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // object_selector assignment_op expression
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
@@ -275,6 +361,27 @@ public class HareParser implements PsiParser, LightPsiParser {
   // postfix_expression
   static boolean buildin_expression(PsiBuilder b, int l) {
     return postfix_expression(b, l + 1);
+  }
+
+  /* ********************************************************** */
+  // postfix_expression LP argument_list? RP
+  public static boolean call_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "call_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CALL_EXPRESSION, "<call expression>");
+    r = postfix_expression(b, l + 1);
+    r = r && consumeToken(b, LP);
+    r = r && call_expression_2(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // argument_list?
+  private static boolean call_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "call_expression_2")) return false;
+    argument_list(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1519,13 +1626,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER | constant
+  // IDENTIFIER | constant | array_literal
   public static boolean plan_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "plan_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PLAN_EXPRESSION, "<plan expression>");
     r = consumeToken(b, IDENTIFIER);
     if (!r) r = constant(b, l + 1);
+    if (!r) r = array_literal(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
