@@ -16,4 +16,7 @@ public interface HareCallExpression extends PsiElement {
   @Nullable
   HarePlanExpression getPlanExpression();
 
+  @Nullable
+  HareTupleItems getTupleItems();
+
 }

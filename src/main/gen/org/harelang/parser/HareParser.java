@@ -1621,20 +1621,33 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // plan_expression | LP expression RP
+  // plan_expression | LP tuple_items RP | LP expression RP
   static boolean nested_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "nested_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = plan_expression(b, l + 1);
     if (!r) r = nested_expression_1(b, l + 1);
+    if (!r) r = nested_expression_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // LP tuple_items RP
+  private static boolean nested_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "nested_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LP);
+    r = r && tuple_items(b, l + 1);
+    r = r && consumeToken(b, RP);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // LP expression RP
-  private static boolean nested_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "nested_expression_1")) return false;
+  private static boolean nested_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "nested_expression_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LP);
@@ -2175,6 +2188,44 @@ public class HareParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "translation_unit_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // expression (COMMA expression)+
+  public static boolean tuple_items(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_items")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, TUPLE_ITEMS, "<tuple items>");
+    r = expression(b, l + 1);
+    r = r && tuple_items_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (COMMA expression)+
+  private static boolean tuple_items_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_items_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = tuple_items_1_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!tuple_items_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "tuple_items_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA expression
+  private static boolean tuple_items_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_items_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */

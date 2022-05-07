@@ -176,4 +176,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseTupleItems() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = (1, 2, 3), b = (1);
+            };
+        """.trimIndent())
+    }
 }

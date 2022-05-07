@@ -28,4 +28,7 @@ public interface HareExpression extends PsiElement {
   @NotNull
   List<HarePlanExpression> getPlanExpressionList();
 
+  @NotNull
+  List<HareTupleItems> getTupleItemsList();
+
 }

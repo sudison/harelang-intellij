@@ -38,4 +38,10 @@ public class HareIndexingExpressionImpl extends ASTWrapperPsiElement implements 
     return findChildByClass(HarePlanExpression.class);
   }
 
+  @Override
+  @Nullable
+  public HareTupleItems getTupleItems() {
+    return findChildByClass(HareTupleItems.class);
+  }
+
 }

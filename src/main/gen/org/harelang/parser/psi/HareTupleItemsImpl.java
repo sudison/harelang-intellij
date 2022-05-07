@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareCallExpressionImpl extends ASTWrapperPsiElement implements HareCallExpression {
+public class HareTupleItemsImpl extends ASTWrapperPsiElement implements HareTupleItems {
 
-  public HareCallExpressionImpl(@NotNull ASTNode node) {
+  public HareTupleItemsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitCallExpression(this);
+    visitor.visitTupleItems(this);
   }
 
   @Override
@@ -27,27 +27,9 @@ public class HareCallExpressionImpl extends ASTWrapperPsiElement implements Hare
   }
 
   @Override
-  @Nullable
-  public HareArgumentList getArgumentList() {
-    return findChildByClass(HareArgumentList.class);
-  }
-
-  @Override
-  @Nullable
-  public HareExpression getExpression() {
-    return findChildByClass(HareExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public HarePlanExpression getPlanExpression() {
-    return findChildByClass(HarePlanExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public HareTupleItems getTupleItems() {
-    return findChildByClass(HareTupleItems.class);
+  @NotNull
+  public List<HareExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
   }
 
 }
