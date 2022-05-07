@@ -595,6 +595,44 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // IDENTIFIER (SCOPE IDENTIFIER)+
+  public static boolean enum_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_literal")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    r = r && enum_literal_1(b, l + 1);
+    exit_section_(b, m, ENUM_LITERAL, r);
+    return r;
+  }
+
+  // (SCOPE IDENTIFIER)+
+  private static boolean enum_literal_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_literal_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = enum_literal_1_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!enum_literal_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "enum_literal_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SCOPE IDENTIFIER
+  private static boolean enum_literal_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_literal_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, SCOPE, IDENTIFIER);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // integer_type | RUNE_KW
   public static boolean enum_storage(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_storage")) return false;
@@ -1626,12 +1664,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER | constant | array_literal
+  // enum_literal | IDENTIFIER | constant | array_literal
   public static boolean plan_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "plan_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PLAN_EXPRESSION, "<plan expression>");
-    r = consumeToken(b, IDENTIFIER);
+    r = enum_literal(b, l + 1);
+    if (!r) r = consumeToken(b, IDENTIFIER);
     if (!r) r = constant(b, l + 1);
     if (!r) r = array_literal(b, l + 1);
     exit_section_(b, l, m, r, false, null);

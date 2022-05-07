@@ -111,9 +111,12 @@ private unary_expression ::= buildin_expression | compound_expression
 private buildin_expression ::= postfix_expression
 private postfix_expression ::= nested_expression
 private nested_expression ::= plan_expression | LP expression RP
-plan_expression ::= IDENTIFIER | constant | array_literal
+plan_expression ::= enum_literal | IDENTIFIER | constant | array_literal
 array_literal ::= LB array_members RB
 array_members ::= expression DOTDOTDOT | expression COMMA array_members | expression
+
+enum_literal ::= IDENTIFIER (SCOPE IDENTIFIER)+
+
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings

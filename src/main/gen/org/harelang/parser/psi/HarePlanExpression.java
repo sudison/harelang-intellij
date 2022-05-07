@@ -13,4 +13,7 @@ public interface HarePlanExpression extends PsiElement {
   @Nullable
   HareConstant getConstant();
 
+  @Nullable
+  HareEnumLiteral getEnumLiteral();
+
 }

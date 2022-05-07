@@ -149,4 +149,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseEnumLiteral() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = a::c, b = a::b::c;
+            };
+        """.trimIndent())
+    }
 }

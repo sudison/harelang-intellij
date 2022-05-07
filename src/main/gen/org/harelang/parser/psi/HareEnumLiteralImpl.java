@@ -10,38 +10,20 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HarePlanExpressionImpl extends ASTWrapperPsiElement implements HarePlanExpression {
+public class HareEnumLiteralImpl extends ASTWrapperPsiElement implements HareEnumLiteral {
 
-  public HarePlanExpressionImpl(@NotNull ASTNode node) {
+  public HareEnumLiteralImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitPlanExpression(this);
+    visitor.visitEnumLiteral(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof HareVisitor) accept((HareVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public HareArrayLiteral getArrayLiteral() {
-    return findChildByClass(HareArrayLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public HareConstant getConstant() {
-    return findChildByClass(HareConstant.class);
-  }
-
-  @Override
-  @Nullable
-  public HareEnumLiteral getEnumLiteral() {
-    return findChildByClass(HareEnumLiteral.class);
   }
 
 }

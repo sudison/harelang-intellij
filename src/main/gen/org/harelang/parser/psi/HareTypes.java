@@ -25,6 +25,7 @@ public interface HareTypes {
   IElementType CONSTANT_DECLARATION = new HareElementType("CONSTANT_DECLARATION");
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
+  IElementType ENUM_LITERAL = new HareElementType("ENUM_LITERAL");
   IElementType ENUM_STORAGE = new HareElementType("ENUM_STORAGE");
   IElementType ENUM_TYPE = new HareElementType("ENUM_TYPE");
   IElementType ENUM_VALUE = new HareElementType("ENUM_VALUE");
@@ -221,6 +222,9 @@ public interface HareTypes {
       }
       else if (type == DECLARATIONS) {
         return new HareDeclarationsImpl(node);
+      }
+      else if (type == ENUM_LITERAL) {
+        return new HareEnumLiteralImpl(node);
       }
       else if (type == ENUM_STORAGE) {
         return new HareEnumStorageImpl(node);
