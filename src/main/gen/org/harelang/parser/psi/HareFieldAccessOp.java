@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HarePostfixOp extends PsiElement {
+public interface HareFieldAccessOp extends PsiElement {
 
   @Nullable
-  HareFieldAccessOp getFieldAccessOp();
-
-  @Nullable
-  HareIndexingOp getIndexingOp();
+  HareIntegerConstant getIntegerConstant();
 
 }

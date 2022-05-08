@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareFieldAccessImpl extends ASTWrapperPsiElement implements HareFieldAccess {
+public class HareFieldAccessOpImpl extends ASTWrapperPsiElement implements HareFieldAccessOp {
 
-  public HareFieldAccessImpl(@NotNull ASTNode node) {
+  public HareFieldAccessOpImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitFieldAccess(this);
+    visitor.visitFieldAccessOp(this);
   }
 
   @Override

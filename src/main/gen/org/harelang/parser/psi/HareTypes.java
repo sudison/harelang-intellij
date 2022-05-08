@@ -32,7 +32,7 @@ public interface HareTypes {
   IElementType ENUM_VALUES = new HareElementType("ENUM_VALUES");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
-  IElementType FIELD_ACCESS = new HareElementType("FIELD_ACCESS");
+  IElementType FIELD_ACCESS_OP = new HareElementType("FIELD_ACCESS_OP");
   IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
   IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
   IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
@@ -49,6 +49,7 @@ public interface HareTypes {
   IElementType IMPORT_ALIAS = new HareElementType("IMPORT_ALIAS");
   IElementType IMPORT_PATH = new HareElementType("IMPORT_PATH");
   IElementType INDEXING_EXPRESSION = new HareElementType("INDEXING_EXPRESSION");
+  IElementType INDEXING_OP = new HareElementType("INDEXING_OP");
   IElementType INTEGER_CONSTANT = new HareElementType("INTEGER_CONSTANT");
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
   IElementType INTEGER_TYPE = new HareElementType("INTEGER_TYPE");
@@ -252,8 +253,8 @@ public interface HareTypes {
       else if (type == EXPRESSION_LIST) {
         return new HareExpressionListImpl(node);
       }
-      else if (type == FIELD_ACCESS) {
-        return new HareFieldAccessImpl(node);
+      else if (type == FIELD_ACCESS_OP) {
+        return new HareFieldAccessOpImpl(node);
       }
       else if (type == FIELD_VALUE) {
         return new HareFieldValueImpl(node);
@@ -302,6 +303,9 @@ public interface HareTypes {
       }
       else if (type == INDEXING_EXPRESSION) {
         return new HareIndexingExpressionImpl(node);
+      }
+      else if (type == INDEXING_OP) {
+        return new HareIndexingOpImpl(node);
       }
       else if (type == INTEGER_CONSTANT) {
         return new HareIntegerConstantImpl(node);

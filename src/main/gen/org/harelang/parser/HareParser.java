@@ -849,20 +849,20 @@ public class HareParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // DOT IDENTIFIER | DOT integer_constant
-  public static boolean field_access(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_access")) return false;
+  public static boolean field_access_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_access_op")) return false;
     if (!nextTokenIs(b, DOT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = parseTokens(b, 0, DOT, IDENTIFIER);
-    if (!r) r = field_access_1(b, l + 1);
-    exit_section_(b, m, FIELD_ACCESS, r);
+    if (!r) r = field_access_op_1(b, l + 1);
+    exit_section_(b, m, FIELD_ACCESS_OP, r);
     return r;
   }
 
   // DOT integer_constant
-  private static boolean field_access_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_access_1")) return false;
+  private static boolean field_access_op_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_access_op_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, DOT);
@@ -1386,6 +1386,20 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LB expression RB
+  public static boolean indexing_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "indexing_op")) return false;
+    if (!nextTokenIs(b, LB)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LB);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RB);
+    exit_section_(b, m, INDEXING_OP, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // DECIMAL_DIGITS integer_suffix?
   public static boolean integer_constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "integer_constant")) return false;
@@ -1839,14 +1853,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // field_access
+  // field_access_op | indexing_op
   public static boolean postfix_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_op")) return false;
-    if (!nextTokenIs(b, DOT)) return false;
+    if (!nextTokenIs(b, "<postfix op>", DOT, LB)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = field_access(b, l + 1);
-    exit_section_(b, m, POSTFIX_OP, r);
+    Marker m = enter_section_(b, l, _NONE_, POSTFIX_OP, "<postfix op>");
+    r = field_access_op(b, l + 1);
+    if (!r) r = indexing_op(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
