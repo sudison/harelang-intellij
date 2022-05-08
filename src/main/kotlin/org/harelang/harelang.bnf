@@ -108,15 +108,15 @@ private multiplicative_expression ::= cast_expression (multiplicative_operator c
 private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
 private cast_expression ::= unary_expression
 private unary_expression ::=
-                            variadic_expression |
-                            slice_mutation_expression |
-                            measurement_expression |
-                            defer_expression |
-                            assertion_expression |
-                            alloc_expression |
                             buildin_expression |
-                            compound_expression
-private buildin_expression ::= postfix_expression
+                            compound_expression |
+                            match_expression
+private buildin_expression ::= variadic_expression |
+                                                           slice_mutation_expression |
+                                                           measurement_expression |
+                                                           defer_expression |
+                                                           assertion_expression |
+                                                           alloc_expression | postfix_expression
 private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
 plan_expression ::= enum_literal | struct_literal | IDENTIFIER | constant | array_literal
@@ -152,7 +152,8 @@ insert_expression ::= STATIC_KW? INSERT_KW LP expression COMMA expression DOTDOT
 delete_expression ::= STATIC_KW? DELETE_KW LP expression RP
 
 variadic_expression ::= VASTART_KW LP RP | VAARG_KW LP expression RP | VAEND_KW LP expression RP
-
+match_expression ::= MATCH_KW LP expression RP LBR match_case+ RBR
+match_case ::= CASE_KW ((LET_KW IDENTIFIER COLON)? type)? MATCH_OP expression_list
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings

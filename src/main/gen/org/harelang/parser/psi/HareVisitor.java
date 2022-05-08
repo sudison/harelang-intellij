@@ -219,6 +219,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMatchCase(@NotNull HareMatchCase o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMatchExpression(@NotNull HareMatchExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitMeasurementExpression(@NotNull HareMeasurementExpression o) {
     visitPsiElement(o);
   }

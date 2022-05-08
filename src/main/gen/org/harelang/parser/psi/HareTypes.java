@@ -60,6 +60,8 @@ public interface HareTypes {
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
   IElementType INTEGER_TYPE = new HareElementType("INTEGER_TYPE");
   IElementType LENGTH_EXPRESSION = new HareElementType("LENGTH_EXPRESSION");
+  IElementType MATCH_CASE = new HareElementType("MATCH_CASE");
+  IElementType MATCH_EXPRESSION = new HareElementType("MATCH_EXPRESSION");
   IElementType MEASUREMENT_EXPRESSION = new HareElementType("MEASUREMENT_EXPRESSION");
   IElementType MEMBER = new HareElementType("MEMBER");
   IElementType MEMBER_LIST = new HareElementType("MEMBER_LIST");
@@ -108,6 +110,7 @@ public interface HareTypes {
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType BANG = new HareTokenType("BANG");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
+  IElementType CASE_KW = new HareTokenType("CASE_KW");
   IElementType CHAR_TYPE = new HareTokenType("CHAR_TYPE");
   IElementType COLON = new HareTokenType("COLON");
   IElementType COMMA = new HareTokenType("COMMA");
@@ -159,6 +162,8 @@ public interface HareTypes {
   IElementType LOGICAL_XOR = new HareTokenType("LOGICAL_XOR");
   IElementType LOGICAL_XOR_ASSIGN = new HareTokenType("LOGICAL_XOR_ASSIGN");
   IElementType LP = new HareTokenType("LP");
+  IElementType MATCH_KW = new HareTokenType("MATCH_KW");
+  IElementType MATCH_OP = new HareTokenType("MATCH_OP");
   IElementType MINUS_ASSIGN = new HareTokenType("MINUS_ASSIGN");
   IElementType MODULUS = new HareTokenType("MODULUS");
   IElementType MODULUS_ASSIGN = new HareTokenType("MODULUS_ASSIGN");
@@ -364,6 +369,12 @@ public interface HareTypes {
       }
       else if (type == LENGTH_EXPRESSION) {
         return new HareLengthExpressionImpl(node);
+      }
+      else if (type == MATCH_CASE) {
+        return new HareMatchCaseImpl(node);
+      }
+      else if (type == MATCH_EXPRESSION) {
+        return new HareMatchExpressionImpl(node);
       }
       else if (type == MEASUREMENT_EXPRESSION) {
         return new HareMeasurementExpressionImpl(node);

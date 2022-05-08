@@ -69,6 +69,7 @@ DECIMAL_DIGITS = \d+
     ">=" {return HareTypes.LARGER_EQUAL;}
     "<<" {return HareTypes.LEFT_SHIFT;}
     ">>" {return HareTypes.RIGHT_SHIFT;}
+    "=>" {return HareTypes.MATCH_OP;}
     "<<=" {return HareTypes.LEFT_SHIFT_ASSIGN;}
     ">>=" {return HareTypes.RIGHT_SHIFT_ASSIGN;}
     "&&=" {return HareTypes.LOGICAL_AND_ASSIGN;}
@@ -125,6 +126,8 @@ DECIMAL_DIGITS = \d+
     "vastart" {return HareTypes.VASTART_KW;}
     "vaarg" {return HareTypes.VAARG_KW;}
     "vaend" {return HareTypes.VAEND_KW;}
+    "match" {return HareTypes.MATCH_KW;}
+    "case" {return HareTypes.CASE_KW;}
 
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}

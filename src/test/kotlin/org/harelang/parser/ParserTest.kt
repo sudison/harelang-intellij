@@ -301,4 +301,17 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseMatchExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = match (a) {
+             case let b:i32 => "dfd";
+             case i8 => "hello";
+             case => "default";
+            };
+            };
+        """.trimIndent())
+    }
 }

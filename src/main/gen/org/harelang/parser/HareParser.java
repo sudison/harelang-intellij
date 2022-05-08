@@ -572,9 +572,23 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // postfix_expression
+  // variadic_expression |
+  //                                                            slice_mutation_expression |
+  //                                                            measurement_expression |
+  //                                                            defer_expression |
+  //                                                            assertion_expression |
+  //                                                            alloc_expression | postfix_expression
   static boolean buildin_expression(PsiBuilder b, int l) {
-    return postfix_expression(b, l + 1);
+    if (!recursion_guard_(b, l, "buildin_expression")) return false;
+    boolean r;
+    r = variadic_expression(b, l + 1);
+    if (!r) r = slice_mutation_expression(b, l + 1);
+    if (!r) r = measurement_expression(b, l + 1);
+    if (!r) r = defer_expression(b, l + 1);
+    if (!r) r = assertion_expression(b, l + 1);
+    if (!r) r = alloc_expression(b, l + 1);
+    if (!r) r = postfix_expression(b, l + 1);
+    return r;
   }
 
   /* ********************************************************** */
@@ -1860,6 +1874,87 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // CASE_KW ((LET_KW IDENTIFIER COLON)? type)? MATCH_OP expression_list
+  public static boolean match_case(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_case")) return false;
+    if (!nextTokenIs(b, CASE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CASE_KW);
+    r = r && match_case_1(b, l + 1);
+    r = r && consumeToken(b, MATCH_OP);
+    r = r && expression_list(b, l + 1);
+    exit_section_(b, m, MATCH_CASE, r);
+    return r;
+  }
+
+  // ((LET_KW IDENTIFIER COLON)? type)?
+  private static boolean match_case_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_case_1")) return false;
+    match_case_1_0(b, l + 1);
+    return true;
+  }
+
+  // (LET_KW IDENTIFIER COLON)? type
+  private static boolean match_case_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_case_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = match_case_1_0_0(b, l + 1);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (LET_KW IDENTIFIER COLON)?
+  private static boolean match_case_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_case_1_0_0")) return false;
+    match_case_1_0_0_0(b, l + 1);
+    return true;
+  }
+
+  // LET_KW IDENTIFIER COLON
+  private static boolean match_case_1_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_case_1_0_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LET_KW, IDENTIFIER, COLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // MATCH_KW LP expression RP LBR match_case+ RBR
+  public static boolean match_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_expression")) return false;
+    if (!nextTokenIs(b, MATCH_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, MATCH_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeTokens(b, 0, RP, LBR);
+    r = r && match_expression_5(b, l + 1);
+    r = r && consumeToken(b, RBR);
+    exit_section_(b, m, MATCH_EXPRESSION, r);
+    return r;
+  }
+
+  // match_case+
+  private static boolean match_expression_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "match_expression_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = match_case(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!match_case(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "match_expression_5", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // size_expression | length_expression | offset_expression
   public static boolean measurement_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "measurement_expression")) return false;
@@ -2818,25 +2913,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variadic_expression |
-  //                             slice_mutation_expression |
-  //                             measurement_expression |
-  //                             defer_expression |
-  //                             assertion_expression |
-  //                             alloc_expression |
-  //                             buildin_expression |
-  //                             compound_expression
+  // buildin_expression |
+  //                             compound_expression |
+  //                             match_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = variadic_expression(b, l + 1);
-    if (!r) r = slice_mutation_expression(b, l + 1);
-    if (!r) r = measurement_expression(b, l + 1);
-    if (!r) r = defer_expression(b, l + 1);
-    if (!r) r = assertion_expression(b, l + 1);
-    if (!r) r = alloc_expression(b, l + 1);
-    if (!r) r = buildin_expression(b, l + 1);
+    r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
+    if (!r) r = match_expression(b, l + 1);
     return r;
   }
 

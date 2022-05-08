@@ -82,6 +82,12 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
 
   @Override
   @NotNull
+  public List<HareMatchExpression> getMatchExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareMatchExpression.class);
+  }
+
+  @Override
+  @NotNull
   public List<HareMeasurementExpression> getMeasurementExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, HareMeasurementExpression.class);
   }
