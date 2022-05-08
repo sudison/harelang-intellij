@@ -749,6 +749,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // DEFER_KW expression
+  public static boolean defer_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "defer_expression")) return false;
+    if (!nextTokenIs(b, DEFER_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DEFER_KW);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, DEFER_EXPRESSION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // IDENTIFIER (SCOPE IDENTIFIER)+
   public static boolean enum_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_literal")) return false;
@@ -2637,11 +2650,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // assertion_expression | alloc_expression | buildin_expression | compound_expression
+  // defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = assertion_expression(b, l + 1);
+    r = defer_expression(b, l + 1);
+    if (!r) r = assertion_expression(b, l + 1);
     if (!r) r = alloc_expression(b, l + 1);
     if (!r) r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);

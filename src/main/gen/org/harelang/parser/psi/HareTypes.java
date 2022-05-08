@@ -27,6 +27,7 @@ public interface HareTypes {
   IElementType CONSTANT_DECLARATION = new HareElementType("CONSTANT_DECLARATION");
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
+  IElementType DEFER_EXPRESSION = new HareElementType("DEFER_EXPRESSION");
   IElementType ENUM_LITERAL = new HareElementType("ENUM_LITERAL");
   IElementType ENUM_STORAGE = new HareElementType("ENUM_STORAGE");
   IElementType ENUM_TYPE = new HareElementType("ENUM_TYPE");
@@ -103,6 +104,7 @@ public interface HareTypes {
   IElementType COMMA = new HareTokenType("COMMA");
   IElementType CONST_KW = new HareTokenType("CONST_KW");
   IElementType DECIMAL_DIGITS = new HareTokenType("DECIMAL_DIGITS");
+  IElementType DEFER_KW = new HareTokenType("DEFER_KW");
   IElementType DEF_KW = new HareTokenType("DEF_KW");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
@@ -247,6 +249,9 @@ public interface HareTypes {
       }
       else if (type == DECLARATIONS) {
         return new HareDeclarationsImpl(node);
+      }
+      else if (type == DEFER_EXPRESSION) {
+        return new HareDeferExpressionImpl(node);
       }
       else if (type == ENUM_LITERAL) {
         return new HareEnumLiteralImpl(node);

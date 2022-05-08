@@ -255,4 +255,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseDeferExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            defer free(a);
+            };
+        """.trimIndent())
+    }
 }

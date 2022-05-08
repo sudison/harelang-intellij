@@ -87,6 +87,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDeferExpression(@NotNull HareDeferExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitEnumLiteral(@NotNull HareEnumLiteral o) {
     visitPsiElement(o);
   }
