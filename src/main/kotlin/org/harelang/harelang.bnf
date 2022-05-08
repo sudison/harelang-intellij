@@ -67,7 +67,7 @@ enum_storage ::= integer_type | RUNE_KW
 pointer_type ::= NULLABLE_KW? MULTIPLIES type
 
 struct_union_type ::= (STRUCT_KW | UNION_KW) LBR struct_union_fields RBR
-struct_union_fields ::= struct_union_field (COMMA struct_union_field)*
+struct_union_fields ::=  struct_union_field COMMA struct_union_fields | struct_union_field COMMA?
 struct_union_field ::= IDENTIFIER COLON type | struct_union_type | identifier_path
 
 tuple_type ::= LP tuple_types RP
@@ -126,7 +126,7 @@ array_members ::= expression DOTDOTDOT | expression COMMA array_members | expres
 
 enum_literal ::= IDENTIFIER (SCOPE IDENTIFIER)+
 
-struct_literal ::= STRUCT_KW LBR field_values RBR | IDENTIFIER LBR struct_initializer RBR
+struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR | IDENTIFIER LBR struct_initializer COMMA? RBR
 field_values ::= field_value (COMMA field_value)*
 field_value ::= struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
 struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT

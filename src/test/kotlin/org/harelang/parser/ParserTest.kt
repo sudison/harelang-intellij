@@ -88,7 +88,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testParseStruct() {
         doCodeTest("""
-            type a = struct {i : i32, b : struct { i : i64}, a::bc};
+            type a = struct {i : i32, b : struct { i : i64}, a::bc,};
         """.trimIndent())
     }
 
@@ -163,7 +163,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testParseStructLiteral() {
         doCodeTest("""
             fn foo(a:int) void = {
-            let a = struct {x = 1, y:int = 2}, b = coords {x = 1, y: int = 2}, c = coords {...}, d = coords {x = 1, ...};
+            let a = struct {x = 1, y:int = 2,}, b = coords {x = 1, y: int = 2}, c = coords {...}, d = coords {x = 1, ...};
             };
         """.trimIndent())
     }

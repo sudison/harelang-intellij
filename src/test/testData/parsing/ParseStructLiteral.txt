@@ -63,6 +63,7 @@ FILE
                                     HareConstantImpl(CONSTANT)
                                       HareIntegerConstantImpl(INTEGER_CONSTANT)
                                         PsiElement(DECIMAL_DIGITS)('2')
+                            PsiElement(COMMA)(',')
                             PsiElement(RBR)('}')
                     PsiElement(COMMA)(',')
                     HareBindingImpl(BINDING)

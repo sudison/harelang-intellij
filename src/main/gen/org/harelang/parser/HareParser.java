@@ -2652,7 +2652,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRUCT_KW LBR field_values RBR | IDENTIFIER LBR struct_initializer RBR
+  // STRUCT_KW LBR field_values COMMA? RBR | IDENTIFIER LBR struct_initializer COMMA? RBR
   public static boolean struct_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_literal")) return false;
     if (!nextTokenIs(b, "<struct literal>", IDENTIFIER, STRUCT_KW)) return false;
@@ -2664,28 +2664,44 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRUCT_KW LBR field_values RBR
+  // STRUCT_KW LBR field_values COMMA? RBR
   private static boolean struct_literal_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_literal_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, STRUCT_KW, LBR);
     r = r && field_values(b, l + 1);
+    r = r && struct_literal_0_3(b, l + 1);
     r = r && consumeToken(b, RBR);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // IDENTIFIER LBR struct_initializer RBR
+  // COMMA?
+  private static boolean struct_literal_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_literal_0_3")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
+  // IDENTIFIER LBR struct_initializer COMMA? RBR
   private static boolean struct_literal_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_literal_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, IDENTIFIER, LBR);
     r = r && struct_initializer(b, l + 1);
+    r = r && struct_literal_1_3(b, l + 1);
     r = r && consumeToken(b, RBR);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean struct_literal_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_literal_1_3")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -2713,37 +2729,45 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // struct_union_field (COMMA struct_union_field)*
+  // struct_union_field COMMA struct_union_fields | struct_union_field COMMA?
   public static boolean struct_union_fields(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_union_fields")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_UNION_FIELDS, "<struct union fields>");
-    r = struct_union_field(b, l + 1);
-    r = r && struct_union_fields_1(b, l + 1);
+    r = struct_union_fields_0(b, l + 1);
+    if (!r) r = struct_union_fields_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // (COMMA struct_union_field)*
-  private static boolean struct_union_fields_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_union_fields_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!struct_union_fields_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "struct_union_fields_1", c)) break;
-    }
-    return true;
-  }
-
-  // COMMA struct_union_field
-  private static boolean struct_union_fields_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_union_fields_1_0")) return false;
+  // struct_union_field COMMA struct_union_fields
+  private static boolean struct_union_fields_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_fields_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
-    r = r && struct_union_field(b, l + 1);
+    r = struct_union_field(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && struct_union_fields(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // struct_union_field COMMA?
+  private static boolean struct_union_fields_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_fields_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = struct_union_field(b, l + 1);
+    r = r && struct_union_fields_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA?
+  private static boolean struct_union_fields_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_fields_1_1")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */

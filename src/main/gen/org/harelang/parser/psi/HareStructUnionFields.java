@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface HareStructUnionFields extends PsiElement {
 
   @NotNull
-  List<HareStructUnionField> getStructUnionFieldList();
+  HareStructUnionField getStructUnionField();
+
+  @Nullable
+  HareStructUnionFields getStructUnionFields();
 
 }

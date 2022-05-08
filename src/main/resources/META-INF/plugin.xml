@@ -8,7 +8,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Hare" implementationClass="org.harelang.HareFileType"
-                  fieldName="INSTANCE" language="Hare" extensions="hare"/>
+                  fieldName="INSTANCE" language="Hare" extensions="ha"/>
         <lang.parserDefinition language="Hare"
                                implementationClass="org.harelang.HareParserDefinition"/>
         <applicationService serviceImplementation="org.jetbrains.plugins.template.services.MyApplicationService"/>
