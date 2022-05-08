@@ -65,6 +65,7 @@ public interface HareTypes {
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
+  IElementType SLICING_OP = new HareElementType("SLICING_OP");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
   IElementType STRUCT_INITIALIZER = new HareElementType("STRUCT_INITIALIZER");
@@ -100,6 +101,7 @@ public interface HareTypes {
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
   IElementType DOT = new HareTokenType("DOT");
+  IElementType DOTDOT = new HareTokenType("DOTDOT");
   IElementType DOTDOTDOT = new HareTokenType("DOTDOTDOT");
   IElementType ELSE_KW = new HareTokenType("ELSE_KW");
   IElementType ENUM_KW = new HareTokenType("ENUM_KW");
@@ -351,6 +353,9 @@ public interface HareTypes {
       }
       else if (type == SLICE_ARRAY_TYPE) {
         return new HareSliceArrayTypeImpl(node);
+      }
+      else if (type == SLICING_OP) {
+        return new HareSlicingOpImpl(node);
       }
       else if (type == STORAGE_CLASS) {
         return new HareStorageClassImpl(node);

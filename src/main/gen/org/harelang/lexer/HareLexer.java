@@ -82,15 +82,15 @@ class HareLexer implements FlexLexer {
     "\1\27\1\30\1\31\1\32\1\33\15\2\1\34\1\35"+
     "\1\0\1\36\1\37\1\40\1\41\1\42\1\43\1\44"+
     "\1\45\1\46\1\47\1\50\1\51\1\52\1\53\1\54"+
-    "\1\55\1\56\1\57\1\0\1\60\4\2\1\61\1\2"+
-    "\1\62\27\2\1\63\2\2\1\34\1\64\1\65\1\66"+
-    "\1\67\1\70\1\71\1\72\1\73\1\74\1\75\1\2"+
-    "\1\76\1\77\1\100\1\2\1\101\4\2\1\102\6\2"+
-    "\1\103\4\2\1\104\1\105\1\106\1\107\1\2\1\110"+
-    "\1\2\1\111\1\112\1\113\1\114\2\2\1\115\1\116"+
-    "\1\2\1\117\1\120\1\121\2\2\1\122\2\2\1\123"+
-    "\5\2\1\124\1\125\2\2\1\126\1\127\1\130\1\131"+
-    "\1\132\1\2\1\133";
+    "\1\55\1\56\1\57\1\60\1\61\4\2\1\62\1\2"+
+    "\1\63\27\2\1\64\2\2\1\34\1\65\1\66\1\67"+
+    "\1\70\1\71\1\72\1\73\1\74\1\75\1\76\1\2"+
+    "\1\77\1\100\1\101\1\2\1\102\4\2\1\103\6\2"+
+    "\1\104\4\2\1\105\1\106\1\107\1\110\1\2\1\111"+
+    "\1\2\1\112\1\113\1\114\1\115\2\2\1\116\1\117"+
+    "\1\2\1\120\1\121\1\122\2\2\1\123\2\2\1\124"+
+    "\5\2\1\125\1\126\2\2\1\127\1\130\1\131\1\132"+
+    "\1\133\1\2\1\134";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[172];
@@ -285,8 +285,8 @@ class HareLexer implements FlexLexer {
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\1\11\4\1\1\11\13\1\2\11\2\1\6\11"+
     "\17\1\1\11\1\0\1\1\4\11\1\1\2\11\1\1"+
-    "\1\11\1\1\1\11\1\1\1\11\1\1\3\11\1\0"+
-    "\42\1\7\11\103\1";
+    "\1\11\1\1\1\11\1\1\1\11\1\1\3\11\43\1"+
+    "\7\11\103\1";
 
   private static int [] zzUnpackAttribute() {
     int [] result = new int[172];
@@ -606,457 +606,462 @@ class HareLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 92: break;
+          case 93: break;
           case 2: 
             { return HareTypes.IDENTIFIER;
             } 
             // fall through
-          case 93: break;
+          case 94: break;
           case 3: 
             { return HareTypes.UNDERSCORE;
             } 
             // fall through
-          case 94: break;
+          case 95: break;
           case 4: 
             { return HareTypes.DECIMAL_DIGITS;
             } 
             // fall through
-          case 95: break;
+          case 96: break;
           case 5: 
             { return HareTypes.DIVIDES;
             } 
             // fall through
-          case 96: break;
+          case 97: break;
           case 6: 
             { return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 97: break;
+          case 98: break;
           case 7: 
             { return HareTypes.ASSIGN;
             } 
             // fall through
-          case 98: break;
+          case 99: break;
           case 8: 
             { return HareTypes.MULTIPLIES;
             } 
             // fall through
-          case 99: break;
+          case 100: break;
           case 9: 
             { return HareTypes.MODULUS;
             } 
             // fall through
-          case 100: break;
+          case 101: break;
           case 10: 
             { return HareTypes.AND;
             } 
             // fall through
-          case 101: break;
+          case 102: break;
           case 11: 
             { return HareTypes.ADDS;
             } 
             // fall through
-          case 102: break;
+          case 103: break;
           case 12: 
             { return HareTypes.EXCLUSIVE_OR;
             } 
             // fall through
-          case 103: break;
+          case 104: break;
           case 13: 
             { return HareTypes.INCLUSIVE_OR;
             } 
             // fall through
-          case 104: break;
+          case 105: break;
           case 14: 
             { return HareTypes.LESSER_THAN;
             } 
             // fall through
-          case 105: break;
+          case 106: break;
           case 15: 
             { return HareTypes.LARGER_THAN;
             } 
             // fall through
-          case 106: break;
+          case 107: break;
           case 16: 
             { return HareTypes.SUBSTRACTS;
             } 
             // fall through
-          case 107: break;
+          case 108: break;
           case 17: 
             { return HareTypes.EOS;
             } 
             // fall through
-          case 108: break;
+          case 109: break;
           case 18: 
             { return HareTypes.COMMA;
             } 
             // fall through
-          case 109: break;
+          case 110: break;
           case 19: 
             { return HareTypes.COLON;
             } 
             // fall through
-          case 110: break;
+          case 111: break;
           case 20: 
             { return HareTypes.BANG;
             } 
             // fall through
-          case 111: break;
+          case 112: break;
           case 21: 
             { return HareTypes.LB;
             } 
             // fall through
-          case 112: break;
+          case 113: break;
           case 22: 
             { return HareTypes.RB;
             } 
             // fall through
-          case 113: break;
+          case 114: break;
           case 23: 
             { return HareTypes.LP;
             } 
             // fall through
-          case 114: break;
+          case 115: break;
           case 24: 
             { return HareTypes.RP;
             } 
             // fall through
-          case 115: break;
+          case 116: break;
           case 25: 
             { return HareTypes.LBR;
             } 
             // fall through
-          case 116: break;
+          case 117: break;
           case 26: 
             { return HareTypes.RBR;
             } 
             // fall through
-          case 117: break;
+          case 118: break;
           case 27: 
             { return HareTypes.DOT;
             } 
             // fall through
-          case 118: break;
+          case 119: break;
           case 28: 
             { return HareElementType.Companion.getCOMMENT();
             } 
             // fall through
-          case 119: break;
+          case 120: break;
           case 29: 
             { return HareTypes.DIVIDES_ASSIGN;
             } 
             // fall through
-          case 120: break;
+          case 121: break;
           case 30: 
             { return HareTypes.STRING_LITERAL;
             } 
             // fall through
-          case 121: break;
+          case 122: break;
           case 31: 
             { return HareTypes.EQUAL;
             } 
             // fall through
-          case 122: break;
+          case 123: break;
           case 32: 
             { return HareTypes.MULTIPLIES_ASSIGN;
             } 
             // fall through
-          case 123: break;
+          case 124: break;
           case 33: 
             { return HareTypes.MODULUS_ASSIGN;
             } 
             // fall through
-          case 124: break;
+          case 125: break;
           case 34: 
             { return HareTypes.AND_ASSIGN;
             } 
             // fall through
-          case 125: break;
+          case 126: break;
           case 35: 
             { return HareTypes.LOGICAL_AND;
             } 
             // fall through
-          case 126: break;
+          case 127: break;
           case 36: 
             { return HareTypes.PLUS_ASSIGN;
             } 
             // fall through
-          case 127: break;
+          case 128: break;
           case 37: 
             { return HareTypes.XOR_ASSIGN;
             } 
             // fall through
-          case 128: break;
+          case 129: break;
           case 38: 
             { return HareTypes.LOGICAL_XOR;
             } 
             // fall through
-          case 129: break;
+          case 130: break;
           case 39: 
             { return HareTypes.OR_ASSIGN;
             } 
             // fall through
-          case 130: break;
+          case 131: break;
           case 40: 
             { return HareTypes.LOGICAL_OR;
             } 
             // fall through
-          case 131: break;
+          case 132: break;
           case 41: 
             { return HareTypes.LESSER_EQUAL;
             } 
             // fall through
-          case 132: break;
+          case 133: break;
           case 42: 
             { return HareTypes.LEFT_SHIFT;
             } 
             // fall through
-          case 133: break;
+          case 134: break;
           case 43: 
             { return HareTypes.LARGER_EQUAL;
             } 
             // fall through
-          case 134: break;
+          case 135: break;
           case 44: 
             { return HareTypes.RIGHT_SHIFT;
             } 
             // fall through
-          case 135: break;
+          case 136: break;
           case 45: 
             { return HareTypes.MINUS_ASSIGN;
             } 
             // fall through
-          case 136: break;
+          case 137: break;
           case 46: 
             { return HareTypes.SCOPE;
             } 
             // fall through
-          case 137: break;
+          case 138: break;
           case 47: 
             { return HareTypes.NOT_EQUAL;
             } 
             // fall through
-          case 138: break;
-          case 48: 
-            { return HareTypes.I8_TYPE;
-            } 
-            // fall through
           case 139: break;
-          case 49: 
-            { return HareTypes.IF_KW;
+          case 48: 
+            { return HareTypes.DOTDOT;
             } 
             // fall through
           case 140: break;
-          case 50: 
-            { return HareTypes.U8_TYPE;
+          case 49: 
+            { return HareTypes.I8_TYPE;
             } 
             // fall through
           case 141: break;
-          case 51: 
-            { return HareTypes.FN_KW;
+          case 50: 
+            { return HareTypes.IF_KW;
             } 
             // fall through
           case 142: break;
-          case 52: 
-            { return HareTypes.LOGICAL_AND_ASSIGN;
+          case 51: 
+            { return HareTypes.U8_TYPE;
             } 
             // fall through
           case 143: break;
-          case 53: 
-            { return HareTypes.LOGICAL_XOR_ASSIGN;
+          case 52: 
+            { return HareTypes.FN_KW;
             } 
             // fall through
           case 144: break;
-          case 54: 
-            { return HareTypes.LOGICAL_OR_ASSIGN;
+          case 53: 
+            { return HareTypes.LOGICAL_AND_ASSIGN;
             } 
             // fall through
           case 145: break;
-          case 55: 
-            { return HareTypes.LEFT_SHIFT_ASSIGN;
+          case 54: 
+            { return HareTypes.LOGICAL_XOR_ASSIGN;
             } 
             // fall through
           case 146: break;
-          case 56: 
-            { return HareTypes.RIGHT_SHIFT_ASSIGN;
+          case 55: 
+            { return HareTypes.LOGICAL_OR_ASSIGN;
             } 
             // fall through
           case 147: break;
-          case 57: 
-            { return HareTypes.DOTDOTDOT;
+          case 56: 
+            { return HareTypes.LEFT_SHIFT_ASSIGN;
             } 
             // fall through
           case 148: break;
-          case 58: 
-            { return HareTypes.I16_TYPE;
+          case 57: 
+            { return HareTypes.RIGHT_SHIFT_ASSIGN;
             } 
             // fall through
           case 149: break;
-          case 59: 
-            { return HareTypes.I64_TYPE;
+          case 58: 
+            { return HareTypes.DOTDOTDOT;
             } 
             // fall through
           case 150: break;
-          case 60: 
-            { return HareTypes.I32_TYPE;
+          case 59: 
+            { return HareTypes.I16_TYPE;
             } 
             // fall through
           case 151: break;
-          case 61: 
-            { return HareTypes.INT_TYPE;
+          case 60: 
+            { return HareTypes.I64_TYPE;
             } 
             // fall through
           case 152: break;
-          case 62: 
-            { return HareTypes.U16_TYPE;
+          case 61: 
+            { return HareTypes.I32_TYPE;
             } 
             // fall through
           case 153: break;
-          case 63: 
-            { return HareTypes.U64_TYPE;
+          case 62: 
+            { return HareTypes.INT_TYPE;
             } 
             // fall through
           case 154: break;
-          case 64: 
-            { return HareTypes.U32_TYPE;
+          case 63: 
+            { return HareTypes.U16_TYPE;
             } 
             // fall through
           case 155: break;
-          case 65: 
-            { return HareTypes.USE_KW;
+          case 64: 
+            { return HareTypes.U64_TYPE;
             } 
             // fall through
           case 156: break;
-          case 66: 
-            { return HareTypes.STR_TYPE;
+          case 65: 
+            { return HareTypes.U32_TYPE;
             } 
             // fall through
           case 157: break;
-          case 67: 
-            { return HareTypes.LET_KW;
+          case 66: 
+            { return HareTypes.USE_KW;
             } 
             // fall through
           case 158: break;
-          case 68: 
-            { return HareTypes.DEF_KW;
+          case 67: 
+            { return HareTypes.STR_TYPE;
             } 
             // fall through
           case 159: break;
-          case 69: 
-            { return HareTypes.F64_TYPE;
+          case 68: 
+            { return HareTypes.LET_KW;
             } 
             // fall through
           case 160: break;
-          case 70: 
-            { return HareTypes.F32_TYPE;
+          case 69: 
+            { return HareTypes.DEF_KW;
             } 
             // fall through
           case 161: break;
-          case 71: 
-            { return HareTypes.FOR_KW;
+          case 70: 
+            { return HareTypes.F64_TYPE;
             } 
             // fall through
           case 162: break;
-          case 72: 
-            { return HareTypes.UINT_TYPE;
+          case 71: 
+            { return HareTypes.F32_TYPE;
             } 
             // fall through
           case 163: break;
-          case 73: 
-            { return HareTypes.NULL_KW;
+          case 72: 
+            { return HareTypes.FOR_KW;
             } 
             // fall through
           case 164: break;
-          case 74: 
-            { return HareTypes.TRUE_KW;
+          case 73: 
+            { return HareTypes.UINT_TYPE;
             } 
             // fall through
           case 165: break;
-          case 75: 
-            { return HareTypes.TYPE_KW;
+          case 74: 
+            { return HareTypes.NULL_KW;
             } 
             // fall through
           case 166: break;
-          case 76: 
-            { return HareTypes.SIZE_TYPE;
+          case 75: 
+            { return HareTypes.TRUE_KW;
             } 
             // fall through
           case 167: break;
-          case 77: 
-            { return HareTypes.ENUM_KW;
+          case 76: 
+            { return HareTypes.TYPE_KW;
             } 
             // fall through
           case 168: break;
-          case 78: 
-            { return HareTypes.ELSE_KW;
+          case 77: 
+            { return HareTypes.SIZE_TYPE;
             } 
             // fall through
           case 169: break;
-          case 79: 
-            { return HareTypes.RUNE_KW;
+          case 78: 
+            { return HareTypes.ENUM_KW;
             } 
             // fall through
           case 170: break;
-          case 80: 
-            { return HareTypes.BOOL_TYPE;
+          case 79: 
+            { return HareTypes.ELSE_KW;
             } 
             // fall through
           case 171: break;
-          case 81: 
-            { return HareTypes.VOID_TYPE;
+          case 80: 
+            { return HareTypes.RUNE_KW;
             } 
             // fall through
           case 172: break;
-          case 82: 
-            { return HareTypes.CHAR_TYPE;
+          case 81: 
+            { return HareTypes.BOOL_TYPE;
             } 
             // fall through
           case 173: break;
-          case 83: 
-            { return HareTypes.UNION_KW;
+          case 82: 
+            { return HareTypes.VOID_TYPE;
             } 
             // fall through
           case 174: break;
-          case 84: 
-            { return HareTypes.CONST_KW;
+          case 83: 
+            { return HareTypes.CHAR_TYPE;
             } 
             // fall through
           case 175: break;
-          case 85: 
-            { return HareTypes.FALSE_KW;
+          case 84: 
+            { return HareTypes.UNION_KW;
             } 
             // fall through
           case 176: break;
-          case 86: 
-            { return HareTypes.STRUCT_KW;
+          case 85: 
+            { return HareTypes.CONST_KW;
             } 
             // fall through
           case 177: break;
-          case 87: 
-            { return HareTypes.STATIC_KW;
+          case 86: 
+            { return HareTypes.FALSE_KW;
             } 
             // fall through
           case 178: break;
-          case 88: 
-            { return HareTypes.EXPORT_KW;
+          case 87: 
+            { return HareTypes.STRUCT_KW;
             } 
             // fall through
           case 179: break;
-          case 89: 
-            { return HareTypes.VALIST_TYPE;
+          case 88: 
+            { return HareTypes.STATIC_KW;
             } 
             // fall through
           case 180: break;
-          case 90: 
-            { return HareTypes.UINTPTR_TYPE;
+          case 89: 
+            { return HareTypes.EXPORT_KW;
             } 
             // fall through
           case 181: break;
-          case 91: 
-            { return HareTypes.NULLABLE_KW;
+          case 90: 
+            { return HareTypes.VALIST_TYPE;
             } 
             // fall through
           case 182: break;
+          case 91: 
+            { return HareTypes.UINTPTR_TYPE;
+            } 
+            // fall through
+          case 183: break;
+          case 92: 
+            { return HareTypes.NULLABLE_KW;
+            } 
+            // fall through
+          case 184: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

@@ -1853,12 +1853,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // field_access_op | indexing_op | call_op
+  // field_access_op | slicing_op | indexing_op | call_op
   public static boolean postfix_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_op")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, POSTFIX_OP, "<postfix op>");
     r = field_access_op(b, l + 1);
+    if (!r) r = slicing_op(b, l + 1);
     if (!r) r = indexing_op(b, l + 1);
     if (!r) r = call_op(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -1980,6 +1981,36 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, MULTIPLIES);
     if (!r) r = consumeToken(b, UNDERSCORE);
     return r;
+  }
+
+  /* ********************************************************** */
+  // LB expression? DOTDOT expression? RB
+  public static boolean slicing_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slicing_op")) return false;
+    if (!nextTokenIs(b, LB)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LB);
+    r = r && slicing_op_1(b, l + 1);
+    r = r && consumeToken(b, DOTDOT);
+    r = r && slicing_op_3(b, l + 1);
+    r = r && consumeToken(b, RB);
+    exit_section_(b, m, SLICING_OP, r);
+    return r;
+  }
+
+  // expression?
+  private static boolean slicing_op_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slicing_op_1")) return false;
+    expression(b, l + 1);
+    return true;
+  }
+
+  // expression?
+  private static boolean slicing_op_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slicing_op_3")) return false;
+    expression(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

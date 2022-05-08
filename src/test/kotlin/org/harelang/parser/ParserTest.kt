@@ -215,4 +215,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseSlicingOp() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = a[1..2], b = a[..2], c = a[..];
+            };
+        """.trimIndent())
+    }
 }

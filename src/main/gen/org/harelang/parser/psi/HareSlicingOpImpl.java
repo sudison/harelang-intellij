@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HarePostfixOpImpl extends ASTWrapperPsiElement implements HarePostfixOp {
+public class HareSlicingOpImpl extends ASTWrapperPsiElement implements HareSlicingOp {
 
-  public HarePostfixOpImpl(@NotNull ASTNode node) {
+  public HareSlicingOpImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitPostfixOp(this);
+    visitor.visitSlicingOp(this);
   }
 
   @Override
@@ -27,27 +27,9 @@ public class HarePostfixOpImpl extends ASTWrapperPsiElement implements HarePostf
   }
 
   @Override
-  @Nullable
-  public HareCallOp getCallOp() {
-    return findChildByClass(HareCallOp.class);
-  }
-
-  @Override
-  @Nullable
-  public HareFieldAccessOp getFieldAccessOp() {
-    return findChildByClass(HareFieldAccessOp.class);
-  }
-
-  @Override
-  @Nullable
-  public HareIndexingOp getIndexingOp() {
-    return findChildByClass(HareIndexingOp.class);
-  }
-
-  @Override
-  @Nullable
-  public HareSlicingOp getSlicingOp() {
-    return findChildByClass(HareSlicingOp.class);
+  @NotNull
+  public List<HareExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
   }
 
 }

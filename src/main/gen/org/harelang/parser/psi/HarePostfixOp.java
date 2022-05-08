@@ -16,4 +16,7 @@ public interface HarePostfixOp extends PsiElement {
   @Nullable
   HareIndexingOp getIndexingOp();
 
+  @Nullable
+  HareSlicingOp getSlicingOp();
+
 }

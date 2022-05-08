@@ -239,6 +239,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSlicingOp(@NotNull HareSlicingOp o) {
+    visitPsiElement(o);
+  }
+
   public void visitStorageClass(@NotNull HareStorageClass o) {
     visitPsiElement(o);
   }
