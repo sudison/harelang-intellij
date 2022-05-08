@@ -12,6 +12,7 @@ public interface HareTypes {
   IElementType ARGUMENT_LIST = new HareElementType("ARGUMENT_LIST");
   IElementType ARRAY_LITERAL = new HareElementType("ARRAY_LITERAL");
   IElementType ARRAY_MEMBERS = new HareElementType("ARRAY_MEMBERS");
+  IElementType ASSERTION_EXPRESSION = new HareElementType("ASSERTION_EXPRESSION");
   IElementType ASSIGNMENT = new HareElementType("ASSIGNMENT");
   IElementType ASSIGNMENT_OP = new HareElementType("ASSIGNMENT_OP");
   IElementType BINDING = new HareElementType("BINDING");
@@ -88,10 +89,12 @@ public interface HareTypes {
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
 
+  IElementType ABORT_KW = new HareTokenType("ABORT_KW");
   IElementType ADDS = new HareTokenType("ADDS");
   IElementType ALLOC_KW = new HareTokenType("ALLOC_KW");
   IElementType AND = new HareTokenType("AND");
   IElementType AND_ASSIGN = new HareTokenType("AND_ASSIGN");
+  IElementType ASSERT_KW = new HareTokenType("ASSERT_KW");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType BANG = new HareTokenType("BANG");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
@@ -199,6 +202,9 @@ public interface HareTypes {
       }
       else if (type == ARRAY_MEMBERS) {
         return new HareArrayMembersImpl(node);
+      }
+      else if (type == ASSERTION_EXPRESSION) {
+        return new HareAssertionExpressionImpl(node);
       }
       else if (type == ASSIGNMENT) {
         return new HareAssignmentImpl(node);

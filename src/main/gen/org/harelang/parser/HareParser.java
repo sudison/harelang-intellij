@@ -285,6 +285,88 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // STATIC_KW? ASSERT_KW LP (expression COMMA string_const | expression) RP | STATIC_KW? ABORT_KW LP string_const? RP
+  public static boolean assertion_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ASSERTION_EXPRESSION, "<assertion expression>");
+    r = assertion_expression_0(b, l + 1);
+    if (!r) r = assertion_expression_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STATIC_KW? ASSERT_KW LP (expression COMMA string_const | expression) RP
+  private static boolean assertion_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = assertion_expression_0_0(b, l + 1);
+    r = r && consumeTokens(b, 0, ASSERT_KW, LP);
+    r = r && assertion_expression_0_3(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STATIC_KW?
+  private static boolean assertion_expression_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_0_0")) return false;
+    consumeToken(b, STATIC_KW);
+    return true;
+  }
+
+  // expression COMMA string_const | expression
+  private static boolean assertion_expression_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_0_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = assertion_expression_0_3_0(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression COMMA string_const
+  private static boolean assertion_expression_0_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_0_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && string_const(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STATIC_KW? ABORT_KW LP string_const? RP
+  private static boolean assertion_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = assertion_expression_1_0(b, l + 1);
+    r = r && consumeTokens(b, 0, ABORT_KW, LP);
+    r = r && assertion_expression_1_3(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STATIC_KW?
+  private static boolean assertion_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_1_0")) return false;
+    consumeToken(b, STATIC_KW);
+    return true;
+  }
+
+  // string_const?
+  private static boolean assertion_expression_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assertion_expression_1_3")) return false;
+    string_const(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
   // object_selector assignment_op expression
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
@@ -2555,11 +2637,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // alloc_expression | buildin_expression | compound_expression
+  // assertion_expression | alloc_expression | buildin_expression | compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = alloc_expression(b, l + 1);
+    r = assertion_expression(b, l + 1);
+    if (!r) r = alloc_expression(b, l + 1);
     if (!r) r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
     return r;

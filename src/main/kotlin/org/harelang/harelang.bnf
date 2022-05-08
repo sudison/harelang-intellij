@@ -107,7 +107,7 @@ private additive_operator ::= ADDS | SUBSTRACTS
 private multiplicative_expression ::= cast_expression (multiplicative_operator cast_expression)*
 private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
 private cast_expression ::= unary_expression
-private unary_expression ::= alloc_expression | buildin_expression | compound_expression
+private unary_expression ::= assertion_expression | alloc_expression | buildin_expression | compound_expression
 private buildin_expression ::= postfix_expression
 private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
@@ -130,7 +130,7 @@ error_propagation_op ::= QUESTION | BANG
 field_access_op ::= DOT IDENTIFIER | DOT integer_constant
 
 alloc_expression ::= ALLOC_KW LP (expression COMMA expression | expression DOTDOTDOT | expression) RP | FREE_KW LP expression RP
-
+assertion_expression ::= STATIC_KW? ASSERT_KW LP (expression COMMA string_const | expression) RP | STATIC_KW? ABORT_KW LP string_const? RP
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings

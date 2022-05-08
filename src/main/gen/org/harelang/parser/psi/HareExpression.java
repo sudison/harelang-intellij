@@ -10,6 +10,9 @@ public interface HareExpression extends PsiElement {
   @NotNull
   List<HareAllocExpression> getAllocExpressionList();
 
+  @NotNull
+  List<HareAssertionExpression> getAssertionExpressionList();
+
   @Nullable
   HareAssignment getAssignment();
 

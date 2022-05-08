@@ -114,6 +114,8 @@ DECIMAL_DIGITS = \d+
     "union" {return HareTypes.UNION_KW;}
     "alloc" {return HareTypes.ALLOC_KW;}
     "free" {return HareTypes.FREE_KW;}
+    "assert" {return HareTypes.ASSERT_KW;}
+    "abort" {return HareTypes.ABORT_KW;}
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}
 

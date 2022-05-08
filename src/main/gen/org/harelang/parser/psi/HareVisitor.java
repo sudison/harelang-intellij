@@ -27,6 +27,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAssertionExpression(@NotNull HareAssertionExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitAssignment(@NotNull HareAssignment o) {
     visitPsiElement(o);
   }
