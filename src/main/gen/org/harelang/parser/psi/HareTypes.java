@@ -16,7 +16,7 @@ public interface HareTypes {
   IElementType BINDING = new HareElementType("BINDING");
   IElementType BINDINGS = new HareElementType("BINDINGS");
   IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
-  IElementType CALL_EXPRESSION = new HareElementType("CALL_EXPRESSION");
+  IElementType CALL_OP = new HareElementType("CALL_OP");
   IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
@@ -205,8 +205,8 @@ public interface HareTypes {
       else if (type == BINDING_LIST) {
         return new HareBindingListImpl(node);
       }
-      else if (type == CALL_EXPRESSION) {
-        return new HareCallExpressionImpl(node);
+      else if (type == CALL_OP) {
+        return new HareCallOpImpl(node);
       }
       else if (type == COMPOUND_EXPRESSION) {
         return new HareCompoundExpressionImpl(node);

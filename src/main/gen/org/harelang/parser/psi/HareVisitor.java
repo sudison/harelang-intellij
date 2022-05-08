@@ -43,7 +43,7 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitCallExpression(@NotNull HareCallExpression o) {
+  public void visitCallOp(@NotNull HareCallOp o) {
     visitPsiElement(o);
   }
 

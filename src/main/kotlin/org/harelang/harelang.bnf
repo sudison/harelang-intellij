@@ -123,7 +123,7 @@ field_value ::= struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
 struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT
 
 tuple_items ::= expression (COMMA expression)+
-postfix_op ::= field_access_op | indexing_op
+postfix_op ::= field_access_op | indexing_op | call_op
 indexing_op ::= LB expression RB
 field_access_op ::= DOT IDENTIFIER | DOT integer_constant
 compound_expression ::= LBR expression_list RBR
@@ -145,5 +145,5 @@ conditional_branch ::= LP expression RP expression
 for_loop ::= FOR_KW LP for_predicate RP expression
 for_predicate ::= binding_list EOS expression EOS expression | binding_list EOS expression | expression EOS expression | expression
 
-call_expression ::= postfix_expression LP argument_list? RP
-argument_list ::= expression DOTDOTDOT | expression | expression COMMA argument_list
+call_op ::= LP argument_list? RP
+argument_list ::= expression DOTDOTDOT  | expression COMMA argument_list | expression

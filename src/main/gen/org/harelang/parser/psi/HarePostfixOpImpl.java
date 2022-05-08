@@ -28,6 +28,12 @@ public class HarePostfixOpImpl extends ASTWrapperPsiElement implements HarePostf
 
   @Override
   @Nullable
+  public HareCallOp getCallOp() {
+    return findChildByClass(HareCallOp.class);
+  }
+
+  @Override
+  @Nullable
   public HareFieldAccessOp getFieldAccessOp() {
     return findChildByClass(HareFieldAccessOp.class);
   }
