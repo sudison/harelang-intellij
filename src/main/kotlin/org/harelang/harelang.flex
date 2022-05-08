@@ -128,6 +128,7 @@ DECIMAL_DIGITS = \d+
     "vaend" {return HareTypes.VAEND_KW;}
     "match" {return HareTypes.MATCH_KW;}
     "case" {return HareTypes.CASE_KW;}
+    "switch" {return HareTypes.SWITCH_KW;}
 
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}

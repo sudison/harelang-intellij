@@ -314,4 +314,16 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseSwitchExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = switch (a) {
+             case 1,2 => "dfd";
+             case => "hello";
+            };
+            };
+        """.trimIndent())
+    }
 }

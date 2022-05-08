@@ -20,6 +20,7 @@ public interface HareTypes {
   IElementType BINDINGS = new HareElementType("BINDINGS");
   IElementType BINDING_LIST = new HareElementType("BINDING_LIST");
   IElementType CALL_OP = new HareElementType("CALL_OP");
+  IElementType CASE_OPTIONS = new HareElementType("CASE_OPTIONS");
   IElementType COMPOUND_EXPRESSION = new HareElementType("COMPOUND_EXPRESSION");
   IElementType CONDITIONAL_BRANCH = new HareElementType("CONDITIONAL_BRANCH");
   IElementType CONSTANT = new HareElementType("CONSTANT");
@@ -86,6 +87,8 @@ public interface HareTypes {
   IElementType STRUCT_UNION_FIELD = new HareElementType("STRUCT_UNION_FIELD");
   IElementType STRUCT_UNION_FIELDS = new HareElementType("STRUCT_UNION_FIELDS");
   IElementType STRUCT_UNION_TYPE = new HareElementType("STRUCT_UNION_TYPE");
+  IElementType SWITCH_CASE = new HareElementType("SWITCH_CASE");
+  IElementType SWITCH_EXPRESSION = new HareElementType("SWITCH_EXPRESSION");
   IElementType TAGGED_TYPES = new HareElementType("TAGGED_TYPES");
   IElementType TAGGED_UNION_TYPE = new HareElementType("TAGGED_UNION_TYPE");
   IElementType TUPLE_ITEMS = new HareElementType("TUPLE_ITEMS");
@@ -189,6 +192,7 @@ public interface HareTypes {
   IElementType STRUCT_KW = new HareTokenType("STRUCT_KW");
   IElementType STR_TYPE = new HareTokenType("STR_TYPE");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
+  IElementType SWITCH_KW = new HareTokenType("SWITCH_KW");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
   IElementType TYPE_KW = new HareTokenType("TYPE_KW");
   IElementType U16_TYPE = new HareTokenType("U16_TYPE");
@@ -249,6 +253,9 @@ public interface HareTypes {
       }
       else if (type == CALL_OP) {
         return new HareCallOpImpl(node);
+      }
+      else if (type == CASE_OPTIONS) {
+        return new HareCaseOptionsImpl(node);
       }
       else if (type == COMPOUND_EXPRESSION) {
         return new HareCompoundExpressionImpl(node);
@@ -447,6 +454,12 @@ public interface HareTypes {
       }
       else if (type == STRUCT_UNION_TYPE) {
         return new HareStructUnionTypeImpl(node);
+      }
+      else if (type == SWITCH_CASE) {
+        return new HareSwitchCaseImpl(node);
+      }
+      else if (type == SWITCH_EXPRESSION) {
+        return new HareSwitchExpressionImpl(node);
       }
       else if (type == TAGGED_TYPES) {
         return new HareTaggedTypesImpl(node);

@@ -613,6 +613,40 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // expression (COMMA expression)*
+  public static boolean case_options(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_options")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CASE_OPTIONS, "<case options>");
+    r = expression(b, l + 1);
+    r = r && case_options_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (COMMA expression)*
+  private static boolean case_options_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_options_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!case_options_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "case_options_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA expression
+  private static boolean case_options_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_options_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // unary_expression
   static boolean cast_expression(PsiBuilder b, int l) {
     return unary_expression(b, l + 1);
@@ -2648,6 +2682,59 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // CASE_KW case_options? MATCH_OP expression_list
+  public static boolean switch_case(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "switch_case")) return false;
+    if (!nextTokenIs(b, CASE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CASE_KW);
+    r = r && switch_case_1(b, l + 1);
+    r = r && consumeToken(b, MATCH_OP);
+    r = r && expression_list(b, l + 1);
+    exit_section_(b, m, SWITCH_CASE, r);
+    return r;
+  }
+
+  // case_options?
+  private static boolean switch_case_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "switch_case_1")) return false;
+    case_options(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // SWITCH_KW LP expression RP LBR switch_case+ RBR
+  public static boolean switch_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "switch_expression")) return false;
+    if (!nextTokenIs(b, SWITCH_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, SWITCH_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeTokens(b, 0, RP, LBR);
+    r = r && switch_expression_5(b, l + 1);
+    r = r && consumeToken(b, RBR);
+    exit_section_(b, m, SWITCH_EXPRESSION, r);
+    return r;
+  }
+
+  // switch_case+
+  private static boolean switch_expression_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "switch_expression_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = switch_case(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!switch_case(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "switch_expression_5", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // type (INCLUSIVE_OR type)+
   public static boolean tagged_types(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "tagged_types")) return false;
@@ -2915,13 +3002,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // buildin_expression |
   //                             compound_expression |
-  //                             match_expression
+  //                             match_expression |
+  //                             switch_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
     r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
     if (!r) r = match_expression(b, l + 1);
+    if (!r) r = switch_expression(b, l + 1);
     return r;
   }
 

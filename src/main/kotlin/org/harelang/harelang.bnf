@@ -110,7 +110,8 @@ private cast_expression ::= unary_expression
 private unary_expression ::=
                             buildin_expression |
                             compound_expression |
-                            match_expression
+                            match_expression |
+                            switch_expression
 private buildin_expression ::= variadic_expression |
                                                            slice_mutation_expression |
                                                            measurement_expression |
@@ -154,6 +155,10 @@ delete_expression ::= STATIC_KW? DELETE_KW LP expression RP
 variadic_expression ::= VASTART_KW LP RP | VAARG_KW LP expression RP | VAEND_KW LP expression RP
 match_expression ::= MATCH_KW LP expression RP LBR match_case+ RBR
 match_case ::= CASE_KW ((LET_KW IDENTIFIER COLON)? type)? MATCH_OP expression_list
+switch_expression ::= SWITCH_KW LP expression RP LBR switch_case+ RBR
+switch_case ::= CASE_KW case_options? MATCH_OP expression_list
+case_options ::= expression (COMMA expression)*
+
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings

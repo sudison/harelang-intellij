@@ -50,6 +50,9 @@ public interface HareExpression extends PsiElement {
   List<HareSliceMutationExpression> getSliceMutationExpressionList();
 
   @NotNull
+  List<HareSwitchExpression> getSwitchExpressionList();
+
+  @NotNull
   List<HareTupleItems> getTupleItemsList();
 
   @NotNull

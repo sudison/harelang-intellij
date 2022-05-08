@@ -59,6 +59,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCaseOptions(@NotNull HareCaseOptions o) {
+    visitPsiElement(o);
+  }
+
   public void visitCompoundExpression(@NotNull HareCompoundExpression o) {
     visitPsiElement(o);
   }
@@ -320,6 +324,14 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitStructUnionType(@NotNull HareStructUnionType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSwitchCase(@NotNull HareSwitchCase o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSwitchExpression(@NotNull HareSwitchExpression o) {
     visitPsiElement(o);
   }
 
