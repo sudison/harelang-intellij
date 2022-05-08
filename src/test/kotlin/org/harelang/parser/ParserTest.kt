@@ -233,4 +233,14 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseAllocExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = alloc(1), b = alloc(1, 2), c = alloc(1...);
+            free(a);
+            };
+        """.trimIndent())
+    }
 }

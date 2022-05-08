@@ -112,6 +112,8 @@ DECIMAL_DIGITS = \d+
     "struct" {return HareTypes.STRUCT_KW;}
     "str" {return HareTypes.STR_TYPE;}
     "union" {return HareTypes.UNION_KW;}
+    "alloc" {return HareTypes.ALLOC_KW;}
+    "free" {return HareTypes.FREE_KW;}
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}
 

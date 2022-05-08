@@ -27,6 +27,12 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
   }
 
   @Override
+  @NotNull
+  public List<HareAllocExpression> getAllocExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareAllocExpression.class);
+  }
+
+  @Override
   @Nullable
   public HareAssignment getAssignment() {
     return findChildByClass(HareAssignment.class);

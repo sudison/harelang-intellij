@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface HareExpression extends PsiElement {
 
+  @NotNull
+  List<HareAllocExpression> getAllocExpressionList();
+
   @Nullable
   HareAssignment getAssignment();
 

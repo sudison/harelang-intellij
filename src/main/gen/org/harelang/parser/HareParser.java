@@ -93,6 +93,78 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ALLOC_KW LP (expression COMMA expression | expression DOTDOTDOT | expression) RP | FREE_KW LP expression RP
+  public static boolean alloc_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alloc_expression")) return false;
+    if (!nextTokenIs(b, "<alloc expression>", ALLOC_KW, FREE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ALLOC_EXPRESSION, "<alloc expression>");
+    r = alloc_expression_0(b, l + 1);
+    if (!r) r = alloc_expression_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ALLOC_KW LP (expression COMMA expression | expression DOTDOTDOT | expression) RP
+  private static boolean alloc_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alloc_expression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, ALLOC_KW, LP);
+    r = r && alloc_expression_0_2(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression COMMA expression | expression DOTDOTDOT | expression
+  private static boolean alloc_expression_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alloc_expression_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = alloc_expression_0_2_0(b, l + 1);
+    if (!r) r = alloc_expression_0_2_1(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression COMMA expression
+  private static boolean alloc_expression_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alloc_expression_0_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression DOTDOTDOT
+  private static boolean alloc_expression_0_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alloc_expression_0_2_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, DOTDOTDOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // FREE_KW LP expression RP
+  private static boolean alloc_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "alloc_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, FREE_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // shift_expression (AND shift_expression)*
   static boolean and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "and_expression")) return false;
@@ -2483,11 +2555,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // buildin_expression | compound_expression
+  // alloc_expression | buildin_expression | compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = buildin_expression(b, l + 1);
+    r = alloc_expression(b, l + 1);
+    if (!r) r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
     return r;
   }

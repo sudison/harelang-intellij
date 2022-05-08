@@ -11,6 +11,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAllocExpression(@NotNull HareAllocExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitArgumentList(@NotNull HareArgumentList o) {
     visitPsiElement(o);
   }

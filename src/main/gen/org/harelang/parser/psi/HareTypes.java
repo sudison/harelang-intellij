@@ -8,6 +8,7 @@ import com.intellij.lang.ASTNode;
 public interface HareTypes {
 
   IElementType ALIAS_TYPE = new HareElementType("ALIAS_TYPE");
+  IElementType ALLOC_EXPRESSION = new HareElementType("ALLOC_EXPRESSION");
   IElementType ARGUMENT_LIST = new HareElementType("ARGUMENT_LIST");
   IElementType ARRAY_LITERAL = new HareElementType("ARRAY_LITERAL");
   IElementType ARRAY_MEMBERS = new HareElementType("ARRAY_MEMBERS");
@@ -88,6 +89,7 @@ public interface HareTypes {
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
 
   IElementType ADDS = new HareTokenType("ADDS");
+  IElementType ALLOC_KW = new HareTokenType("ALLOC_KW");
   IElementType AND = new HareTokenType("AND");
   IElementType AND_ASSIGN = new HareTokenType("AND_ASSIGN");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
@@ -115,6 +117,7 @@ public interface HareTypes {
   IElementType FALSE_KW = new HareTokenType("FALSE_KW");
   IElementType FN_KW = new HareTokenType("FN_KW");
   IElementType FOR_KW = new HareTokenType("FOR_KW");
+  IElementType FREE_KW = new HareTokenType("FREE_KW");
   IElementType I16_TYPE = new HareTokenType("I16_TYPE");
   IElementType I32_TYPE = new HareTokenType("I32_TYPE");
   IElementType I64_TYPE = new HareTokenType("I64_TYPE");
@@ -184,6 +187,9 @@ public interface HareTypes {
       IElementType type = node.getElementType();
       if (type == ALIAS_TYPE) {
         return new HareAliasTypeImpl(node);
+      }
+      else if (type == ALLOC_EXPRESSION) {
+        return new HareAllocExpressionImpl(node);
       }
       else if (type == ARGUMENT_LIST) {
         return new HareArgumentListImpl(node);
