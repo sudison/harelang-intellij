@@ -50,6 +50,7 @@ DECIMAL_DIGITS = \d+
     ")" { return HareTypes.RP; }
     "{" { return HareTypes.LBR; }
     "}" { return HareTypes.RBR; }
+    "." {return HareTypes.DOT;}
     "+=" {return HareTypes.PLUS_ASSIGN;}
     "-=" {return HareTypes.MINUS_ASSIGN;}
     "*=" {return HareTypes.MULTIPLIES_ASSIGN;}

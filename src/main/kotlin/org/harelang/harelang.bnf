@@ -109,7 +109,7 @@ private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
 private cast_expression ::= unary_expression
 private unary_expression ::= buildin_expression | compound_expression
 private buildin_expression ::= postfix_expression
-private postfix_expression ::= nested_expression
+private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
 plan_expression ::= enum_literal | struct_literal | IDENTIFIER | constant | array_literal
 array_literal ::= LB array_members RB
@@ -123,7 +123,8 @@ field_value ::= struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
 struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT
 
 tuple_items ::= expression (COMMA expression)+
-
+postfix_op ::= field_access
+field_access ::= DOT IDENTIFIER | DOT integer_constant
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings

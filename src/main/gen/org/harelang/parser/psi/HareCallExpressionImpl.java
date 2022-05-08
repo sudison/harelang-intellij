@@ -45,6 +45,12 @@ public class HareCallExpressionImpl extends ASTWrapperPsiElement implements Hare
   }
 
   @Override
+  @NotNull
+  public List<HarePostfixOp> getPostfixOpList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HarePostfixOp.class);
+  }
+
+  @Override
   @Nullable
   public HareTupleItems getTupleItems() {
     return findChildByClass(HareTupleItems.class);

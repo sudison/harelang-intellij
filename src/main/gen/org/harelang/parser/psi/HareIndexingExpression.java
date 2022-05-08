@@ -13,6 +13,9 @@ public interface HareIndexingExpression extends PsiElement {
   @Nullable
   HarePlanExpression getPlanExpression();
 
+  @NotNull
+  List<HarePostfixOp> getPostfixOpList();
+
   @Nullable
   HareTupleItems getTupleItems();
 

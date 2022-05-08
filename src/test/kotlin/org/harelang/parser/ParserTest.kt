@@ -185,4 +185,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseStructAccess() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = a.b.c;
+            };
+        """.trimIndent())
+    }
 }

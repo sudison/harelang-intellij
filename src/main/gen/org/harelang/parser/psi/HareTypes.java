@@ -32,6 +32,7 @@ public interface HareTypes {
   IElementType ENUM_VALUES = new HareElementType("ENUM_VALUES");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
+  IElementType FIELD_ACCESS = new HareElementType("FIELD_ACCESS");
   IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
   IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
   IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
@@ -59,6 +60,7 @@ public interface HareTypes {
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
   IElementType PLAN_EXPRESSION = new HareElementType("PLAN_EXPRESSION");
   IElementType POINTER_TYPE = new HareElementType("POINTER_TYPE");
+  IElementType POSTFIX_OP = new HareElementType("POSTFIX_OP");
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
@@ -96,6 +98,7 @@ public interface HareTypes {
   IElementType DEF_KW = new HareTokenType("DEF_KW");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
+  IElementType DOT = new HareTokenType("DOT");
   IElementType DOTDOTDOT = new HareTokenType("DOTDOTDOT");
   IElementType ELSE_KW = new HareTokenType("ELSE_KW");
   IElementType ENUM_KW = new HareTokenType("ENUM_KW");
@@ -249,6 +252,9 @@ public interface HareTypes {
       else if (type == EXPRESSION_LIST) {
         return new HareExpressionListImpl(node);
       }
+      else if (type == FIELD_ACCESS) {
+        return new HareFieldAccessImpl(node);
+      }
       else if (type == FIELD_VALUE) {
         return new HareFieldValueImpl(node);
       }
@@ -329,6 +335,9 @@ public interface HareTypes {
       }
       else if (type == POINTER_TYPE) {
         return new HarePointerTypeImpl(node);
+      }
+      else if (type == POSTFIX_OP) {
+        return new HarePostfixOpImpl(node);
       }
       else if (type == PROTOTYPE) {
         return new HarePrototypeImpl(node);

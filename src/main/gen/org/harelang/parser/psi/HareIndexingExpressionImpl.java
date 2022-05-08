@@ -39,6 +39,12 @@ public class HareIndexingExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
+  @NotNull
+  public List<HarePostfixOp> getPostfixOpList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HarePostfixOp.class);
+  }
+
+  @Override
   @Nullable
   public HareTupleItems getTupleItems() {
     return findChildByClass(HareTupleItems.class);

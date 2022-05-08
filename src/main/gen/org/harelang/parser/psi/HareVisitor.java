@@ -107,6 +107,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFieldAccess(@NotNull HareFieldAccess o) {
+    visitPsiElement(o);
+  }
+
   public void visitFieldValue(@NotNull HareFieldValue o) {
     visitPsiElement(o);
   }
@@ -212,6 +216,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitPointerType(@NotNull HarePointerType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPostfixOp(@NotNull HarePostfixOp o) {
     visitPsiElement(o);
   }
 

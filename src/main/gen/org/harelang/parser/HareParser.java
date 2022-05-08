@@ -848,6 +848,30 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // DOT IDENTIFIER | DOT integer_constant
+  public static boolean field_access(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_access")) return false;
+    if (!nextTokenIs(b, DOT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = parseTokens(b, 0, DOT, IDENTIFIER);
+    if (!r) r = field_access_1(b, l + 1);
+    exit_section_(b, m, FIELD_ACCESS, r);
+    return r;
+  }
+
+  // DOT integer_constant
+  private static boolean field_access_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_access_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOT);
+    r = r && integer_constant(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
   public static boolean field_value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field_value")) return false;
@@ -1792,9 +1816,38 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // nested_expression
+  // nested_expression postfix_op*
   static boolean postfix_expression(PsiBuilder b, int l) {
-    return nested_expression(b, l + 1);
+    if (!recursion_guard_(b, l, "postfix_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = nested_expression(b, l + 1);
+    r = r && postfix_expression_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // postfix_op*
+  private static boolean postfix_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "postfix_expression_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!postfix_op(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "postfix_expression_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // field_access
+  public static boolean postfix_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "postfix_op")) return false;
+    if (!nextTokenIs(b, DOT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = field_access(b, l + 1);
+    exit_section_(b, m, POSTFIX_OP, r);
+    return r;
   }
 
   /* ********************************************************** */
