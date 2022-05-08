@@ -326,4 +326,30 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseControlExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+                :l {
+                    for (i < len(items); i += 1) {
+		                if (items[i] == "Hare") {
+			                i;
+                            break :l;
+                            yield;
+                            yield "dfd";
+                            yield :l;
+                            yield :l, "fdf";
+		                } else {
+                            1;
+                            continue :l;
+                            continue;
+                            return 1;
+                            return;
+                        };
+	                };
+                };
+          };
+        """.trimIndent())
+    }
 }

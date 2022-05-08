@@ -129,6 +129,10 @@ DECIMAL_DIGITS = \d+
     "match" {return HareTypes.MATCH_KW;}
     "case" {return HareTypes.CASE_KW;}
     "switch" {return HareTypes.SWITCH_KW;}
+    "break" {return HareTypes.BREAK_KW;}
+    "continue" {return HareTypes.CONTINUE_KW;}
+    "return" {return HareTypes.RETURN_KW;}
+    "yield" {return HareTypes.YIELD_KW;}
 
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}

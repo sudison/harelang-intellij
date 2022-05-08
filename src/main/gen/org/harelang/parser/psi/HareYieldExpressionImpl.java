@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareCompoundExpressionImpl extends ASTWrapperPsiElement implements HareCompoundExpression {
+public class HareYieldExpressionImpl extends ASTWrapperPsiElement implements HareYieldExpression {
 
-  public HareCompoundExpressionImpl(@NotNull ASTNode node) {
+  public HareYieldExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitCompoundExpression(this);
+    visitor.visitYieldExpression(this);
   }
 
   @Override
@@ -27,9 +27,9 @@ public class HareCompoundExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
-  public HareExpressionList getExpressionList() {
-    return findNotNullChildByClass(HareExpressionList.class);
+  @Nullable
+  public HareExpression getExpression() {
+    return findChildByClass(HareExpression.class);
   }
 
   @Override

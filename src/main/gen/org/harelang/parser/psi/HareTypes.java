@@ -27,6 +27,7 @@ public interface HareTypes {
   IElementType CONSTANT_BINDING = new HareElementType("CONSTANT_BINDING");
   IElementType CONSTANT_BINDINGS = new HareElementType("CONSTANT_BINDINGS");
   IElementType CONSTANT_DECLARATION = new HareElementType("CONSTANT_DECLARATION");
+  IElementType CONTROL_EXPRESSION = new HareElementType("CONTROL_EXPRESSION");
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
   IElementType DEFER_EXPRESSION = new HareElementType("DEFER_EXPRESSION");
@@ -60,6 +61,7 @@ public interface HareTypes {
   IElementType INTEGER_CONSTANT = new HareElementType("INTEGER_CONSTANT");
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
   IElementType INTEGER_TYPE = new HareElementType("INTEGER_TYPE");
+  IElementType LABEL = new HareElementType("LABEL");
   IElementType LENGTH_EXPRESSION = new HareElementType("LENGTH_EXPRESSION");
   IElementType MATCH_CASE = new HareElementType("MATCH_CASE");
   IElementType MATCH_EXPRESSION = new HareElementType("MATCH_EXPRESSION");
@@ -102,6 +104,7 @@ public interface HareTypes {
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
   IElementType VARIADIC_EXPRESSION = new HareElementType("VARIADIC_EXPRESSION");
+  IElementType YIELD_EXPRESSION = new HareElementType("YIELD_EXPRESSION");
 
   IElementType ABORT_KW = new HareTokenType("ABORT_KW");
   IElementType ADDS = new HareTokenType("ADDS");
@@ -113,11 +116,13 @@ public interface HareTypes {
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType BANG = new HareTokenType("BANG");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
+  IElementType BREAK_KW = new HareTokenType("BREAK_KW");
   IElementType CASE_KW = new HareTokenType("CASE_KW");
   IElementType CHAR_TYPE = new HareTokenType("CHAR_TYPE");
   IElementType COLON = new HareTokenType("COLON");
   IElementType COMMA = new HareTokenType("COMMA");
   IElementType CONST_KW = new HareTokenType("CONST_KW");
+  IElementType CONTINUE_KW = new HareTokenType("CONTINUE_KW");
   IElementType DECIMAL_DIGITS = new HareTokenType("DECIMAL_DIGITS");
   IElementType DEFER_KW = new HareTokenType("DEFER_KW");
   IElementType DEF_KW = new HareTokenType("DEF_KW");
@@ -181,6 +186,7 @@ public interface HareTypes {
   IElementType QUESTION = new HareTokenType("QUESTION");
   IElementType RB = new HareTokenType("RB");
   IElementType RBR = new HareTokenType("RBR");
+  IElementType RETURN_KW = new HareTokenType("RETURN_KW");
   IElementType RIGHT_SHIFT = new HareTokenType("RIGHT_SHIFT");
   IElementType RIGHT_SHIFT_ASSIGN = new HareTokenType("RIGHT_SHIFT_ASSIGN");
   IElementType RP = new HareTokenType("RP");
@@ -211,6 +217,7 @@ public interface HareTypes {
   IElementType VOID_KW = new HareTokenType("VOID_KW");
   IElementType VOID_TYPE = new HareTokenType("VOID_TYPE");
   IElementType XOR_ASSIGN = new HareTokenType("XOR_ASSIGN");
+  IElementType YIELD_KW = new HareTokenType("YIELD_KW");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -274,6 +281,9 @@ public interface HareTypes {
       }
       else if (type == CONSTANT_DECLARATION) {
         return new HareConstantDeclarationImpl(node);
+      }
+      else if (type == CONTROL_EXPRESSION) {
+        return new HareControlExpressionImpl(node);
       }
       else if (type == DECLARATION) {
         return new HareDeclarationImpl(node);
@@ -373,6 +383,9 @@ public interface HareTypes {
       }
       else if (type == INTEGER_TYPE) {
         return new HareIntegerTypeImpl(node);
+      }
+      else if (type == LABEL) {
+        return new HareLabelImpl(node);
       }
       else if (type == LENGTH_EXPRESSION) {
         return new HareLengthExpressionImpl(node);
@@ -499,6 +512,9 @@ public interface HareTypes {
       }
       else if (type == VARIADIC_EXPRESSION) {
         return new HareVariadicExpressionImpl(node);
+      }
+      else if (type == YIELD_EXPRESSION) {
+        return new HareYieldExpressionImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

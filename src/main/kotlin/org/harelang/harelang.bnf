@@ -88,7 +88,7 @@ integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16"
 string_const ::= STRING_LITERAL
 
 
-expression ::= assignment | binding_list | logical_or_expression | if_expression | for_loop
+expression ::= assignment | binding_list | logical_or_expression | if_expression | for_loop | control_expression
 
 private logical_or_expression ::= logical_xor_expression (LOGICAL_OR logical_xor_expression)*
 private logical_xor_expression ::= logical_and_expression (LOGICAL_XOR logical_and_expression)*
@@ -159,7 +159,8 @@ switch_expression ::= SWITCH_KW LP expression RP LBR switch_case+ RBR
 switch_case ::= CASE_KW case_options? MATCH_OP expression_list
 case_options ::= expression (COMMA expression)*
 
-compound_expression ::= LBR expression_list RBR
+compound_expression ::= label? LBR expression_list RBR
+label ::= COLON IDENTIFIER
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
 bindings ::= binding (COMMA binding)*
@@ -171,7 +172,7 @@ MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT
 LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
 object_selector ::=  IDENTIFIER
 
-if_expression ::= IF_KW conditional_branch | IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression
+if_expression ::=  IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression | IF_KW conditional_branch
 conditional_branch ::= LP expression RP expression
 
 for_loop ::= FOR_KW LP for_predicate RP expression
@@ -179,3 +180,6 @@ for_predicate ::= binding_list EOS expression EOS expression | binding_list EOS 
 
 call_op ::= LP argument_list? RP
 argument_list ::= expression DOTDOTDOT  | expression COMMA argument_list | expression
+
+control_expression ::= BREAK_KW label? | CONTINUE_KW label? | RETURN_KW expression? | yield_expression
+yield_expression ::= YIELD_KW ((label COMMA expression) | expression | label)?

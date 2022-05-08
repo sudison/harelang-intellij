@@ -22,6 +22,9 @@ public interface HareExpression extends PsiElement {
   @NotNull
   List<HareCompoundExpression> getCompoundExpressionList();
 
+  @Nullable
+  HareControlExpression getControlExpression();
+
   @NotNull
   List<HareDeferExpression> getDeferExpressionList();
 

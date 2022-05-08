@@ -699,17 +699,25 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LBR expression_list RBR
+  // label? LBR expression_list RBR
   public static boolean compound_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "compound_expression")) return false;
-    if (!nextTokenIs(b, LBR)) return false;
+    if (!nextTokenIs(b, "<compound expression>", COLON, LBR)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LBR);
+    Marker m = enter_section_(b, l, _NONE_, COMPOUND_EXPRESSION, "<compound expression>");
+    r = compound_expression_0(b, l + 1);
+    r = r && consumeToken(b, LBR);
     r = r && expression_list(b, l + 1);
     r = r && consumeToken(b, RBR);
-    exit_section_(b, m, COMPOUND_EXPRESSION, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // label?
+  private static boolean compound_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "compound_expression_0")) return false;
+    label(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -805,6 +813,74 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = r && constant_bindings(b, l + 1);
     exit_section_(b, m, CONSTANT_DECLARATION, r);
     return r;
+  }
+
+  /* ********************************************************** */
+  // BREAK_KW label? | CONTINUE_KW label? | RETURN_KW expression? | yield_expression
+  public static boolean control_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CONTROL_EXPRESSION, "<control expression>");
+    r = control_expression_0(b, l + 1);
+    if (!r) r = control_expression_1(b, l + 1);
+    if (!r) r = control_expression_2(b, l + 1);
+    if (!r) r = yield_expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // BREAK_KW label?
+  private static boolean control_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, BREAK_KW);
+    r = r && control_expression_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // label?
+  private static boolean control_expression_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression_0_1")) return false;
+    label(b, l + 1);
+    return true;
+  }
+
+  // CONTINUE_KW label?
+  private static boolean control_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CONTINUE_KW);
+    r = r && control_expression_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // label?
+  private static boolean control_expression_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression_1_1")) return false;
+    label(b, l + 1);
+    return true;
+  }
+
+  // RETURN_KW expression?
+  private static boolean control_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, RETURN_KW);
+    r = r && control_expression_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression?
+  private static boolean control_expression_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "control_expression_2_1")) return false;
+    expression(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1116,7 +1192,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // assignment | binding_list | logical_or_expression | if_expression | for_loop
+  // assignment | binding_list | logical_or_expression | if_expression | for_loop | control_expression
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
@@ -1126,6 +1202,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = logical_or_expression(b, l + 1);
     if (!r) r = if_expression(b, l + 1);
     if (!r) r = for_loop(b, l + 1);
+    if (!r) r = control_expression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1525,7 +1602,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IF_KW conditional_branch | IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression
+  // IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression | IF_KW conditional_branch
   public static boolean if_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_expression")) return false;
     if (!nextTokenIs(b, IF_KW)) return false;
@@ -1538,20 +1615,9 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // IF_KW conditional_branch
+  // IF_KW conditional_branch ELSE_KW if_expression
   private static boolean if_expression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IF_KW);
-    r = r && conditional_branch(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // IF_KW conditional_branch ELSE_KW if_expression
-  private static boolean if_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "if_expression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, IF_KW);
@@ -1563,14 +1629,25 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   // IF_KW conditional_branch ELSE_KW expression
-  private static boolean if_expression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "if_expression_2")) return false;
+  private static boolean if_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "if_expression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, IF_KW);
     r = r && conditional_branch(b, l + 1);
     r = r && consumeToken(b, ELSE_KW);
     r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // IF_KW conditional_branch
+  private static boolean if_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "if_expression_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IF_KW);
+    r = r && conditional_branch(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1788,6 +1865,18 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, UINTPTR_TYPE);
     if (!r) r = consumeToken(b, CHAR_TYPE);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // COLON IDENTIFIER
+  public static boolean label(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "label")) return false;
+    if (!nextTokenIs(b, COLON)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, COLON, IDENTIFIER);
+    exit_section_(b, m, LABEL, r);
     return r;
   }
 
@@ -3134,6 +3223,50 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = consumeTokens(b, 0, VAEND_KW, LP);
     r = r && expression(b, l + 1);
     r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // YIELD_KW ((label COMMA expression) | expression | label)?
+  public static boolean yield_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "yield_expression")) return false;
+    if (!nextTokenIs(b, YIELD_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, YIELD_KW);
+    r = r && yield_expression_1(b, l + 1);
+    exit_section_(b, m, YIELD_EXPRESSION, r);
+    return r;
+  }
+
+  // ((label COMMA expression) | expression | label)?
+  private static boolean yield_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "yield_expression_1")) return false;
+    yield_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // (label COMMA expression) | expression | label
+  private static boolean yield_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "yield_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = yield_expression_1_0_0(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    if (!r) r = label(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // label COMMA expression
+  private static boolean yield_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "yield_expression_1_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = label(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
