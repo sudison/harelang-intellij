@@ -10,4 +10,7 @@ public interface HareBinding extends PsiElement {
   @NotNull
   HareExpression getExpression();
 
+  @Nullable
+  HareType getType();
+
 }

@@ -32,4 +32,10 @@ public class HareBindingImpl extends ASTWrapperPsiElement implements HareBinding
     return findNotNullChildByClass(HareExpression.class);
   }
 
+  @Override
+  @Nullable
+  public HareType getType() {
+    return findChildByClass(HareType.class);
+  }
+
 }

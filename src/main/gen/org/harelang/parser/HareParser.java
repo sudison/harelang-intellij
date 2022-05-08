@@ -502,15 +502,84 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER ASSIGN expression
+  // IDENTIFIER (COLON type)? ASSIGN expression | LP IDENTIFIER (COMMA IDENTIFIER)+ RP ASSIGN expression
   public static boolean binding(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binding")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, "<binding>", IDENTIFIER, LP)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, BINDING, "<binding>");
+    r = binding_0(b, l + 1);
+    if (!r) r = binding_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // IDENTIFIER (COLON type)? ASSIGN expression
+  private static boolean binding_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFIER, ASSIGN);
+    r = consumeToken(b, IDENTIFIER);
+    r = r && binding_0_1(b, l + 1);
+    r = r && consumeToken(b, ASSIGN);
     r = r && expression(b, l + 1);
-    exit_section_(b, m, BINDING, r);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COLON type)?
+  private static boolean binding_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_0_1")) return false;
+    binding_0_1_0(b, l + 1);
+    return true;
+  }
+
+  // COLON type
+  private static boolean binding_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COLON);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // LP IDENTIFIER (COMMA IDENTIFIER)+ RP ASSIGN expression
+  private static boolean binding_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LP, IDENTIFIER);
+    r = r && binding_1_2(b, l + 1);
+    r = r && consumeTokens(b, 0, RP, ASSIGN);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COMMA IDENTIFIER)+
+  private static boolean binding_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_1_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = binding_1_2_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!binding_1_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "binding_1_2", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA IDENTIFIER
+  private static boolean binding_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binding_1_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, COMMA, IDENTIFIER);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -576,12 +645,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   // binding (COMMA binding)*
   public static boolean bindings(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bindings")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, "<bindings>", IDENTIFIER, LP)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, BINDINGS, "<bindings>");
     r = binding(b, l + 1);
     r = r && bindings_1(b, l + 1);
-    exit_section_(b, m, BINDINGS, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

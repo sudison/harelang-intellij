@@ -167,7 +167,8 @@ label ::= COLON IDENTIFIER
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
 bindings ::= binding (COMMA binding)*
-binding ::= IDENTIFIER ASSIGN expression
+binding ::= IDENTIFIER (COLON type)? ASSIGN expression | LP IDENTIFIER (COMMA IDENTIFIER)+ RP ASSIGN expression
+
 
 assignment ::= object_selector assignment_op expression | MULTIPLIES unary_expression assignment_op expression | slicing_expression ASSIGN expression
 assignment_op ::=  ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | MULTIPLIES_ASSIGN | DIVIDES_ASSIGN |
