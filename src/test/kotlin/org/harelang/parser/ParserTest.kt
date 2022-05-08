@@ -23,7 +23,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
 
     @Test
     fun testPrintParseImports() {
-        printTree("""use a::b::c; use a::b::{a}; use a::b::*; use a::b::{a, b, c = d};""")
+        printTree("""
+            fn huh(a:int) void = {
+                st.limit -= len(buf);
+            };    
+            """.trimIndent())
     }
 
     @Test
@@ -367,6 +371,18 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         doCodeTest("""
             fn foo(a:int) void = {
             let a = a::bc : i32, b = a as bool, c = a is bool;
+            };
+        """.trimIndent())
+    }
+
+    @Test
+    fun testParseAssignment() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            a.b.c = 1;
+            a[1].b[2].c = 3;
+            *p = 1;
+            a[1..2] = [1,2];
             };
         """.trimIndent())
     }

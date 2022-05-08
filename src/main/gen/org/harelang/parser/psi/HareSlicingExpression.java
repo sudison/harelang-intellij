@@ -5,19 +5,16 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareObjectSelector extends PsiElement {
+public interface HareSlicingExpression extends PsiElement {
 
   @Nullable
   HareExpression getExpression();
 
-  @NotNull
-  List<HareFieldAccessOp> getFieldAccessOpList();
-
-  @NotNull
-  List<HareIndexingOp> getIndexingOpList();
-
   @Nullable
   HarePlanExpression getPlanExpression();
+
+  @NotNull
+  HareSlicingOp getSlicingOp();
 
   @Nullable
   HareTupleItems getTupleItems();

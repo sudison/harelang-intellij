@@ -81,6 +81,7 @@ public interface HareTypes {
   IElementType SIZE_EXPRESSION = new HareElementType("SIZE_EXPRESSION");
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
   IElementType SLICE_MUTATION_EXPRESSION = new HareElementType("SLICE_MUTATION_EXPRESSION");
+  IElementType SLICING_EXPRESSION = new HareElementType("SLICING_EXPRESSION");
   IElementType SLICING_OP = new HareElementType("SLICING_OP");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
@@ -447,6 +448,9 @@ public interface HareTypes {
       }
       else if (type == SLICE_MUTATION_EXPRESSION) {
         return new HareSliceMutationExpressionImpl(node);
+      }
+      else if (type == SLICING_EXPRESSION) {
+        return new HareSlicingExpressionImpl(node);
       }
       else if (type == SLICING_OP) {
         return new HareSlicingOpImpl(node);

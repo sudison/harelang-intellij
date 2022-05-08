@@ -140,6 +140,7 @@ slicing_op ::= LB expression? DOTDOT expression? RB
 error_propagation_op ::= QUESTION | BANG
 field_access_op ::= DOT IDENTIFIER | DOT integer_constant
 
+slicing_expression ::= nested_expression slicing_op
 alloc_expression ::= ALLOC_KW LP (expression COMMA expression | expression DOTDOTDOT | expression) RP | FREE_KW LP expression RP
 assertion_expression ::= STATIC_KW? ASSERT_KW LP (expression COMMA string_const | expression) RP | STATIC_KW? ABORT_KW LP string_const? RP
 defer_expression ::= DEFER_KW expression
@@ -168,11 +169,11 @@ binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
 bindings ::= binding (COMMA binding)*
 binding ::= IDENTIFIER ASSIGN expression
 
-assignment ::= object_selector assignment_op expression
+assignment ::= object_selector assignment_op expression | MULTIPLIES unary_expression assignment_op expression | slicing_expression ASSIGN expression
 assignment_op ::=  ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | MULTIPLIES_ASSIGN | DIVIDES_ASSIGN |
 MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT_SHIFT_ASSIGN | LOGICAL_AND_ASSIGN |
 LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
-object_selector ::=  IDENTIFIER
+object_selector ::=  nested_expression (field_access_op | indexing_op)* | IDENTIFIER
 
 if_expression ::=  IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression | IF_KW conditional_branch
 conditional_branch ::= LP expression RP expression

@@ -27,21 +27,105 @@ public class HareAssignmentImpl extends ASTWrapperPsiElement implements HareAssi
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public HareAllocExpression getAllocExpression() {
+    return findChildByClass(HareAllocExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public HareAssertionExpression getAssertionExpression() {
+    return findChildByClass(HareAssertionExpression.class);
+  }
+
+  @Override
+  @Nullable
   public HareAssignmentOp getAssignmentOp() {
-    return findNotNullChildByClass(HareAssignmentOp.class);
+    return findChildByClass(HareAssignmentOp.class);
+  }
+
+  @Override
+  @Nullable
+  public HareCompoundExpression getCompoundExpression() {
+    return findChildByClass(HareCompoundExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public HareDeferExpression getDeferExpression() {
+    return findChildByClass(HareDeferExpression.class);
   }
 
   @Override
   @NotNull
-  public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+  public List<HareExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public HareMatchExpression getMatchExpression() {
+    return findChildByClass(HareMatchExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public HareMeasurementExpression getMeasurementExpression() {
+    return findChildByClass(HareMeasurementExpression.class);
+  }
+
+  @Override
+  @Nullable
   public HareObjectSelector getObjectSelector() {
-    return findNotNullChildByClass(HareObjectSelector.class);
+    return findChildByClass(HareObjectSelector.class);
+  }
+
+  @Override
+  @Nullable
+  public HarePlanExpression getPlanExpression() {
+    return findChildByClass(HarePlanExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<HarePostfixOp> getPostfixOpList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HarePostfixOp.class);
+  }
+
+  @Override
+  @Nullable
+  public HareSliceMutationExpression getSliceMutationExpression() {
+    return findChildByClass(HareSliceMutationExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public HareSlicingExpression getSlicingExpression() {
+    return findChildByClass(HareSlicingExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public HareSwitchExpression getSwitchExpression() {
+    return findChildByClass(HareSwitchExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public HareTupleItems getTupleItems() {
+    return findChildByClass(HareTupleItems.class);
+  }
+
+  @Override
+  @NotNull
+  public List<HareUnaryOperator> getUnaryOperatorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareUnaryOperator.class);
+  }
+
+  @Override
+  @Nullable
+  public HareVariadicExpression getVariadicExpression() {
+    return findChildByClass(HareVariadicExpression.class);
   }
 
 }

@@ -303,6 +303,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSlicingExpression(@NotNull HareSlicingExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitSlicingOp(@NotNull HareSlicingOp o) {
     visitPsiElement(o);
   }

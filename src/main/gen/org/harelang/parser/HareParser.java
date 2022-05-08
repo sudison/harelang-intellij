@@ -426,16 +426,52 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // object_selector assignment_op expression
+  // object_selector assignment_op expression | MULTIPLIES unary_expression assignment_op expression | slicing_expression ASSIGN expression
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT, "<assignment>");
+    r = assignment_0(b, l + 1);
+    if (!r) r = assignment_1(b, l + 1);
+    if (!r) r = assignment_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // object_selector assignment_op expression
+  private static boolean assignment_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = object_selector(b, l + 1);
     r = r && assignment_op(b, l + 1);
     r = r && expression(b, l + 1);
-    exit_section_(b, m, ASSIGNMENT, r);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // MULTIPLIES unary_expression assignment_op expression
+  private static boolean assignment_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, MULTIPLIES);
+    r = r && unary_expression(b, l + 1);
+    r = r && assignment_op(b, l + 1);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // slicing_expression ASSIGN expression
+  private static boolean assignment_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = slicing_expression(b, l + 1);
+    r = r && consumeToken(b, ASSIGN);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -2279,14 +2315,45 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER
+  // nested_expression (field_access_op | indexing_op)* | IDENTIFIER
   public static boolean object_selector(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_selector")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, OBJECT_SELECTOR, "<object selector>");
+    r = object_selector_0(b, l + 1);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // nested_expression (field_access_op | indexing_op)*
+  private static boolean object_selector_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_selector_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, OBJECT_SELECTOR, r);
+    r = nested_expression(b, l + 1);
+    r = r && object_selector_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (field_access_op | indexing_op)*
+  private static boolean object_selector_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_selector_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!object_selector_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "object_selector_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // field_access_op | indexing_op
+  private static boolean object_selector_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_selector_0_1_0")) return false;
+    boolean r;
+    r = field_access_op(b, l + 1);
+    if (!r) r = indexing_op(b, l + 1);
     return r;
   }
 
@@ -2605,6 +2672,18 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = append_expression(b, l + 1);
     if (!r) r = insert_expression(b, l + 1);
     if (!r) r = delete_expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // nested_expression slicing_op
+  public static boolean slicing_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slicing_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SLICING_EXPRESSION, "<slicing expression>");
+    r = nested_expression(b, l + 1);
+    r = r && slicing_op(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

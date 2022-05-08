@@ -7,13 +7,55 @@ import com.intellij.psi.PsiElement;
 
 public interface HareAssignment extends PsiElement {
 
-  @NotNull
+  @Nullable
+  HareAllocExpression getAllocExpression();
+
+  @Nullable
+  HareAssertionExpression getAssertionExpression();
+
+  @Nullable
   HareAssignmentOp getAssignmentOp();
 
-  @NotNull
-  HareExpression getExpression();
+  @Nullable
+  HareCompoundExpression getCompoundExpression();
+
+  @Nullable
+  HareDeferExpression getDeferExpression();
 
   @NotNull
+  List<HareExpression> getExpressionList();
+
+  @Nullable
+  HareMatchExpression getMatchExpression();
+
+  @Nullable
+  HareMeasurementExpression getMeasurementExpression();
+
+  @Nullable
   HareObjectSelector getObjectSelector();
+
+  @Nullable
+  HarePlanExpression getPlanExpression();
+
+  @NotNull
+  List<HarePostfixOp> getPostfixOpList();
+
+  @Nullable
+  HareSliceMutationExpression getSliceMutationExpression();
+
+  @Nullable
+  HareSlicingExpression getSlicingExpression();
+
+  @Nullable
+  HareSwitchExpression getSwitchExpression();
+
+  @Nullable
+  HareTupleItems getTupleItems();
+
+  @NotNull
+  List<HareUnaryOperator> getUnaryOperatorList();
+
+  @Nullable
+  HareVariadicExpression getVariadicExpression();
 
 }
