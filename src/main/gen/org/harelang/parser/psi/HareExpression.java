@@ -59,6 +59,9 @@ public interface HareExpression extends PsiElement {
   List<HareTupleItems> getTupleItemsList();
 
   @NotNull
+  List<HareType> getTypeList();
+
+  @NotNull
   List<HareUnaryOperator> getUnaryOperatorList();
 
   @NotNull

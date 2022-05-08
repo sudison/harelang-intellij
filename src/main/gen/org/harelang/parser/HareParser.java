@@ -647,9 +647,67 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // unary_expression
+  // unary_expression (COLON type | AS_KW type | IS_KW type)?
   static boolean cast_expression(PsiBuilder b, int l) {
-    return unary_expression(b, l + 1);
+    if (!recursion_guard_(b, l, "cast_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = unary_expression(b, l + 1);
+    r = r && cast_expression_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COLON type | AS_KW type | IS_KW type)?
+  private static boolean cast_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cast_expression_1")) return false;
+    cast_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // COLON type | AS_KW type | IS_KW type
+  private static boolean cast_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cast_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = cast_expression_1_0_0(b, l + 1);
+    if (!r) r = cast_expression_1_0_1(b, l + 1);
+    if (!r) r = cast_expression_1_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COLON type
+  private static boolean cast_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cast_expression_1_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COLON);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // AS_KW type
+  private static boolean cast_expression_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cast_expression_1_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, AS_KW);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // IS_KW type
+  private static boolean cast_expression_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cast_expression_1_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IS_KW);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */

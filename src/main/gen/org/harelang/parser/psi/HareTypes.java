@@ -115,6 +115,7 @@ public interface HareTypes {
   IElementType APPEND_KW = new HareTokenType("APPEND_KW");
   IElementType ASSERT_KW = new HareTokenType("ASSERT_KW");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
+  IElementType AS_KW = new HareTokenType("AS_KW");
   IElementType BANG = new HareTokenType("BANG");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
   IElementType BREAK_KW = new HareTokenType("BREAK_KW");
@@ -154,6 +155,7 @@ public interface HareTypes {
   IElementType INCLUSIVE_OR = new HareTokenType("INCLUSIVE_OR");
   IElementType INSERT_KW = new HareTokenType("INSERT_KW");
   IElementType INT_TYPE = new HareTokenType("INT_TYPE");
+  IElementType IS_KW = new HareTokenType("IS_KW");
   IElementType LARGER_EQUAL = new HareTokenType("LARGER_EQUAL");
   IElementType LARGER_THAN = new HareTokenType("LARGER_THAN");
   IElementType LB = new HareTokenType("LB");

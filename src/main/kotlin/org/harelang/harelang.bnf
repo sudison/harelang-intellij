@@ -106,7 +106,7 @@ private additive_expression ::= multiplicative_expression (additive_operator mul
 private additive_operator ::= ADDS | SUBSTRACTS
 private multiplicative_expression ::= cast_expression (multiplicative_operator cast_expression)*
 private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
-private cast_expression ::= unary_expression
+private cast_expression ::= unary_expression (COLON type | AS_KW type | IS_KW type)?
 private unary_expression ::=
                             buildin_expression |
                             compound_expression |

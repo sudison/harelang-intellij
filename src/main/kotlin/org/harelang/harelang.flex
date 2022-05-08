@@ -76,6 +76,9 @@ DECIMAL_DIGITS = \d+
     "&&=" {return HareTypes.LOGICAL_AND_ASSIGN;}
     "||=" {return HareTypes.LOGICAL_OR_ASSIGN;}
     "^^=" {return HareTypes.LOGICAL_XOR_ASSIGN;}
+    "as" {return HareTypes.AS_KW;}
+    "is" {return HareTypes.IS_KW;}
+
     "i8" {return HareTypes.I8_TYPE;}
     "i16" {return HareTypes.I16_TYPE;}
     "i32" {return HareTypes.I32_TYPE;}
