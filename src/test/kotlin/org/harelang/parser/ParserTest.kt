@@ -264,4 +264,15 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseMeasurementExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            size(a);
+            len(a);
+            offset(a.b.c);
+            };
+        """.trimIndent())
+    }
 }

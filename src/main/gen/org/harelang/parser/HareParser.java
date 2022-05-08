@@ -1028,6 +1028,29 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // nested_expression field_access_op*
+  public static boolean field_access_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_access_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, FIELD_ACCESS_EXPRESSION, "<field access expression>");
+    r = nested_expression(b, l + 1);
+    r = r && field_access_expression_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // field_access_op*
+  private static boolean field_access_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_access_expression_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!field_access_op(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "field_access_expression_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // DOT IDENTIFIER | DOT integer_constant
   public static boolean field_access_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field_access_op")) return false;
@@ -1644,6 +1667,20 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LEN_KW LP expression RP
+  public static boolean length_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "length_expression")) return false;
+    if (!nextTokenIs(b, LEN_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEN_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, LENGTH_EXPRESSION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // equality_expression (LOGICAL_AND equality_expression)*
   static boolean logical_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression")) return false;
@@ -1742,6 +1779,19 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, LOGICAL_XOR);
     r = r && logical_and_expression(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // size_expression | length_expression | offset_expression
+  public static boolean measurement_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "measurement_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MEASUREMENT_EXPRESSION, "<measurement expression>");
+    r = size_expression(b, l + 1);
+    if (!r) r = length_expression(b, l + 1);
+    if (!r) r = offset_expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1884,6 +1934,20 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, IDENTIFIER);
     if (!r) r = indexing_expression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // OFFSET_KW LP field_access_expression RP
+  public static boolean offset_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "offset_expression")) return false;
+    if (!nextTokenIs(b, OFFSET_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, OFFSET_KW, LP);
+    r = r && field_access_expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, OFFSET_EXPRESSION, r);
     return r;
   }
 
@@ -2129,6 +2193,20 @@ public class HareParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, LEFT_SHIFT);
     if (!r) r = consumeToken(b, RIGHT_SHIFT);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SIZE_TYPE LP type RP
+  public static boolean size_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "size_expression")) return false;
+    if (!nextTokenIs(b, SIZE_TYPE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, SIZE_TYPE, LP);
+    r = r && type(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, SIZE_EXPRESSION, r);
     return r;
   }
 
@@ -2650,11 +2728,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
+  // measurement_expression | defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = defer_expression(b, l + 1);
+    r = measurement_expression(b, l + 1);
+    if (!r) r = defer_expression(b, l + 1);
     if (!r) r = assertion_expression(b, l + 1);
     if (!r) r = alloc_expression(b, l + 1);
     if (!r) r = buildin_expression(b, l + 1);

@@ -117,6 +117,8 @@ DECIMAL_DIGITS = \d+
     "assert" {return HareTypes.ASSERT_KW;}
     "abort" {return HareTypes.ABORT_KW;}
     "defer" {return HareTypes.DEFER_KW;}
+    "len" {return HareTypes.LEN_KW;}
+    "offset" {return HareTypes.OFFSET_KW;}
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}
 

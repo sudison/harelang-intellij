@@ -35,6 +35,9 @@ public interface HareExpression extends PsiElement {
   HareIfExpression getIfExpression();
 
   @NotNull
+  List<HareMeasurementExpression> getMeasurementExpressionList();
+
+  @NotNull
   List<HarePlanExpression> getPlanExpressionList();
 
   @NotNull

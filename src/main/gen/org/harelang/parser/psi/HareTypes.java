@@ -36,6 +36,7 @@ public interface HareTypes {
   IElementType ERROR_PROPAGATION_OP = new HareElementType("ERROR_PROPAGATION_OP");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
+  IElementType FIELD_ACCESS_EXPRESSION = new HareElementType("FIELD_ACCESS_EXPRESSION");
   IElementType FIELD_ACCESS_OP = new HareElementType("FIELD_ACCESS_OP");
   IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
   IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
@@ -57,9 +58,12 @@ public interface HareTypes {
   IElementType INTEGER_CONSTANT = new HareElementType("INTEGER_CONSTANT");
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
   IElementType INTEGER_TYPE = new HareElementType("INTEGER_TYPE");
+  IElementType LENGTH_EXPRESSION = new HareElementType("LENGTH_EXPRESSION");
+  IElementType MEASUREMENT_EXPRESSION = new HareElementType("MEASUREMENT_EXPRESSION");
   IElementType MEMBER = new HareElementType("MEMBER");
   IElementType MEMBER_LIST = new HareElementType("MEMBER_LIST");
   IElementType OBJECT_SELECTOR = new HareElementType("OBJECT_SELECTOR");
+  IElementType OFFSET_EXPRESSION = new HareElementType("OFFSET_EXPRESSION");
   IElementType PARAMETER = new HareElementType("PARAMETER");
   IElementType PARAMETERS = new HareElementType("PARAMETERS");
   IElementType PARAMETER_LIST = new HareElementType("PARAMETER_LIST");
@@ -68,6 +72,7 @@ public interface HareTypes {
   IElementType POSTFIX_OP = new HareElementType("POSTFIX_OP");
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
+  IElementType SIZE_EXPRESSION = new HareElementType("SIZE_EXPRESSION");
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
   IElementType SLICING_OP = new HareElementType("SLICING_OP");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
@@ -137,6 +142,7 @@ public interface HareTypes {
   IElementType LBR = new HareTokenType("LBR");
   IElementType LEFT_SHIFT = new HareTokenType("LEFT_SHIFT");
   IElementType LEFT_SHIFT_ASSIGN = new HareTokenType("LEFT_SHIFT_ASSIGN");
+  IElementType LEN_KW = new HareTokenType("LEN_KW");
   IElementType LESSER_EQUAL = new HareTokenType("LESSER_EQUAL");
   IElementType LESSER_THAN = new HareTokenType("LESSER_THAN");
   IElementType LET_KW = new HareTokenType("LET_KW");
@@ -155,6 +161,7 @@ public interface HareTypes {
   IElementType NOT_EQUAL = new HareTokenType("NOT_EQUAL");
   IElementType NULLABLE_KW = new HareTokenType("NULLABLE_KW");
   IElementType NULL_KW = new HareTokenType("NULL_KW");
+  IElementType OFFSET_KW = new HareTokenType("OFFSET_KW");
   IElementType OR_ASSIGN = new HareTokenType("OR_ASSIGN");
   IElementType PLUS_ASSIGN = new HareTokenType("PLUS_ASSIGN");
   IElementType QUESTION = new HareTokenType("QUESTION");
@@ -277,6 +284,9 @@ public interface HareTypes {
       else if (type == EXPRESSION_LIST) {
         return new HareExpressionListImpl(node);
       }
+      else if (type == FIELD_ACCESS_EXPRESSION) {
+        return new HareFieldAccessExpressionImpl(node);
+      }
       else if (type == FIELD_ACCESS_OP) {
         return new HareFieldAccessOpImpl(node);
       }
@@ -340,6 +350,12 @@ public interface HareTypes {
       else if (type == INTEGER_TYPE) {
         return new HareIntegerTypeImpl(node);
       }
+      else if (type == LENGTH_EXPRESSION) {
+        return new HareLengthExpressionImpl(node);
+      }
+      else if (type == MEASUREMENT_EXPRESSION) {
+        return new HareMeasurementExpressionImpl(node);
+      }
       else if (type == MEMBER) {
         return new HareMemberImpl(node);
       }
@@ -348,6 +364,9 @@ public interface HareTypes {
       }
       else if (type == OBJECT_SELECTOR) {
         return new HareObjectSelectorImpl(node);
+      }
+      else if (type == OFFSET_EXPRESSION) {
+        return new HareOffsetExpressionImpl(node);
       }
       else if (type == PARAMETER) {
         return new HareParameterImpl(node);
@@ -372,6 +391,9 @@ public interface HareTypes {
       }
       else if (type == SCALA_TYPE) {
         return new HareScalaTypeImpl(node);
+      }
+      else if (type == SIZE_EXPRESSION) {
+        return new HareSizeExpressionImpl(node);
       }
       else if (type == SLICE_ARRAY_TYPE) {
         return new HareSliceArrayTypeImpl(node);

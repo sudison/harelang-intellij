@@ -123,6 +123,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFieldAccessExpression(@NotNull HareFieldAccessExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitFieldAccessOp(@NotNull HareFieldAccessOp o) {
     visitPsiElement(o);
   }
@@ -207,6 +211,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitLengthExpression(@NotNull HareLengthExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMeasurementExpression(@NotNull HareMeasurementExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitMember(@NotNull HareMember o) {
     visitPsiElement(o);
   }
@@ -216,6 +228,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitObjectSelector(@NotNull HareObjectSelector o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOffsetExpression(@NotNull HareOffsetExpression o) {
     visitPsiElement(o);
   }
 
@@ -248,6 +264,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitScalaType(@NotNull HareScalaType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSizeExpression(@NotNull HareSizeExpression o) {
     visitPsiElement(o);
   }
 
