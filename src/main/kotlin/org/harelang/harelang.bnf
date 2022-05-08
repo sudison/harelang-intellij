@@ -111,7 +111,9 @@ private unary_expression ::=
                             buildin_expression |
                             compound_expression |
                             match_expression |
-                            switch_expression
+                            switch_expression |
+                            unary_operator unary_expression
+unary_operator ::= ADDS | SUBSTRACTS | NOT | BANG | MULTIPLIES | AND
 private buildin_expression ::= variadic_expression |
                                                            slice_mutation_expression |
                                                            measurement_expression |

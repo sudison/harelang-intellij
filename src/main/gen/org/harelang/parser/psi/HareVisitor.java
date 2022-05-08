@@ -379,6 +379,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitUnaryOperator(@NotNull HareUnaryOperator o) {
+    visitPsiElement(o);
+  }
+
   public void visitUnwrappedAlias(@NotNull HareUnwrappedAlias o) {
     visitPsiElement(o);
   }

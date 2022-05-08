@@ -65,10 +65,10 @@ class HareLexer implements FlexLexer {
     "\11\0\1\10\1\5\3\7\22\0\1\10\1\27\1\6\2\0\1\14\1\15\1\0\1\32\1\33\1\13\1\16"+
     "\1\25\1\23\1\36\1\4\1\3\1\42\1\45\1\44\1\46\1\3\1\43\1\3\1\41\1\3\1\26\1\24"+
     "\1\21\1\12\1\22\1\37\1\0\32\1\1\30\1\0\1\31\1\17\1\2\1\0\1\63\1\57\1\64\1"+
-    "\66\1\54\1\67\1\73\1\65\1\40\2\1\1\61\1\72\1\50\1\60\1\55\1\1\1\56\1\52\1"+
-    "\51\1\47\1\62\1\74\1\70\1\71\1\53\1\34\1\20\1\35\7\0\1\7\32\0\1\10\77\0\12"+
-    "\11\46\0\12\11\14\0\12\11\20\0\12\11\6\0\12\11\6\0\13\10\35\0\2\7\5\0\1\10"+
-    "\57\0\1\10\26\0\12\11\16\0\62\11");
+    "\66\1\54\1\67\1\73\1\65\1\40\1\1\1\75\1\61\1\72\1\50\1\60\1\55\1\1\1\56\1"+
+    "\52\1\51\1\47\1\62\1\74\1\70\1\71\1\53\1\34\1\20\1\35\7\0\1\7\32\0\1\10\77"+
+    "\0\12\11\46\0\12\11\14\0\12\11\20\0\12\11\6\0\12\11\6\0\13\10\35\0\2\7\5\0"+
+    "\1\10\57\0\1\10\26\0\12\11\16\0\62\11");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -79,24 +79,25 @@ class HareLexer implements FlexLexer {
     "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\1\1"+
     "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
     "\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1\26"+
-    "\1\27\1\30\1\31\1\32\1\33\1\34\20\2\1\35"+
+    "\1\27\1\30\1\31\1\32\1\33\1\34\21\2\1\35"+
     "\1\36\1\0\1\37\1\40\1\41\1\42\1\43\1\44"+
     "\1\45\1\46\1\47\1\50\1\51\1\52\1\53\1\54"+
     "\1\55\1\56\1\57\1\60\1\61\1\62\1\63\4\2"+
-    "\1\64\1\2\1\65\36\2\1\66\4\2\1\35\1\67"+
+    "\1\64\1\2\1\65\40\2\1\66\5\2\1\35\1\67"+
     "\1\70\1\71\1\72\1\73\1\74\1\75\1\76\1\77"+
     "\1\100\2\2\1\101\1\102\1\103\1\2\1\104\4\2"+
-    "\1\105\10\2\1\106\1\107\15\2\1\110\1\111\1\112"+
-    "\1\2\1\113\3\2\1\114\1\2\1\115\1\116\1\117"+
-    "\1\120\3\2\1\121\1\122\1\2\1\123\1\124\1\2"+
-    "\1\125\11\2\1\126\1\127\2\2\1\130\4\2\1\131"+
-    "\7\2\1\132\1\2\1\133\2\2\1\134\1\135\1\136"+
-    "\1\2\1\137\1\140\1\141\1\142\2\2\1\143\1\144"+
-    "\1\145\1\146\1\147\1\2\1\150\1\151\1\152\1\153"+
-    "\1\154\1\2\1\155\1\156";
+    "\1\105\12\2\1\106\1\107\15\2\1\110\1\111\1\112"+
+    "\1\2\1\113\4\2\1\114\1\2\1\115\1\116\1\117"+
+    "\1\120\3\2\1\121\1\122\1\2\1\123\2\2\1\124"+
+    "\1\2\1\125\12\2\1\126\1\127\2\2\1\130\5\2"+
+    "\1\131\6\2\1\132\2\2\1\133\1\2\1\134\2\2"+
+    "\1\135\1\136\1\2\1\137\1\2\1\140\1\141\1\142"+
+    "\1\143\1\144\2\2\1\145\1\146\1\147\1\150\1\151"+
+    "\1\152\1\2\1\153\1\154\1\155\1\2\1\156\1\157"+
+    "\1\2\1\160\1\2\1\161\1\162";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[237];
+    int [] result = new int[256];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -121,39 +122,41 @@ class HareLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\75\0\172\0\172\0\267\0\364\0\75\0\u0131"+
-    "\0\u016e\0\u01ab\0\u01e8\0\u0225\0\u0262\0\u029f\0\u02dc\0\u0319"+
-    "\0\u0356\0\u0393\0\75\0\75\0\u03d0\0\u040d\0\75\0\75"+
-    "\0\75\0\75\0\75\0\75\0\u044a\0\75\0\u0487\0\u04c4"+
-    "\0\u0501\0\u053e\0\u057b\0\u05b8\0\u05f5\0\u0632\0\u066f\0\u06ac"+
-    "\0\u06e9\0\u0726\0\u0763\0\u07a0\0\u07dd\0\u081a\0\u0857\0\75"+
-    "\0\u0131\0\u0131\0\75\0\75\0\75\0\75\0\75\0\u0894"+
-    "\0\75\0\75\0\u08d1\0\75\0\u090e\0\75\0\u094b\0\75"+
-    "\0\u0988\0\75\0\75\0\75\0\u09c5\0\172\0\u0a02\0\u0a3f"+
-    "\0\u0a7c\0\u0ab9\0\172\0\u0af6\0\172\0\u0b33\0\u0b70\0\u0bad"+
-    "\0\u0bea\0\u0c27\0\u0c64\0\u0ca1\0\u0cde\0\u0d1b\0\u0d58\0\u0d95"+
-    "\0\u0dd2\0\u0e0f\0\u0e4c\0\u0e89\0\u0ec6\0\u0f03\0\u0f40\0\u0f7d"+
-    "\0\u0fba\0\u0ff7\0\u1034\0\u1071\0\u10ae\0\u10eb\0\u1128\0\u1165"+
-    "\0\u11a2\0\u11df\0\u121c\0\172\0\u1259\0\u1296\0\u12d3\0\u1310"+
-    "\0\75\0\75\0\75\0\75\0\75\0\75\0\75\0\172"+
-    "\0\172\0\172\0\172\0\u134d\0\u138a\0\172\0\172\0\172"+
-    "\0\u13c7\0\172\0\u1404\0\u1441\0\u147e\0\u14bb\0\u14f8\0\u1535"+
-    "\0\u1572\0\u15af\0\u15ec\0\u1629\0\u1666\0\u16a3\0\u16e0\0\172"+
-    "\0\172\0\u171d\0\u175a\0\u1797\0\u17d4\0\u1811\0\u184e\0\u188b"+
-    "\0\u18c8\0\u1905\0\u1942\0\u197f\0\u19bc\0\u19f9\0\u1a36\0\172"+
-    "\0\172\0\u1a73\0\172\0\u1ab0\0\u1aed\0\u1b2a\0\u1b67\0\u1ba4"+
-    "\0\u1be1\0\172\0\172\0\172\0\u1c1e\0\u1c5b\0\u1c98\0\172"+
-    "\0\172\0\u1cd5\0\172\0\172\0\u1d12\0\172\0\u1d4f\0\u1d8c"+
-    "\0\u1dc9\0\u1e06\0\u1e43\0\u1e80\0\u1ebd\0\u1efa\0\u1f37\0\172"+
-    "\0\172\0\u1f74\0\u1fb1\0\172\0\u1fee\0\u202b\0\u2068\0\u20a5"+
-    "\0\172\0\u20e2\0\u211f\0\u215c\0\u2199\0\u21d6\0\u2213\0\u2250"+
-    "\0\172\0\u228d\0\172\0\u22ca\0\u2307\0\172\0\172\0\172"+
-    "\0\u2344\0\172\0\172\0\172\0\172\0\u2381\0\u23be\0\172"+
-    "\0\172\0\172\0\172\0\172\0\u23fb\0\172\0\172\0\172"+
-    "\0\172\0\172\0\u2438\0\172\0\172";
+    "\0\0\0\76\0\174\0\174\0\272\0\370\0\76\0\u0136"+
+    "\0\u0174\0\u01b2\0\u01f0\0\u022e\0\u026c\0\u02aa\0\u02e8\0\u0326"+
+    "\0\u0364\0\u03a2\0\76\0\76\0\u03e0\0\u041e\0\76\0\76"+
+    "\0\76\0\76\0\76\0\76\0\u045c\0\76\0\u049a\0\u04d8"+
+    "\0\u0516\0\u0554\0\u0592\0\u05d0\0\u060e\0\u064c\0\u068a\0\u06c8"+
+    "\0\u0706\0\u0744\0\u0782\0\u07c0\0\u07fe\0\u083c\0\u087a\0\u08b8"+
+    "\0\76\0\u0136\0\u0136\0\76\0\76\0\76\0\76\0\76"+
+    "\0\u08f6\0\76\0\76\0\u0934\0\76\0\u0972\0\76\0\u09b0"+
+    "\0\76\0\u09ee\0\76\0\76\0\76\0\u0a2c\0\174\0\u0a6a"+
+    "\0\u0aa8\0\u0ae6\0\u0b24\0\174\0\u0b62\0\174\0\u0ba0\0\u0bde"+
+    "\0\u0c1c\0\u0c5a\0\u0c98\0\u0cd6\0\u0d14\0\u0d52\0\u0d90\0\u0dce"+
+    "\0\u0e0c\0\u0e4a\0\u0e88\0\u0ec6\0\u0f04\0\u0f42\0\u0f80\0\u0fbe"+
+    "\0\u0ffc\0\u103a\0\u1078\0\u10b6\0\u10f4\0\u1132\0\u1170\0\u11ae"+
+    "\0\u11ec\0\u122a\0\u1268\0\u12a6\0\u12e4\0\u1322\0\174\0\u1360"+
+    "\0\u139e\0\u13dc\0\u141a\0\u1458\0\76\0\76\0\76\0\76"+
+    "\0\76\0\76\0\76\0\174\0\174\0\174\0\174\0\u1496"+
+    "\0\u14d4\0\174\0\174\0\174\0\u1512\0\174\0\u1550\0\u158e"+
+    "\0\u15cc\0\u160a\0\u1648\0\u1686\0\u16c4\0\u1702\0\u1740\0\u177e"+
+    "\0\u17bc\0\u17fa\0\u1838\0\u1876\0\u18b4\0\174\0\174\0\u18f2"+
+    "\0\u1930\0\u196e\0\u19ac\0\u19ea\0\u1a28\0\u1a66\0\u1aa4\0\u1ae2"+
+    "\0\u1b20\0\u1b5e\0\u1b9c\0\u1bda\0\u1c18\0\174\0\174\0\u1c56"+
+    "\0\174\0\u1c94\0\u1cd2\0\u1d10\0\u1d4e\0\u1d8c\0\u1dca\0\u1e08"+
+    "\0\174\0\174\0\174\0\u1e46\0\u1e84\0\u1ec2\0\174\0\174"+
+    "\0\u1f00\0\174\0\u1f3e\0\u1f7c\0\174\0\u1fba\0\174\0\u1ff8"+
+    "\0\u2036\0\u2074\0\u20b2\0\u20f0\0\u212e\0\u216c\0\u21aa\0\u21e8"+
+    "\0\u2226\0\174\0\174\0\u2264\0\u22a2\0\174\0\u22e0\0\u231e"+
+    "\0\u235c\0\u239a\0\u23d8\0\174\0\u2416\0\u2454\0\u2492\0\u24d0"+
+    "\0\u250e\0\u254c\0\174\0\u258a\0\u25c8\0\174\0\u2606\0\174"+
+    "\0\u2644\0\u2682\0\174\0\174\0\u26c0\0\174\0\u26fe\0\174"+
+    "\0\174\0\174\0\174\0\174\0\u273c\0\u277a\0\174\0\174"+
+    "\0\174\0\174\0\174\0\174\0\u27b8\0\174\0\174\0\174"+
+    "\0\u27f6\0\174\0\174\0\u2834\0\174\0\u2872\0\174\0\174";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[237];
+    int [] result = new int[256];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -182,121 +185,132 @@ class HareLexer implements FlexLexer {
     "\1\30\1\31\1\32\1\33\1\34\1\35\1\36\1\37"+
     "\6\5\1\40\1\41\1\42\1\43\1\3\1\44\1\3"+
     "\1\45\1\46\1\47\1\50\1\51\1\52\1\53\1\3"+
-    "\1\54\1\55\2\3\1\56\2\3\76\0\3\3\34\0"+
-    "\35\3\3\0\1\5\5\0\1\5\27\0\6\5\32\0"+
-    "\1\57\5\0\1\60\62\0\5\61\1\0\1\62\1\0"+
-    "\65\61\12\0\1\63\7\0\1\64\64\0\1\65\74\0"+
-    "\1\66\74\0\1\67\2\0\1\70\71\0\1\71\74\0"+
-    "\1\72\4\0\1\73\67\0\1\74\5\0\1\75\66\0"+
-    "\1\76\6\0\1\77\65\0\1\100\7\0\1\101\64\0"+
-    "\1\102\110\0\1\103\60\0\1\104\120\0\1\105\37\0"+
-    "\3\3\34\0\1\3\1\106\1\107\1\110\1\111\3\3"+
-    "\1\112\16\3\1\113\5\3\1\0\3\3\34\0\1\114"+
-    "\1\115\1\116\1\117\1\120\3\3\1\121\1\3\1\122"+
-    "\22\3\1\0\3\3\34\0\7\3\1\123\25\3\1\0"+
-    "\3\3\34\0\16\3\1\124\12\3\1\125\3\3\1\0"+
-    "\3\3\34\0\1\126\10\3\1\127\22\3\1\130\1\0"+
-    "\3\3\34\0\10\3\1\131\10\3\1\132\6\3\1\133"+
-    "\4\3\1\0\3\3\34\0\7\3\1\134\25\3\1\0"+
-    "\3\3\34\0\20\3\1\135\14\3\1\0\3\3\34\0"+
-    "\27\3\1\136\5\3\1\0\3\3\34\0\14\3\1\137"+
-    "\20\3\1\0\3\3\34\0\20\3\1\140\2\3\1\141"+
-    "\11\3\1\0\3\3\34\0\12\3\1\142\2\3\1\143"+
-    "\1\3\1\144\1\3\1\145\13\3\1\0\3\3\34\0"+
-    "\20\3\1\146\2\3\1\147\1\3\1\150\7\3\1\0"+
-    "\3\3\34\0\14\3\1\151\20\3\1\0\3\3\34\0"+
-    "\3\3\1\152\1\153\3\3\1\154\5\3\1\155\1\3"+
-    "\1\156\2\3\1\157\11\3\1\0\3\3\34\0\23\3"+
-    "\1\160\11\3\5\57\1\161\67\57\12\0\1\162\74\0"+
-    "\1\163\74\0\1\164\74\0\1\165\74\0\1\166\120\0"+
-    "\1\167\37\0\3\3\34\0\3\3\1\170\31\3\1\0"+
-    "\3\3\34\0\6\3\1\171\26\3\1\0\3\3\34\0"+
-    "\5\3\1\172\27\3\1\0\3\3\34\0\11\3\1\173"+
-    "\1\174\22\3\1\0\3\3\34\0\10\3\1\175\24\3"+
-    "\1\0\3\3\34\0\3\3\1\176\31\3\1\0\3\3"+
-    "\34\0\6\3\1\177\26\3\1\0\3\3\34\0\5\3"+
-    "\1\200\27\3\1\0\3\3\34\0\1\201\34\3\1\0"+
-    "\3\3\34\0\14\3\1\202\20\3\1\0\3\3\34\0"+
-    "\21\3\1\203\13\3\1\0\3\3\34\0\7\3\1\204"+
-    "\25\3\1\0\3\3\34\0\15\3\1\205\17\3\1\0"+
-    "\3\3\34\0\13\3\1\206\21\3\1\0\3\3\34\0"+
-    "\16\3\1\207\4\3\1\210\11\3\1\0\3\3\34\0"+
-    "\1\211\34\3\1\0\3\3\34\0\7\3\1\212\25\3"+
-    "\1\0\3\3\34\0\12\3\1\213\22\3\1\0\3\3"+
-    "\34\0\15\3\1\214\17\3\1\0\3\3\34\0\10\3"+
-    "\1\215\24\3\1\0\3\3\34\0\20\3\1\216\14\3"+
-    "\1\0\3\3\34\0\27\3\1\217\5\3\1\0\3\3"+
-    "\34\0\10\3\1\220\1\221\23\3\1\0\3\3\34\0"+
-    "\1\222\34\3\1\0\3\3\34\0\12\3\1\223\1\3"+
-    "\1\224\4\3\1\225\1\3\1\226\11\3\1\0\3\3"+
-    "\34\0\12\3\1\227\22\3\1\0\3\3\34\0\15\3"+
-    "\1\230\17\3\1\0\3\3\34\0\20\3\1\231\14\3"+
-    "\1\0\3\3\34\0\21\3\1\232\13\3\1\0\3\3"+
-    "\34\0\10\3\1\233\24\3\1\0\3\3\34\0\12\3"+
-    "\1\234\22\3\1\0\3\3\34\0\23\3\1\235\11\3"+
-    "\1\0\3\3\34\0\21\3\1\236\5\3\1\237\5\3"+
-    "\1\0\3\3\34\0\6\3\1\240\26\3\1\0\3\3"+
-    "\34\0\5\3\1\241\27\3\1\0\3\3\34\0\14\3"+
-    "\1\242\20\3\1\0\3\3\34\0\16\3\1\243\16\3"+
-    "\1\0\3\3\34\0\21\3\1\244\13\3\1\0\3\3"+
-    "\34\0\11\3\1\245\23\3\1\0\3\3\34\0\14\3"+
-    "\1\246\20\3\1\0\3\3\34\0\11\3\1\247\23\3"+
-    "\1\0\3\3\34\0\20\3\1\250\14\3\1\0\3\3"+
-    "\34\0\21\3\1\251\13\3\1\0\3\3\34\0\14\3"+
-    "\1\252\20\3\1\0\3\3\34\0\14\3\1\253\20\3"+
-    "\1\0\3\3\34\0\14\3\1\254\20\3\1\0\3\3"+
-    "\34\0\7\3\1\255\25\3\1\0\3\3\34\0\11\3"+
-    "\1\256\23\3\1\0\3\3\34\0\11\3\1\257\23\3"+
-    "\1\0\3\3\34\0\32\3\1\260\2\3\1\0\3\3"+
-    "\34\0\14\3\1\261\20\3\1\0\3\3\34\0\20\3"+
-    "\1\262\14\3\1\0\3\3\34\0\14\3\1\263\20\3"+
-    "\1\0\3\3\34\0\21\3\1\264\13\3\1\0\3\3"+
-    "\34\0\12\3\1\265\22\3\1\0\3\3\34\0\26\3"+
-    "\1\266\6\3\1\0\3\3\34\0\11\3\1\267\23\3"+
-    "\1\0\3\3\34\0\10\3\1\270\24\3\1\0\3\3"+
-    "\34\0\1\271\34\3\1\0\3\3\34\0\16\3\1\272"+
-    "\16\3\1\0\3\3\34\0\14\3\1\273\20\3\1\0"+
-    "\3\3\34\0\14\3\1\274\20\3\1\0\3\3\34\0"+
-    "\16\3\1\275\16\3\1\0\3\3\34\0\20\3\1\276"+
-    "\14\3\1\0\3\3\34\0\12\3\1\277\22\3\1\0"+
-    "\3\3\34\0\14\3\1\300\20\3\1\0\3\3\34\0"+
-    "\16\3\1\301\16\3\1\0\3\3\34\0\14\3\1\302"+
-    "\20\3\1\0\3\3\34\0\14\3\1\303\20\3\1\0"+
-    "\3\3\34\0\14\3\1\304\20\3\1\0\3\3\34\0"+
-    "\12\3\1\305\22\3\1\0\3\3\34\0\24\3\1\306"+
-    "\10\3\1\0\3\3\34\0\16\3\1\307\16\3\1\0"+
-    "\3\3\34\0\15\3\1\310\17\3\1\0\3\3\34\0"+
-    "\10\3\1\311\24\3\1\0\3\3\34\0\23\3\1\312"+
-    "\11\3\1\0\3\3\34\0\24\3\1\313\10\3\1\0"+
-    "\3\3\34\0\1\314\34\3\1\0\3\3\34\0\24\3"+
-    "\1\315\10\3\1\0\3\3\34\0\16\3\1\316\16\3"+
-    "\1\0\3\3\34\0\14\3\1\317\20\3\1\0\3\3"+
-    "\34\0\23\3\1\320\11\3\1\0\3\3\34\0\26\3"+
-    "\1\321\6\3\1\0\3\3\34\0\12\3\1\322\22\3"+
-    "\1\0\3\3\34\0\33\3\1\323\1\3\1\0\3\3"+
-    "\34\0\16\3\1\324\16\3\1\0\3\3\34\0\10\3"+
-    "\1\325\24\3\1\0\3\3\34\0\11\3\1\326\23\3"+
-    "\1\0\3\3\34\0\24\3\1\327\10\3\1\0\3\3"+
-    "\34\0\11\3\1\330\23\3\1\0\3\3\34\0\11\3"+
-    "\1\331\23\3\1\0\3\3\34\0\16\3\1\332\16\3"+
-    "\1\0\3\3\34\0\14\3\1\333\20\3\1\0\3\3"+
-    "\34\0\25\3\1\334\7\3\1\0\3\3\34\0\11\3"+
-    "\1\335\23\3\1\0\3\3\34\0\11\3\1\336\23\3"+
-    "\1\0\3\3\34\0\17\3\1\337\15\3\1\0\3\3"+
-    "\34\0\11\3\1\340\23\3\1\0\3\3\34\0\24\3"+
-    "\1\341\10\3\1\0\3\3\34\0\25\3\1\342\7\3"+
-    "\1\0\3\3\34\0\11\3\1\343\23\3\1\0\3\3"+
-    "\34\0\11\3\1\344\23\3\1\0\3\3\34\0\16\3"+
-    "\1\345\16\3\1\0\3\3\34\0\11\3\1\346\23\3"+
-    "\1\0\3\3\34\0\11\3\1\347\23\3\1\0\3\3"+
-    "\34\0\26\3\1\350\6\3\1\0\3\3\34\0\14\3"+
-    "\1\351\20\3\1\0\3\3\34\0\16\3\1\352\16\3"+
-    "\1\0\3\3\34\0\21\3\1\353\13\3\1\0\3\3"+
-    "\34\0\11\3\1\354\23\3\1\0\3\3\34\0\14\3"+
-    "\1\355\20\3";
+    "\1\54\1\55\1\3\1\56\1\57\3\3\77\0\3\3"+
+    "\34\0\36\3\3\0\1\5\5\0\1\5\27\0\6\5"+
+    "\33\0\1\60\5\0\1\61\63\0\5\62\1\0\1\63"+
+    "\1\0\66\62\12\0\1\64\7\0\1\65\65\0\1\66"+
+    "\75\0\1\67\75\0\1\70\2\0\1\71\72\0\1\72"+
+    "\75\0\1\73\4\0\1\74\70\0\1\75\5\0\1\76"+
+    "\67\0\1\77\6\0\1\100\66\0\1\101\7\0\1\102"+
+    "\65\0\1\103\111\0\1\104\61\0\1\105\121\0\1\106"+
+    "\40\0\3\3\34\0\1\3\1\107\1\110\1\111\1\112"+
+    "\3\3\1\113\16\3\1\114\6\3\1\0\3\3\34\0"+
+    "\1\115\1\116\1\117\1\120\1\121\3\3\1\122\1\3"+
+    "\1\123\23\3\1\0\3\3\34\0\7\3\1\124\26\3"+
+    "\1\0\3\3\34\0\16\3\1\125\12\3\1\126\4\3"+
+    "\1\0\3\3\34\0\1\127\10\3\1\130\22\3\1\131"+
+    "\1\3\1\0\3\3\34\0\10\3\1\132\10\3\1\133"+
+    "\6\3\1\134\5\3\1\0\3\3\34\0\7\3\1\135"+
+    "\4\3\1\136\21\3\1\0\3\3\34\0\16\3\1\137"+
+    "\1\3\1\140\15\3\1\0\3\3\34\0\27\3\1\141"+
+    "\6\3\1\0\3\3\34\0\14\3\1\142\21\3\1\0"+
+    "\3\3\34\0\20\3\1\143\2\3\1\144\12\3\1\0"+
+    "\3\3\34\0\12\3\1\145\2\3\1\146\1\3\1\147"+
+    "\1\3\1\150\14\3\1\0\3\3\34\0\20\3\1\151"+
+    "\2\3\1\152\1\3\1\153\10\3\1\0\3\3\34\0"+
+    "\14\3\1\154\21\3\1\0\3\3\34\0\3\3\1\155"+
+    "\1\156\3\3\1\157\5\3\1\160\1\3\1\161\2\3"+
+    "\1\162\12\3\1\0\3\3\34\0\1\163\35\3\1\0"+
+    "\3\3\34\0\23\3\1\164\12\3\5\60\1\165\70\60"+
+    "\12\0\1\166\75\0\1\167\75\0\1\170\75\0\1\171"+
+    "\75\0\1\172\121\0\1\173\40\0\3\3\34\0\3\3"+
+    "\1\174\32\3\1\0\3\3\34\0\6\3\1\175\27\3"+
+    "\1\0\3\3\34\0\5\3\1\176\30\3\1\0\3\3"+
+    "\34\0\11\3\1\177\1\200\23\3\1\0\3\3\34\0"+
+    "\10\3\1\201\25\3\1\0\3\3\34\0\3\3\1\202"+
+    "\32\3\1\0\3\3\34\0\6\3\1\203\27\3\1\0"+
+    "\3\3\34\0\5\3\1\204\30\3\1\0\3\3\34\0"+
+    "\1\205\35\3\1\0\3\3\34\0\14\3\1\206\21\3"+
+    "\1\0\3\3\34\0\21\3\1\207\14\3\1\0\3\3"+
+    "\34\0\7\3\1\210\26\3\1\0\3\3\34\0\15\3"+
+    "\1\211\20\3\1\0\3\3\34\0\13\3\1\212\22\3"+
+    "\1\0\3\3\34\0\16\3\1\213\4\3\1\214\12\3"+
+    "\1\0\3\3\34\0\1\215\35\3\1\0\3\3\34\0"+
+    "\7\3\1\216\26\3\1\0\3\3\34\0\12\3\1\217"+
+    "\23\3\1\0\3\3\34\0\15\3\1\220\20\3\1\0"+
+    "\3\3\34\0\10\3\1\221\25\3\1\0\3\3\34\0"+
+    "\11\3\1\222\24\3\1\0\3\3\34\0\14\3\1\223"+
+    "\21\3\1\0\3\3\34\0\20\3\1\224\15\3\1\0"+
+    "\3\3\34\0\27\3\1\225\6\3\1\0\3\3\34\0"+
+    "\10\3\1\226\1\227\24\3\1\0\3\3\34\0\1\230"+
+    "\35\3\1\0\3\3\34\0\12\3\1\231\1\3\1\232"+
+    "\4\3\1\233\1\3\1\234\12\3\1\0\3\3\34\0"+
+    "\12\3\1\235\23\3\1\0\3\3\34\0\15\3\1\236"+
+    "\20\3\1\0\3\3\34\0\20\3\1\237\15\3\1\0"+
+    "\3\3\34\0\21\3\1\240\14\3\1\0\3\3\34\0"+
+    "\10\3\1\241\25\3\1\0\3\3\34\0\12\3\1\242"+
+    "\23\3\1\0\3\3\34\0\23\3\1\243\12\3\1\0"+
+    "\3\3\34\0\21\3\1\244\5\3\1\245\6\3\1\0"+
+    "\3\3\34\0\6\3\1\246\27\3\1\0\3\3\34\0"+
+    "\5\3\1\247\30\3\1\0\3\3\34\0\14\3\1\250"+
+    "\21\3\1\0\3\3\34\0\16\3\1\251\17\3\1\0"+
+    "\3\3\34\0\21\3\1\252\14\3\1\0\3\3\34\0"+
+    "\14\3\1\253\21\3\1\0\3\3\34\0\11\3\1\254"+
+    "\24\3\1\0\3\3\34\0\14\3\1\255\21\3\1\0"+
+    "\3\3\34\0\11\3\1\256\24\3\1\0\3\3\34\0"+
+    "\20\3\1\257\15\3\1\0\3\3\34\0\21\3\1\260"+
+    "\14\3\1\0\3\3\34\0\14\3\1\261\21\3\1\0"+
+    "\3\3\34\0\14\3\1\262\21\3\1\0\3\3\34\0"+
+    "\14\3\1\263\21\3\1\0\3\3\34\0\7\3\1\264"+
+    "\26\3\1\0\3\3\34\0\11\3\1\265\24\3\1\0"+
+    "\3\3\34\0\11\3\1\266\24\3\1\0\3\3\34\0"+
+    "\32\3\1\267\3\3\1\0\3\3\34\0\14\3\1\270"+
+    "\21\3\1\0\3\3\34\0\20\3\1\271\15\3\1\0"+
+    "\3\3\34\0\14\3\1\272\21\3\1\0\3\3\34\0"+
+    "\7\3\1\273\26\3\1\0\3\3\34\0\23\3\1\274"+
+    "\12\3\1\0\3\3\34\0\21\3\1\275\14\3\1\0"+
+    "\3\3\34\0\12\3\1\276\23\3\1\0\3\3\34\0"+
+    "\26\3\1\277\7\3\1\0\3\3\34\0\11\3\1\300"+
+    "\24\3\1\0\3\3\34\0\10\3\1\301\25\3\1\0"+
+    "\3\3\34\0\1\302\35\3\1\0\3\3\34\0\16\3"+
+    "\1\303\17\3\1\0\3\3\34\0\14\3\1\304\21\3"+
+    "\1\0\3\3\34\0\14\3\1\305\21\3\1\0\3\3"+
+    "\34\0\16\3\1\306\17\3\1\0\3\3\34\0\20\3"+
+    "\1\307\15\3\1\0\3\3\34\0\11\3\1\310\1\311"+
+    "\23\3\1\0\3\3\34\0\14\3\1\312\21\3\1\0"+
+    "\3\3\34\0\16\3\1\313\17\3\1\0\3\3\34\0"+
+    "\14\3\1\314\21\3\1\0\3\3\34\0\14\3\1\315"+
+    "\21\3\1\0\3\3\34\0\14\3\1\316\21\3\1\0"+
+    "\3\3\34\0\12\3\1\317\23\3\1\0\3\3\34\0"+
+    "\21\3\1\320\14\3\1\0\3\3\34\0\24\3\1\321"+
+    "\11\3\1\0\3\3\34\0\16\3\1\322\17\3\1\0"+
+    "\3\3\34\0\15\3\1\323\20\3\1\0\3\3\34\0"+
+    "\10\3\1\324\25\3\1\0\3\3\34\0\23\3\1\325"+
+    "\12\3\1\0\3\3\34\0\24\3\1\326\11\3\1\0"+
+    "\3\3\34\0\1\327\35\3\1\0\3\3\34\0\24\3"+
+    "\1\330\11\3\1\0\3\3\34\0\16\3\1\331\17\3"+
+    "\1\0\3\3\34\0\16\3\1\332\17\3\1\0\3\3"+
+    "\34\0\35\3\1\333\1\0\3\3\34\0\14\3\1\334"+
+    "\21\3\1\0\3\3\34\0\23\3\1\335\12\3\1\0"+
+    "\3\3\34\0\26\3\1\336\7\3\1\0\3\3\34\0"+
+    "\12\3\1\337\23\3\1\0\3\3\34\0\33\3\1\340"+
+    "\2\3\1\0\3\3\34\0\16\3\1\341\17\3\1\0"+
+    "\3\3\34\0\10\3\1\342\25\3\1\0\3\3\34\0"+
+    "\11\3\1\343\24\3\1\0\3\3\34\0\24\3\1\344"+
+    "\11\3\1\0\3\3\34\0\1\345\35\3\1\0\3\3"+
+    "\34\0\11\3\1\346\24\3\1\0\3\3\34\0\11\3"+
+    "\1\347\24\3\1\0\3\3\34\0\16\3\1\350\17\3"+
+    "\1\0\3\3\34\0\14\3\1\351\21\3\1\0\3\3"+
+    "\34\0\26\3\1\352\7\3\1\0\3\3\34\0\25\3"+
+    "\1\353\10\3\1\0\3\3\34\0\11\3\1\354\24\3"+
+    "\1\0\3\3\34\0\11\3\1\355\24\3\1\0\3\3"+
+    "\34\0\17\3\1\356\16\3\1\0\3\3\34\0\11\3"+
+    "\1\357\24\3\1\0\3\3\34\0\24\3\1\360\11\3"+
+    "\1\0\3\3\34\0\25\3\1\361\10\3\1\0\3\3"+
+    "\34\0\11\3\1\362\24\3\1\0\3\3\34\0\10\3"+
+    "\1\363\25\3\1\0\3\3\34\0\11\3\1\364\24\3"+
+    "\1\0\3\3\34\0\16\3\1\365\17\3\1\0\3\3"+
+    "\34\0\11\3\1\366\24\3\1\0\3\3\34\0\11\3"+
+    "\1\367\24\3\1\0\3\3\34\0\26\3\1\370\7\3"+
+    "\1\0\3\3\34\0\10\3\1\371\25\3\1\0\3\3"+
+    "\34\0\14\3\1\372\21\3\1\0\3\3\34\0\16\3"+
+    "\1\373\17\3\1\0\3\3\34\0\21\3\1\374\14\3"+
+    "\1\0\3\3\34\0\11\3\1\375\24\3\1\0\3\3"+
+    "\34\0\7\3\1\376\26\3\1\0\3\3\34\0\14\3"+
+    "\1\377\21\3\1\0\3\3\34\0\14\3\1\u0100\21\3";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[9333];
+    int [] result = new int[10416];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -335,12 +349,12 @@ class HareLexer implements FlexLexer {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\1\11\4\1\1\11\13\1\2\11\2\1\6\11"+
-    "\1\1\1\11\21\1\1\11\1\0\1\1\5\11\1\1"+
+    "\1\1\1\11\22\1\1\11\1\0\1\1\5\11\1\1"+
     "\2\11\1\1\1\11\1\1\1\11\1\1\1\11\1\1"+
-    "\3\11\54\1\7\11\166\1";
+    "\3\11\57\1\7\11\205\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[237];
+    int [] result = new int[256];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -657,552 +671,572 @@ class HareLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 111: break;
+          case 115: break;
           case 2: 
             { return HareTypes.IDENTIFIER;
             } 
             // fall through
-          case 112: break;
+          case 116: break;
           case 3: 
             { return HareTypes.UNDERSCORE;
             } 
             // fall through
-          case 113: break;
+          case 117: break;
           case 4: 
             { return HareTypes.DECIMAL_DIGITS;
             } 
             // fall through
-          case 114: break;
+          case 118: break;
           case 5: 
             { return HareTypes.DIVIDES;
             } 
             // fall through
-          case 115: break;
+          case 119: break;
           case 6: 
             { return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 116: break;
+          case 120: break;
           case 7: 
             { return HareTypes.ASSIGN;
             } 
             // fall through
-          case 117: break;
+          case 121: break;
           case 8: 
             { return HareTypes.MULTIPLIES;
             } 
             // fall through
-          case 118: break;
+          case 122: break;
           case 9: 
             { return HareTypes.MODULUS;
             } 
             // fall through
-          case 119: break;
+          case 123: break;
           case 10: 
             { return HareTypes.AND;
             } 
             // fall through
-          case 120: break;
+          case 124: break;
           case 11: 
             { return HareTypes.ADDS;
             } 
             // fall through
-          case 121: break;
+          case 125: break;
           case 12: 
             { return HareTypes.EXCLUSIVE_OR;
             } 
             // fall through
-          case 122: break;
+          case 126: break;
           case 13: 
             { return HareTypes.INCLUSIVE_OR;
             } 
             // fall through
-          case 123: break;
+          case 127: break;
           case 14: 
             { return HareTypes.LESSER_THAN;
             } 
             // fall through
-          case 124: break;
+          case 128: break;
           case 15: 
             { return HareTypes.LARGER_THAN;
             } 
             // fall through
-          case 125: break;
+          case 129: break;
           case 16: 
             { return HareTypes.SUBSTRACTS;
             } 
             // fall through
-          case 126: break;
+          case 130: break;
           case 17: 
             { return HareTypes.EOS;
             } 
             // fall through
-          case 127: break;
+          case 131: break;
           case 18: 
             { return HareTypes.COMMA;
             } 
             // fall through
-          case 128: break;
+          case 132: break;
           case 19: 
             { return HareTypes.COLON;
             } 
             // fall through
-          case 129: break;
+          case 133: break;
           case 20: 
             { return HareTypes.BANG;
             } 
             // fall through
-          case 130: break;
+          case 134: break;
           case 21: 
             { return HareTypes.LB;
             } 
             // fall through
-          case 131: break;
+          case 135: break;
           case 22: 
             { return HareTypes.RB;
             } 
             // fall through
-          case 132: break;
+          case 136: break;
           case 23: 
             { return HareTypes.LP;
             } 
             // fall through
-          case 133: break;
+          case 137: break;
           case 24: 
             { return HareTypes.RP;
             } 
             // fall through
-          case 134: break;
+          case 138: break;
           case 25: 
             { return HareTypes.LBR;
             } 
             // fall through
-          case 135: break;
+          case 139: break;
           case 26: 
             { return HareTypes.RBR;
             } 
             // fall through
-          case 136: break;
+          case 140: break;
           case 27: 
             { return HareTypes.DOT;
             } 
             // fall through
-          case 137: break;
+          case 141: break;
           case 28: 
             { return HareTypes.QUESTION;
             } 
             // fall through
-          case 138: break;
+          case 142: break;
           case 29: 
             { return HareElementType.Companion.getCOMMENT();
             } 
             // fall through
-          case 139: break;
+          case 143: break;
           case 30: 
             { return HareTypes.DIVIDES_ASSIGN;
             } 
             // fall through
-          case 140: break;
+          case 144: break;
           case 31: 
             { return HareTypes.STRING_LITERAL;
             } 
             // fall through
-          case 141: break;
+          case 145: break;
           case 32: 
             { return HareTypes.EQUAL;
             } 
             // fall through
-          case 142: break;
+          case 146: break;
           case 33: 
             { return HareTypes.MATCH_OP;
             } 
             // fall through
-          case 143: break;
+          case 147: break;
           case 34: 
             { return HareTypes.MULTIPLIES_ASSIGN;
             } 
             // fall through
-          case 144: break;
+          case 148: break;
           case 35: 
             { return HareTypes.MODULUS_ASSIGN;
             } 
             // fall through
-          case 145: break;
+          case 149: break;
           case 36: 
             { return HareTypes.AND_ASSIGN;
             } 
             // fall through
-          case 146: break;
+          case 150: break;
           case 37: 
             { return HareTypes.LOGICAL_AND;
             } 
             // fall through
-          case 147: break;
+          case 151: break;
           case 38: 
             { return HareTypes.PLUS_ASSIGN;
             } 
             // fall through
-          case 148: break;
+          case 152: break;
           case 39: 
             { return HareTypes.XOR_ASSIGN;
             } 
             // fall through
-          case 149: break;
+          case 153: break;
           case 40: 
             { return HareTypes.LOGICAL_XOR;
             } 
             // fall through
-          case 150: break;
+          case 154: break;
           case 41: 
             { return HareTypes.OR_ASSIGN;
             } 
             // fall through
-          case 151: break;
+          case 155: break;
           case 42: 
             { return HareTypes.LOGICAL_OR;
             } 
             // fall through
-          case 152: break;
+          case 156: break;
           case 43: 
             { return HareTypes.LESSER_EQUAL;
             } 
             // fall through
-          case 153: break;
+          case 157: break;
           case 44: 
             { return HareTypes.LEFT_SHIFT;
             } 
             // fall through
-          case 154: break;
+          case 158: break;
           case 45: 
             { return HareTypes.LARGER_EQUAL;
             } 
             // fall through
-          case 155: break;
+          case 159: break;
           case 46: 
             { return HareTypes.RIGHT_SHIFT;
             } 
             // fall through
-          case 156: break;
+          case 160: break;
           case 47: 
             { return HareTypes.MINUS_ASSIGN;
             } 
             // fall through
-          case 157: break;
+          case 161: break;
           case 48: 
             { return HareTypes.SCOPE;
             } 
             // fall through
-          case 158: break;
+          case 162: break;
           case 49: 
             { return HareTypes.NOT_EQUAL;
             } 
             // fall through
-          case 159: break;
+          case 163: break;
           case 50: 
             { return HareTypes.DOTDOT;
             } 
             // fall through
-          case 160: break;
+          case 164: break;
           case 51: 
             { return HareTypes.I8_TYPE;
             } 
             // fall through
-          case 161: break;
+          case 165: break;
           case 52: 
             { return HareTypes.IF_KW;
             } 
             // fall through
-          case 162: break;
+          case 166: break;
           case 53: 
             { return HareTypes.U8_TYPE;
             } 
             // fall through
-          case 163: break;
+          case 167: break;
           case 54: 
             { return HareTypes.FN_KW;
             } 
             // fall through
-          case 164: break;
+          case 168: break;
           case 55: 
             { return HareTypes.LOGICAL_AND_ASSIGN;
             } 
             // fall through
-          case 165: break;
+          case 169: break;
           case 56: 
             { return HareTypes.LOGICAL_XOR_ASSIGN;
             } 
             // fall through
-          case 166: break;
+          case 170: break;
           case 57: 
             { return HareTypes.LOGICAL_OR_ASSIGN;
             } 
             // fall through
-          case 167: break;
+          case 171: break;
           case 58: 
             { return HareTypes.LEFT_SHIFT_ASSIGN;
             } 
             // fall through
-          case 168: break;
+          case 172: break;
           case 59: 
             { return HareTypes.RIGHT_SHIFT_ASSIGN;
             } 
             // fall through
-          case 169: break;
+          case 173: break;
           case 60: 
             { return HareTypes.DOTDOTDOT;
             } 
             // fall through
-          case 170: break;
+          case 174: break;
           case 61: 
             { return HareTypes.I16_TYPE;
             } 
             // fall through
-          case 171: break;
+          case 175: break;
           case 62: 
             { return HareTypes.I64_TYPE;
             } 
             // fall through
-          case 172: break;
+          case 176: break;
           case 63: 
             { return HareTypes.I32_TYPE;
             } 
             // fall through
-          case 173: break;
+          case 177: break;
           case 64: 
             { return HareTypes.INT_TYPE;
             } 
             // fall through
-          case 174: break;
+          case 178: break;
           case 65: 
             { return HareTypes.U16_TYPE;
             } 
             // fall through
-          case 175: break;
+          case 179: break;
           case 66: 
             { return HareTypes.U64_TYPE;
             } 
             // fall through
-          case 176: break;
+          case 180: break;
           case 67: 
             { return HareTypes.U32_TYPE;
             } 
             // fall through
-          case 177: break;
+          case 181: break;
           case 68: 
             { return HareTypes.USE_KW;
             } 
             // fall through
-          case 178: break;
+          case 182: break;
           case 69: 
             { return HareTypes.STR_TYPE;
             } 
             // fall through
-          case 179: break;
+          case 183: break;
           case 70: 
             { return HareTypes.LEN_KW;
             } 
             // fall through
-          case 180: break;
+          case 184: break;
           case 71: 
             { return HareTypes.LET_KW;
             } 
             // fall through
-          case 181: break;
+          case 185: break;
           case 72: 
             { return HareTypes.DEF_KW;
             } 
             // fall through
-          case 182: break;
+          case 186: break;
           case 73: 
             { return HareTypes.F64_TYPE;
             } 
             // fall through
-          case 183: break;
+          case 187: break;
           case 74: 
             { return HareTypes.F32_TYPE;
             } 
             // fall through
-          case 184: break;
+          case 188: break;
           case 75: 
             { return HareTypes.FOR_KW;
             } 
             // fall through
-          case 185: break;
+          case 189: break;
           case 76: 
             { return HareTypes.UINT_TYPE;
             } 
             // fall through
-          case 186: break;
+          case 190: break;
           case 77: 
             { return HareTypes.NULL_KW;
             } 
             // fall through
-          case 187: break;
+          case 191: break;
           case 78: 
             { return HareTypes.TRUE_KW;
             } 
             // fall through
-          case 188: break;
+          case 192: break;
           case 79: 
             { return HareTypes.TYPE_KW;
             } 
             // fall through
-          case 189: break;
+          case 193: break;
           case 80: 
             { return HareTypes.SIZE_TYPE;
             } 
             // fall through
-          case 190: break;
+          case 194: break;
           case 81: 
             { return HareTypes.ENUM_KW;
             } 
             // fall through
-          case 191: break;
+          case 195: break;
           case 82: 
             { return HareTypes.ELSE_KW;
             } 
             // fall through
-          case 192: break;
+          case 196: break;
           case 83: 
             { return HareTypes.RUNE_KW;
             } 
             // fall through
-          case 193: break;
+          case 197: break;
           case 84: 
             { return HareTypes.BOOL_TYPE;
             } 
             // fall through
-          case 194: break;
+          case 198: break;
           case 85: 
             { return HareTypes.VOID_TYPE;
             } 
             // fall through
-          case 195: break;
+          case 199: break;
           case 86: 
             { return HareTypes.CASE_KW;
             } 
             // fall through
-          case 196: break;
+          case 200: break;
           case 87: 
             { return HareTypes.CHAR_TYPE;
             } 
             // fall through
-          case 197: break;
+          case 201: break;
           case 88: 
             { return HareTypes.FREE_KW;
             } 
             // fall through
-          case 198: break;
+          case 202: break;
           case 89: 
             { return HareTypes.UNION_KW;
             } 
             // fall through
-          case 199: break;
-          case 90: 
-            { return HareTypes.VAEND_KW;
-            } 
-            // fall through
-          case 200: break;
-          case 91: 
-            { return HareTypes.VAARG_KW;
-            } 
-            // fall through
-          case 201: break;
-          case 92: 
-            { return HareTypes.ABORT_KW;
-            } 
-            // fall through
-          case 202: break;
-          case 93: 
-            { return HareTypes.ALLOC_KW;
-            } 
-            // fall through
           case 203: break;
-          case 94: 
-            { return HareTypes.CONST_KW;
+          case 90: 
+            { return HareTypes.BREAK_KW;
             } 
             // fall through
           case 204: break;
-          case 95: 
-            { return HareTypes.DEFER_KW;
+          case 91: 
+            { return HareTypes.VAEND_KW;
             } 
             // fall through
           case 205: break;
-          case 96: 
-            { return HareTypes.FALSE_KW;
+          case 92: 
+            { return HareTypes.VAARG_KW;
             } 
             // fall through
           case 206: break;
-          case 97: 
-            { return HareTypes.MATCH_KW;
+          case 93: 
+            { return HareTypes.ABORT_KW;
             } 
             // fall through
           case 207: break;
-          case 98: 
-            { return HareTypes.INSERT_KW;
+          case 94: 
+            { return HareTypes.ALLOC_KW;
             } 
             // fall through
           case 208: break;
-          case 99: 
-            { return HareTypes.STRUCT_KW;
+          case 95: 
+            { return HareTypes.CONST_KW;
             } 
             // fall through
           case 209: break;
-          case 100: 
-            { return HareTypes.STATIC_KW;
+          case 96: 
+            { return HareTypes.DEFER_KW;
             } 
             // fall through
           case 210: break;
-          case 101: 
-            { return HareTypes.SWITCH_KW;
+          case 97: 
+            { return HareTypes.FALSE_KW;
             } 
             // fall through
           case 211: break;
-          case 102: 
-            { return HareTypes.EXPORT_KW;
+          case 98: 
+            { return HareTypes.YIELD_KW;
             } 
             // fall through
           case 212: break;
-          case 103: 
-            { return HareTypes.OFFSET_KW;
+          case 99: 
+            { return HareTypes.MATCH_KW;
             } 
             // fall through
           case 213: break;
-          case 104: 
-            { return HareTypes.VALIST_TYPE;
+          case 100: 
+            { return HareTypes.INSERT_KW;
             } 
             // fall through
           case 214: break;
-          case 105: 
-            { return HareTypes.ASSERT_KW;
+          case 101: 
+            { return HareTypes.STRUCT_KW;
             } 
             // fall through
           case 215: break;
-          case 106: 
-            { return HareTypes.APPEND_KW;
+          case 102: 
+            { return HareTypes.STATIC_KW;
             } 
             // fall through
           case 216: break;
-          case 107: 
-            { return HareTypes.DELETE_KW;
+          case 103: 
+            { return HareTypes.SWITCH_KW;
             } 
             // fall through
           case 217: break;
-          case 108: 
-            { return HareTypes.UINTPTR_TYPE;
+          case 104: 
+            { return HareTypes.EXPORT_KW;
             } 
             // fall through
           case 218: break;
-          case 109: 
-            { return HareTypes.VASTART_KW;
+          case 105: 
+            { return HareTypes.RETURN_KW;
             } 
             // fall through
           case 219: break;
-          case 110: 
-            { return HareTypes.NULLABLE_KW;
+          case 106: 
+            { return HareTypes.OFFSET_KW;
             } 
             // fall through
           case 220: break;
+          case 107: 
+            { return HareTypes.VALIST_TYPE;
+            } 
+            // fall through
+          case 221: break;
+          case 108: 
+            { return HareTypes.ASSERT_KW;
+            } 
+            // fall through
+          case 222: break;
+          case 109: 
+            { return HareTypes.APPEND_KW;
+            } 
+            // fall through
+          case 223: break;
+          case 110: 
+            { return HareTypes.DELETE_KW;
+            } 
+            // fall through
+          case 224: break;
+          case 111: 
+            { return HareTypes.UINTPTR_TYPE;
+            } 
+            // fall through
+          case 225: break;
+          case 112: 
+            { return HareTypes.VASTART_KW;
+            } 
+            // fall through
+          case 226: break;
+          case 113: 
+            { return HareTypes.NULLABLE_KW;
+            } 
+            // fall through
+          case 227: break;
+          case 114: 
+            { return HareTypes.CONTINUE_KW;
+            } 
+            // fall through
+          case 228: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

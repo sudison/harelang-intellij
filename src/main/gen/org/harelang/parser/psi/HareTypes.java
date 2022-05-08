@@ -100,6 +100,7 @@ public interface HareTypes {
   IElementType TYPE_BINDING = new HareElementType("TYPE_BINDING");
   IElementType TYPE_BINDINGS = new HareElementType("TYPE_BINDINGS");
   IElementType TYPE_DECLARATION = new HareElementType("TYPE_DECLARATION");
+  IElementType UNARY_OPERATOR = new HareElementType("UNARY_OPERATOR");
   IElementType UNWRAPPED_ALIAS = new HareElementType("UNWRAPPED_ALIAS");
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
@@ -177,6 +178,7 @@ public interface HareTypes {
   IElementType MODULUS_ASSIGN = new HareTokenType("MODULUS_ASSIGN");
   IElementType MULTIPLIES = new HareTokenType("MULTIPLIES");
   IElementType MULTIPLIES_ASSIGN = new HareTokenType("MULTIPLIES_ASSIGN");
+  IElementType NOT = new HareTokenType("NOT");
   IElementType NOT_EQUAL = new HareTokenType("NOT_EQUAL");
   IElementType NULLABLE_KW = new HareTokenType("NULLABLE_KW");
   IElementType NULL_KW = new HareTokenType("NULL_KW");
@@ -500,6 +502,9 @@ public interface HareTypes {
       }
       else if (type == TYPE_DECLARATION) {
         return new HareTypeDeclarationImpl(node);
+      }
+      else if (type == UNARY_OPERATOR) {
+        return new HareUnaryOperatorImpl(node);
       }
       else if (type == UNWRAPPED_ALIAS) {
         return new HareUnwrappedAliasImpl(node);

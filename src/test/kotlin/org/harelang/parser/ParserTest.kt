@@ -352,4 +352,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
           };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseUnaryExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            let a = &b, b = +1, c = -1, d = ~1, e = *1, f = !1;
+            };
+        """.trimIndent())
+    }
 }

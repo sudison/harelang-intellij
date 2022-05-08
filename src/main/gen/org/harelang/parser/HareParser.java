@@ -3117,14 +3117,45 @@ public class HareParser implements PsiParser, LightPsiParser {
   // buildin_expression |
   //                             compound_expression |
   //                             match_expression |
-  //                             switch_expression
+  //                             switch_expression |
+  //                             unary_operator unary_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
+    Marker m = enter_section_(b);
     r = buildin_expression(b, l + 1);
     if (!r) r = compound_expression(b, l + 1);
     if (!r) r = match_expression(b, l + 1);
     if (!r) r = switch_expression(b, l + 1);
+    if (!r) r = unary_expression_4(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // unary_operator unary_expression
+  private static boolean unary_expression_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "unary_expression_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = unary_operator(b, l + 1);
+    r = r && unary_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ADDS | SUBSTRACTS | NOT | BANG | MULTIPLIES | AND
+  public static boolean unary_operator(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "unary_operator")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, UNARY_OPERATOR, "<unary operator>");
+    r = consumeToken(b, ADDS);
+    if (!r) r = consumeToken(b, SUBSTRACTS);
+    if (!r) r = consumeToken(b, NOT);
+    if (!r) r = consumeToken(b, BANG);
+    if (!r) r = consumeToken(b, MULTIPLIES);
+    if (!r) r = consumeToken(b, AND);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

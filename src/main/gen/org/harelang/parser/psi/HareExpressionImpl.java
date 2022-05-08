@@ -130,6 +130,12 @@ public class HareExpressionImpl extends ASTWrapperPsiElement implements HareExpr
 
   @Override
   @NotNull
+  public List<HareUnaryOperator> getUnaryOperatorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareUnaryOperator.class);
+  }
+
+  @Override
+  @NotNull
   public List<HareVariadicExpression> getVariadicExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, HareVariadicExpression.class);
   }
