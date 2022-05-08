@@ -294,17 +294,24 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LB array_members RB
+  // LB array_members? RB
   public static boolean array_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_literal")) return false;
     if (!nextTokenIs(b, LB)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LB);
-    r = r && array_members(b, l + 1);
+    r = r && array_literal_1(b, l + 1);
     r = r && consumeToken(b, RB);
     exit_section_(b, m, ARRAY_LITERAL, r);
     return r;
+  }
+
+  // array_members?
+  private static boolean array_literal_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_literal_1")) return false;
+    array_members(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

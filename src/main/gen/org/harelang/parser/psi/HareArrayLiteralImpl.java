@@ -27,9 +27,9 @@ public class HareArrayLiteralImpl extends ASTWrapperPsiElement implements HareAr
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareArrayMembers getArrayMembers() {
-    return findNotNullChildByClass(HareArrayMembers.class);
+    return findChildByClass(HareArrayMembers.class);
   }
 
 }
