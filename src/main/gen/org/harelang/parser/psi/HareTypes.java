@@ -9,6 +9,7 @@ public interface HareTypes {
 
   IElementType ALIAS_TYPE = new HareElementType("ALIAS_TYPE");
   IElementType ALLOC_EXPRESSION = new HareElementType("ALLOC_EXPRESSION");
+  IElementType APPEND_EXPRESSION = new HareElementType("APPEND_EXPRESSION");
   IElementType ARGUMENT_LIST = new HareElementType("ARGUMENT_LIST");
   IElementType ARRAY_LITERAL = new HareElementType("ARRAY_LITERAL");
   IElementType ARRAY_MEMBERS = new HareElementType("ARRAY_MEMBERS");
@@ -28,6 +29,7 @@ public interface HareTypes {
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
   IElementType DEFER_EXPRESSION = new HareElementType("DEFER_EXPRESSION");
+  IElementType DELETE_EXPRESSION = new HareElementType("DELETE_EXPRESSION");
   IElementType ENUM_LITERAL = new HareElementType("ENUM_LITERAL");
   IElementType ENUM_STORAGE = new HareElementType("ENUM_STORAGE");
   IElementType ENUM_TYPE = new HareElementType("ENUM_TYPE");
@@ -36,7 +38,6 @@ public interface HareTypes {
   IElementType ERROR_PROPAGATION_OP = new HareElementType("ERROR_PROPAGATION_OP");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
-  IElementType FIELD_ACCESS_EXPRESSION = new HareElementType("FIELD_ACCESS_EXPRESSION");
   IElementType FIELD_ACCESS_OP = new HareElementType("FIELD_ACCESS_OP");
   IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
   IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
@@ -53,8 +54,8 @@ public interface HareTypes {
   IElementType IMPORTS = new HareElementType("IMPORTS");
   IElementType IMPORT_ALIAS = new HareElementType("IMPORT_ALIAS");
   IElementType IMPORT_PATH = new HareElementType("IMPORT_PATH");
-  IElementType INDEXING_EXPRESSION = new HareElementType("INDEXING_EXPRESSION");
   IElementType INDEXING_OP = new HareElementType("INDEXING_OP");
+  IElementType INSERT_EXPRESSION = new HareElementType("INSERT_EXPRESSION");
   IElementType INTEGER_CONSTANT = new HareElementType("INTEGER_CONSTANT");
   IElementType INTEGER_SUFFIX = new HareElementType("INTEGER_SUFFIX");
   IElementType INTEGER_TYPE = new HareElementType("INTEGER_TYPE");
@@ -74,6 +75,7 @@ public interface HareTypes {
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
   IElementType SIZE_EXPRESSION = new HareElementType("SIZE_EXPRESSION");
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
+  IElementType SLICE_MUTATION_EXPRESSION = new HareElementType("SLICE_MUTATION_EXPRESSION");
   IElementType SLICING_OP = new HareElementType("SLICING_OP");
   IElementType STORAGE_CLASS = new HareElementType("STORAGE_CLASS");
   IElementType STRING_CONST = new HareElementType("STRING_CONST");
@@ -100,6 +102,7 @@ public interface HareTypes {
   IElementType ALLOC_KW = new HareTokenType("ALLOC_KW");
   IElementType AND = new HareTokenType("AND");
   IElementType AND_ASSIGN = new HareTokenType("AND_ASSIGN");
+  IElementType APPEND_KW = new HareTokenType("APPEND_KW");
   IElementType ASSERT_KW = new HareTokenType("ASSERT_KW");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType BANG = new HareTokenType("BANG");
@@ -111,6 +114,7 @@ public interface HareTypes {
   IElementType DECIMAL_DIGITS = new HareTokenType("DECIMAL_DIGITS");
   IElementType DEFER_KW = new HareTokenType("DEFER_KW");
   IElementType DEF_KW = new HareTokenType("DEF_KW");
+  IElementType DELETE_KW = new HareTokenType("DELETE_KW");
   IElementType DIVIDES = new HareTokenType("DIVIDES");
   IElementType DIVIDES_ASSIGN = new HareTokenType("DIVIDES_ASSIGN");
   IElementType DOT = new HareTokenType("DOT");
@@ -135,6 +139,7 @@ public interface HareTypes {
   IElementType IDENTIFIER = new HareTokenType("IDENTIFIER");
   IElementType IF_KW = new HareTokenType("IF_KW");
   IElementType INCLUSIVE_OR = new HareTokenType("INCLUSIVE_OR");
+  IElementType INSERT_KW = new HareTokenType("INSERT_KW");
   IElementType INT_TYPE = new HareTokenType("INT_TYPE");
   IElementType LARGER_EQUAL = new HareTokenType("LARGER_EQUAL");
   IElementType LARGER_THAN = new HareTokenType("LARGER_THAN");
@@ -203,6 +208,9 @@ public interface HareTypes {
       else if (type == ALLOC_EXPRESSION) {
         return new HareAllocExpressionImpl(node);
       }
+      else if (type == APPEND_EXPRESSION) {
+        return new HareAppendExpressionImpl(node);
+      }
       else if (type == ARGUMENT_LIST) {
         return new HareArgumentListImpl(node);
       }
@@ -260,6 +268,9 @@ public interface HareTypes {
       else if (type == DEFER_EXPRESSION) {
         return new HareDeferExpressionImpl(node);
       }
+      else if (type == DELETE_EXPRESSION) {
+        return new HareDeleteExpressionImpl(node);
+      }
       else if (type == ENUM_LITERAL) {
         return new HareEnumLiteralImpl(node);
       }
@@ -283,9 +294,6 @@ public interface HareTypes {
       }
       else if (type == EXPRESSION_LIST) {
         return new HareExpressionListImpl(node);
-      }
-      else if (type == FIELD_ACCESS_EXPRESSION) {
-        return new HareFieldAccessExpressionImpl(node);
       }
       else if (type == FIELD_ACCESS_OP) {
         return new HareFieldAccessOpImpl(node);
@@ -335,11 +343,11 @@ public interface HareTypes {
       else if (type == IMPORT_PATH) {
         return new HareImportPathImpl(node);
       }
-      else if (type == INDEXING_EXPRESSION) {
-        return new HareIndexingExpressionImpl(node);
-      }
       else if (type == INDEXING_OP) {
         return new HareIndexingOpImpl(node);
+      }
+      else if (type == INSERT_EXPRESSION) {
+        return new HareInsertExpressionImpl(node);
       }
       else if (type == INTEGER_CONSTANT) {
         return new HareIntegerConstantImpl(node);
@@ -397,6 +405,9 @@ public interface HareTypes {
       }
       else if (type == SLICE_ARRAY_TYPE) {
         return new HareSliceArrayTypeImpl(node);
+      }
+      else if (type == SLICE_MUTATION_EXPRESSION) {
+        return new HareSliceMutationExpressionImpl(node);
       }
       else if (type == SLICING_OP) {
         return new HareSlicingOpImpl(node);

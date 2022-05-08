@@ -107,7 +107,7 @@ private additive_operator ::= ADDS | SUBSTRACTS
 private multiplicative_expression ::= cast_expression (multiplicative_operator cast_expression)*
 private multiplicative_operator ::= MULTIPLIES | DIVIDES | MODULUS
 private cast_expression ::= unary_expression
-private unary_expression ::= measurement_expression | defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
+private unary_expression ::= slice_mutation_expression | measurement_expression | defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
 private buildin_expression ::= postfix_expression
 private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
@@ -136,8 +136,12 @@ defer_expression ::= DEFER_KW expression
 measurement_expression ::= size_expression | length_expression | offset_expression
 size_expression ::= SIZE_TYPE LP type RP
 length_expression ::= LEN_KW LP expression RP
-offset_expression ::= OFFSET_KW LP field_access_expression RP
-field_access_expression ::= nested_expression field_access_op*
+offset_expression ::= OFFSET_KW LP expression RP
+
+slice_mutation_expression ::= append_expression | insert_expression | delete_expression
+append_expression ::= STATIC_KW? APPEND_KW LP expression COMMA (expression COMMA expression | expression DOTDOTDOT | expression) RP
+insert_expression ::= STATIC_KW? INSERT_KW LP expression COMMA expression DOTDOTDOT? RP
+delete_expression ::= STATIC_KW? DELETE_KW LP expression RP
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+
 binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
@@ -148,8 +152,7 @@ assignment ::= object_selector assignment_op expression
 assignment_op ::=  ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | MULTIPLIES_ASSIGN | DIVIDES_ASSIGN |
 MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT_SHIFT_ASSIGN | LOGICAL_AND_ASSIGN |
 LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
-object_selector ::= IDENTIFIER | indexing_expression
-indexing_expression ::= postfix_expression LB expression RB
+object_selector ::=  IDENTIFIER
 
 if_expression ::= IF_KW conditional_branch | IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression
 conditional_branch ::= LP expression RP expression

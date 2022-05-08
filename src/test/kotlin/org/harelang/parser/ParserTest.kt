@@ -275,4 +275,19 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseSliceMutationExpression() {
+        doCodeTest("""
+            fn foo(a:int) void = {
+            append(a[1], 1, 1);
+            append(a[1], a...);
+            append(a[1], a);
+            insert(a[1], a);
+            insert(a[1], a...);
+            delete(a[1]);
+            
+            };
+        """.trimIndent())
+    }
 }

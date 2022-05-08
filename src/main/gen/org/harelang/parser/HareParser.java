@@ -199,6 +199,65 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // STATIC_KW? APPEND_KW LP expression COMMA (expression COMMA expression | expression DOTDOTDOT | expression) RP
+  public static boolean append_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "append_expression")) return false;
+    if (!nextTokenIs(b, "<append expression>", APPEND_KW, STATIC_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, APPEND_EXPRESSION, "<append expression>");
+    r = append_expression_0(b, l + 1);
+    r = r && consumeTokens(b, 0, APPEND_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && append_expression_5(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STATIC_KW?
+  private static boolean append_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "append_expression_0")) return false;
+    consumeToken(b, STATIC_KW);
+    return true;
+  }
+
+  // expression COMMA expression | expression DOTDOTDOT | expression
+  private static boolean append_expression_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "append_expression_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = append_expression_5_0(b, l + 1);
+    if (!r) r = append_expression_5_1(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression COMMA expression
+  private static boolean append_expression_5_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "append_expression_5_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // expression DOTDOTDOT
+  private static boolean append_expression_5_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "append_expression_5_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, DOTDOTDOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // expression DOTDOTDOT  | expression COMMA argument_list | expression
   public static boolean argument_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_list")) return false;
@@ -370,12 +429,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   // object_selector assignment_op expression
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT, "<assignment>");
+    Marker m = enter_section_(b);
     r = object_selector(b, l + 1);
     r = r && assignment_op(b, l + 1);
     r = r && expression(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, ASSIGNMENT, r);
     return r;
   }
 
@@ -762,6 +822,28 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // STATIC_KW? DELETE_KW LP expression RP
+  public static boolean delete_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "delete_expression")) return false;
+    if (!nextTokenIs(b, "<delete expression>", DELETE_KW, STATIC_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, DELETE_EXPRESSION, "<delete expression>");
+    r = delete_expression_0(b, l + 1);
+    r = r && consumeTokens(b, 0, DELETE_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STATIC_KW?
+  private static boolean delete_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "delete_expression_0")) return false;
+    consumeToken(b, STATIC_KW);
+    return true;
+  }
+
+  /* ********************************************************** */
   // IDENTIFIER (SCOPE IDENTIFIER)+
   public static boolean enum_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_literal")) return false;
@@ -1025,29 +1107,6 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, EOS);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  /* ********************************************************** */
-  // nested_expression field_access_op*
-  public static boolean field_access_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_access_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, FIELD_ACCESS_EXPRESSION, "<field access expression>");
-    r = nested_expression(b, l + 1);
-    r = r && field_access_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // field_access_op*
-  private static boolean field_access_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_access_expression_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!field_access_op(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "field_access_expression_1", c)) break;
-    }
-    return true;
   }
 
   /* ********************************************************** */
@@ -1575,20 +1634,6 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // postfix_expression LB expression RB
-  public static boolean indexing_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indexing_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, INDEXING_EXPRESSION, "<indexing expression>");
-    r = postfix_expression(b, l + 1);
-    r = r && consumeToken(b, LB);
-    r = r && expression(b, l + 1);
-    r = r && consumeToken(b, RB);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
   // LB expression RB
   public static boolean indexing_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "indexing_op")) return false;
@@ -1600,6 +1645,38 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, RB);
     exit_section_(b, m, INDEXING_OP, r);
     return r;
+  }
+
+  /* ********************************************************** */
+  // STATIC_KW? INSERT_KW LP expression COMMA expression DOTDOTDOT? RP
+  public static boolean insert_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "insert_expression")) return false;
+    if (!nextTokenIs(b, "<insert expression>", INSERT_KW, STATIC_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, INSERT_EXPRESSION, "<insert expression>");
+    r = insert_expression_0(b, l + 1);
+    r = r && consumeTokens(b, 0, INSERT_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    r = r && insert_expression_6(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STATIC_KW?
+  private static boolean insert_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "insert_expression_0")) return false;
+    consumeToken(b, STATIC_KW);
+    return true;
+  }
+
+  // DOTDOTDOT?
+  private static boolean insert_expression_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "insert_expression_6")) return false;
+    consumeToken(b, DOTDOTDOT);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1926,26 +2003,26 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER | indexing_expression
+  // IDENTIFIER
   public static boolean object_selector(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_selector")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, OBJECT_SELECTOR, "<object selector>");
+    Marker m = enter_section_(b);
     r = consumeToken(b, IDENTIFIER);
-    if (!r) r = indexing_expression(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, OBJECT_SELECTOR, r);
     return r;
   }
 
   /* ********************************************************** */
-  // OFFSET_KW LP field_access_expression RP
+  // OFFSET_KW LP expression RP
   public static boolean offset_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "offset_expression")) return false;
     if (!nextTokenIs(b, OFFSET_KW)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, OFFSET_KW, LP);
-    r = r && field_access_expression(b, l + 1);
+    r = r && expression(b, l + 1);
     r = r && consumeToken(b, RP);
     exit_section_(b, m, OFFSET_EXPRESSION, r);
     return r;
@@ -2239,6 +2316,19 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = expression(b, l + 1);
     if (!r) r = consumeToken(b, MULTIPLIES);
     if (!r) r = consumeToken(b, UNDERSCORE);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // append_expression | insert_expression | delete_expression
+  public static boolean slice_mutation_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "slice_mutation_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SLICE_MUTATION_EXPRESSION, "<slice mutation expression>");
+    r = append_expression(b, l + 1);
+    if (!r) r = insert_expression(b, l + 1);
+    if (!r) r = delete_expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -2728,11 +2818,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // measurement_expression | defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
+  // slice_mutation_expression | measurement_expression | defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = measurement_expression(b, l + 1);
+    r = slice_mutation_expression(b, l + 1);
+    if (!r) r = measurement_expression(b, l + 1);
     if (!r) r = defer_expression(b, l + 1);
     if (!r) r = assertion_expression(b, l + 1);
     if (!r) r = alloc_expression(b, l + 1);

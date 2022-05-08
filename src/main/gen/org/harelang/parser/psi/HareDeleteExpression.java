@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareOffsetExpression extends PsiElement {
+public interface HareDeleteExpression extends PsiElement {
 
   @NotNull
   HareExpression getExpression();

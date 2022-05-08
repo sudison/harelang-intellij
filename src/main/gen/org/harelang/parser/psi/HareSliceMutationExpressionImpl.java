@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareIndexingExpressionImpl extends ASTWrapperPsiElement implements HareIndexingExpression {
+public class HareSliceMutationExpressionImpl extends ASTWrapperPsiElement implements HareSliceMutationExpression {
 
-  public HareIndexingExpressionImpl(@NotNull ASTNode node) {
+  public HareSliceMutationExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitIndexingExpression(this);
+    visitor.visitSliceMutationExpression(this);
   }
 
   @Override
@@ -27,27 +27,21 @@ public class HareIndexingExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
-  public List<HareExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
+  @Nullable
+  public HareAppendExpression getAppendExpression() {
+    return findChildByClass(HareAppendExpression.class);
   }
 
   @Override
   @Nullable
-  public HarePlanExpression getPlanExpression() {
-    return findChildByClass(HarePlanExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<HarePostfixOp> getPostfixOpList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HarePostfixOp.class);
+  public HareDeleteExpression getDeleteExpression() {
+    return findChildByClass(HareDeleteExpression.class);
   }
 
   @Override
   @Nullable
-  public HareTupleItems getTupleItems() {
-    return findChildByClass(HareTupleItems.class);
+  public HareInsertExpression getInsertExpression() {
+    return findChildByClass(HareInsertExpression.class);
   }
 
 }

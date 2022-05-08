@@ -28,8 +28,8 @@ public class HareOffsetExpressionImpl extends ASTWrapperPsiElement implements Ha
 
   @Override
   @NotNull
-  public HareFieldAccessExpression getFieldAccessExpression() {
-    return findNotNullChildByClass(HareFieldAccessExpression.class);
+  public HareExpression getExpression() {
+    return findNotNullChildByClass(HareExpression.class);
   }
 
 }

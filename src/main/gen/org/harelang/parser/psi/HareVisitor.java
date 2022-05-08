@@ -15,6 +15,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAppendExpression(@NotNull HareAppendExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitArgumentList(@NotNull HareArgumentList o) {
     visitPsiElement(o);
   }
@@ -91,6 +95,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDeleteExpression(@NotNull HareDeleteExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitEnumLiteral(@NotNull HareEnumLiteral o) {
     visitPsiElement(o);
   }
@@ -120,10 +128,6 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitExpressionList(@NotNull HareExpressionList o) {
-    visitPsiElement(o);
-  }
-
-  public void visitFieldAccessExpression(@NotNull HareFieldAccessExpression o) {
     visitPsiElement(o);
   }
 
@@ -191,11 +195,11 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitIndexingExpression(@NotNull HareIndexingExpression o) {
+  public void visitIndexingOp(@NotNull HareIndexingOp o) {
     visitPsiElement(o);
   }
 
-  public void visitIndexingOp(@NotNull HareIndexingOp o) {
+  public void visitInsertExpression(@NotNull HareInsertExpression o) {
     visitPsiElement(o);
   }
 
@@ -272,6 +276,10 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitSliceArrayType(@NotNull HareSliceArrayType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSliceMutationExpression(@NotNull HareSliceMutationExpression o) {
     visitPsiElement(o);
   }
 

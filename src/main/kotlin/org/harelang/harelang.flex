@@ -119,6 +119,10 @@ DECIMAL_DIGITS = \d+
     "defer" {return HareTypes.DEFER_KW;}
     "len" {return HareTypes.LEN_KW;}
     "offset" {return HareTypes.OFFSET_KW;}
+    "append" {return HareTypes.APPEND_KW;}
+    "insert" {return HareTypes.INSERT_KW;}
+    "delete" {return HareTypes.DELETE_KW;}
+
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}
 

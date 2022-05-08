@@ -44,6 +44,9 @@ public interface HareExpression extends PsiElement {
   List<HarePostfixOp> getPostfixOpList();
 
   @NotNull
+  List<HareSliceMutationExpression> getSliceMutationExpressionList();
+
+  @NotNull
   List<HareTupleItems> getTupleItemsList();
 
 }
