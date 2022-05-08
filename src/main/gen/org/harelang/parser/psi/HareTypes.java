@@ -96,6 +96,7 @@ public interface HareTypes {
   IElementType UNWRAPPED_ALIAS = new HareElementType("UNWRAPPED_ALIAS");
   IElementType USE_STATEMENT = new HareElementType("USE_STATEMENT");
   IElementType USE_STATEMENT_MEMBER_LIST = new HareElementType("USE_STATEMENT_MEMBER_LIST");
+  IElementType VARIADIC_EXPRESSION = new HareElementType("VARIADIC_EXPRESSION");
 
   IElementType ABORT_KW = new HareTokenType("ABORT_KW");
   IElementType ADDS = new HareTokenType("ADDS");
@@ -194,7 +195,10 @@ public interface HareTypes {
   IElementType UNDERSCORE = new HareTokenType("UNDERSCORE");
   IElementType UNION_KW = new HareTokenType("UNION_KW");
   IElementType USE_KW = new HareTokenType("USE_KW");
+  IElementType VAARG_KW = new HareTokenType("VAARG_KW");
+  IElementType VAEND_KW = new HareTokenType("VAEND_KW");
   IElementType VALIST_TYPE = new HareTokenType("VALIST_TYPE");
+  IElementType VASTART_KW = new HareTokenType("VASTART_KW");
   IElementType VOID_KW = new HareTokenType("VOID_KW");
   IElementType VOID_TYPE = new HareTokenType("VOID_TYPE");
   IElementType XOR_ASSIGN = new HareTokenType("XOR_ASSIGN");
@@ -468,6 +472,9 @@ public interface HareTypes {
       }
       else if (type == USE_STATEMENT_MEMBER_LIST) {
         return new HareUseStatementMemberListImpl(node);
+      }
+      else if (type == VARIADIC_EXPRESSION) {
+        return new HareVariadicExpressionImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

@@ -49,4 +49,7 @@ public interface HareExpression extends PsiElement {
   @NotNull
   List<HareTupleItems> getTupleItemsList();
 
+  @NotNull
+  List<HareVariadicExpression> getVariadicExpressionList();
+
 }

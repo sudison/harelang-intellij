@@ -2818,11 +2818,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // slice_mutation_expression | measurement_expression | defer_expression | assertion_expression | alloc_expression | buildin_expression | compound_expression
+  // variadic_expression |
+  //                             slice_mutation_expression |
+  //                             measurement_expression |
+  //                             defer_expression |
+  //                             assertion_expression |
+  //                             alloc_expression |
+  //                             buildin_expression |
+  //                             compound_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
-    r = slice_mutation_expression(b, l + 1);
+    r = variadic_expression(b, l + 1);
+    if (!r) r = slice_mutation_expression(b, l + 1);
     if (!r) r = measurement_expression(b, l + 1);
     if (!r) r = defer_expression(b, l + 1);
     if (!r) r = assertion_expression(b, l + 1);
@@ -2917,6 +2925,43 @@ public class HareParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "use_statement_member_list_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // VASTART_KW LP RP | VAARG_KW LP expression RP | VAEND_KW LP expression RP
+  public static boolean variadic_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variadic_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, VARIADIC_EXPRESSION, "<variadic expression>");
+    r = parseTokens(b, 0, VASTART_KW, LP, RP);
+    if (!r) r = variadic_expression_1(b, l + 1);
+    if (!r) r = variadic_expression_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // VAARG_KW LP expression RP
+  private static boolean variadic_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variadic_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, VAARG_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // VAEND_KW LP expression RP
+  private static boolean variadic_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variadic_expression_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, VAEND_KW, LP);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
 }

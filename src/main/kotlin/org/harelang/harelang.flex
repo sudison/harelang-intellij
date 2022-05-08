@@ -122,6 +122,9 @@ DECIMAL_DIGITS = \d+
     "append" {return HareTypes.APPEND_KW;}
     "insert" {return HareTypes.INSERT_KW;}
     "delete" {return HareTypes.DELETE_KW;}
+    "vastart" {return HareTypes.VASTART_KW;}
+    "vaarg" {return HareTypes.VAARG_KW;}
+    "vaend" {return HareTypes.VAEND_KW;}
 
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}
