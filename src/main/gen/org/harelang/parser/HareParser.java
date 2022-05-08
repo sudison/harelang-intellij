@@ -772,6 +772,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // QUESTION | BANG
+  public static boolean error_propagation_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "error_propagation_op")) return false;
+    if (!nextTokenIs(b, "<error propagation op>", BANG, QUESTION)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ERROR_PROPAGATION_OP, "<error propagation op>");
+    r = consumeToken(b, QUESTION);
+    if (!r) r = consumeToken(b, BANG);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // and_expression (EXCLUSIVE_OR and_expression)*
   static boolean exclusive_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exclusive_or_expression")) return false;
@@ -1853,7 +1866,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // field_access_op | slicing_op | indexing_op | call_op
+  // field_access_op | slicing_op | indexing_op | call_op | error_propagation_op
   public static boolean postfix_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_op")) return false;
     boolean r;
@@ -1862,6 +1875,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = slicing_op(b, l + 1);
     if (!r) r = indexing_op(b, l + 1);
     if (!r) r = call_op(b, l + 1);
+    if (!r) r = error_propagation_op(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

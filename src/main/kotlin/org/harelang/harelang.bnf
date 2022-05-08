@@ -123,9 +123,10 @@ field_value ::= struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
 struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT
 
 tuple_items ::= expression (COMMA expression)+
-postfix_op ::= field_access_op | slicing_op | indexing_op | call_op
+postfix_op ::= field_access_op | slicing_op | indexing_op | call_op | error_propagation_op
 indexing_op ::= LB expression RB
 slicing_op ::= LB expression? DOTDOT expression? RB
+error_propagation_op ::= QUESTION | BANG
 field_access_op ::= DOT IDENTIFIER | DOT integer_constant
 compound_expression ::= LBR expression_list RBR
 expression_list ::= (expression EOS)+

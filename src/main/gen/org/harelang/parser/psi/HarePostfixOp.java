@@ -11,6 +11,9 @@ public interface HarePostfixOp extends PsiElement {
   HareCallOp getCallOp();
 
   @Nullable
+  HareErrorPropagationOp getErrorPropagationOp();
+
+  @Nullable
   HareFieldAccessOp getFieldAccessOp();
 
   @Nullable

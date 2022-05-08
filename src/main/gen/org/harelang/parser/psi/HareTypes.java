@@ -30,6 +30,7 @@ public interface HareTypes {
   IElementType ENUM_TYPE = new HareElementType("ENUM_TYPE");
   IElementType ENUM_VALUE = new HareElementType("ENUM_VALUE");
   IElementType ENUM_VALUES = new HareElementType("ENUM_VALUES");
+  IElementType ERROR_PROPAGATION_OP = new HareElementType("ERROR_PROPAGATION_OP");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
   IElementType FIELD_ACCESS_OP = new HareElementType("FIELD_ACCESS_OP");
@@ -148,6 +149,7 @@ public interface HareTypes {
   IElementType NULL_KW = new HareTokenType("NULL_KW");
   IElementType OR_ASSIGN = new HareTokenType("OR_ASSIGN");
   IElementType PLUS_ASSIGN = new HareTokenType("PLUS_ASSIGN");
+  IElementType QUESTION = new HareTokenType("QUESTION");
   IElementType RB = new HareTokenType("RB");
   IElementType RBR = new HareTokenType("RBR");
   IElementType RIGHT_SHIFT = new HareTokenType("RIGHT_SHIFT");
@@ -248,6 +250,9 @@ public interface HareTypes {
       }
       else if (type == ENUM_VALUES) {
         return new HareEnumValuesImpl(node);
+      }
+      else if (type == ERROR_PROPAGATION_OP) {
+        return new HareErrorPropagationOpImpl(node);
       }
       else if (type == EXPRESSION) {
         return new HareExpressionImpl(node);
