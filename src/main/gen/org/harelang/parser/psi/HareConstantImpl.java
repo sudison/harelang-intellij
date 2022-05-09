@@ -40,6 +40,12 @@ public class HareConstantImpl extends ASTWrapperPsiElement implements HareConsta
 
   @Override
   @Nullable
+  public HareRuneConstant getRuneConstant() {
+    return findChildByClass(HareRuneConstant.class);
+  }
+
+  @Override
+  @Nullable
   public HareStringConst getStringConst() {
     return findChildByClass(HareStringConst.class);
   }

@@ -14,6 +14,9 @@ public interface HareConstant extends PsiElement {
   HareIntegerConstant getIntegerConstant();
 
   @Nullable
+  HareRuneConstant getRuneConstant();
+
+  @Nullable
   HareStringConst getStringConst();
 
 }

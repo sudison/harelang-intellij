@@ -81,6 +81,7 @@ public interface HareTypes {
   IElementType POINTER_TYPE = new HareElementType("POINTER_TYPE");
   IElementType POSTFIX_OP = new HareElementType("POSTFIX_OP");
   IElementType PROTOTYPE = new HareElementType("PROTOTYPE");
+  IElementType RUNE_CONSTANT = new HareElementType("RUNE_CONSTANT");
   IElementType SCALA_TYPE = new HareElementType("SCALA_TYPE");
   IElementType SIZE_EXPRESSION = new HareElementType("SIZE_EXPRESSION");
   IElementType SLICE_ARRAY_TYPE = new HareElementType("SLICE_ARRAY_TYPE");
@@ -207,6 +208,7 @@ public interface HareTypes {
   IElementType RIGHT_SHIFT_ASSIGN = new HareTokenType("RIGHT_SHIFT_ASSIGN");
   IElementType RP = new HareTokenType("RP");
   IElementType RUNE_KW = new HareTokenType("RUNE_KW");
+  IElementType RUNE_LITERAL = new HareTokenType("RUNE_LITERAL");
   IElementType SCOPE = new HareTokenType("SCOPE");
   IElementType SIZE_TYPE = new HareTokenType("SIZE_TYPE");
   IElementType STATIC_KW = new HareTokenType("STATIC_KW");
@@ -460,6 +462,9 @@ public interface HareTypes {
       }
       else if (type == PROTOTYPE) {
         return new HarePrototypeImpl(node);
+      }
+      else if (type == RUNE_CONSTANT) {
+        return new HareRuneConstantImpl(node);
       }
       else if (type == SCALA_TYPE) {
         return new HareScalaTypeImpl(node);

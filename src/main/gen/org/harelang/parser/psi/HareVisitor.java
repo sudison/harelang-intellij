@@ -303,6 +303,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitRuneConstant(@NotNull HareRuneConstant o) {
+    visitPsiElement(o);
+  }
+
   public void visitScalaType(@NotNull HareScalaType o) {
     visitPsiElement(o);
   }

@@ -932,7 +932,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // floating_constant | integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
+  // floating_constant | integer_constant | string_const | rune_constant | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
     boolean r;
@@ -940,6 +940,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = floating_constant(b, l + 1);
     if (!r) r = integer_constant(b, l + 1);
     if (!r) r = string_const(b, l + 1);
+    if (!r) r = rune_constant(b, l + 1);
     if (!r) r = consumeToken(b, NULL_KW);
     if (!r) r = consumeToken(b, TRUE_KW);
     if (!r) r = consumeToken(b, FALSE_KW);
@@ -2805,6 +2806,18 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "prototype_1")) return false;
     parameter_list(b, l + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // RUNE_LITERAL
+  public static boolean rune_constant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "rune_constant")) return false;
+    if (!nextTokenIs(b, RUNE_LITERAL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, RUNE_LITERAL);
+    exit_section_(b, m, RUNE_CONSTANT, r);
+    return r;
   }
 
   /* ********************************************************** */
