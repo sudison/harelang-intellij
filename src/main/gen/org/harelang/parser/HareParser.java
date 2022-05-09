@@ -315,27 +315,35 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expression DOTDOTDOT | expression COMMA array_members | expression
+  // expression DOTDOTDOT COMMA? | expression COMMA array_members | expression COMMA?
   public static boolean array_members(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_members")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARRAY_MEMBERS, "<array members>");
     r = array_members_0(b, l + 1);
     if (!r) r = array_members_1(b, l + 1);
-    if (!r) r = expression(b, l + 1);
+    if (!r) r = array_members_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // expression DOTDOTDOT
+  // expression DOTDOTDOT COMMA?
   private static boolean array_members_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_members_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = expression(b, l + 1);
     r = r && consumeToken(b, DOTDOTDOT);
+    r = r && array_members_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean array_members_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   // expression COMMA array_members
@@ -348,6 +356,24 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = r && array_members(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // expression COMMA?
+  private static boolean array_members_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && array_members_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA?
+  private static boolean array_members_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_2_1")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */

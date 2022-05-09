@@ -127,7 +127,7 @@ private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
 plan_expression ::= enum_literal | struct_literal | IDENTIFIER | constant | array_literal
 array_literal ::= LB array_members? RB
-array_members ::= expression DOTDOTDOT | expression COMMA array_members | expression
+array_members ::= expression DOTDOTDOT COMMA? | expression COMMA array_members | expression COMMA?
 
 enum_literal ::= IDENTIFIER (SCOPE IDENTIFIER)+
 
