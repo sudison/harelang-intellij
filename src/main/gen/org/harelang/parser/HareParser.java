@@ -936,7 +936,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // floating_constant | integer_constant | string_const | rune_constant | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
+  // floating_constant | integer_constant | string_const | rune_constant | NULL_KW | TRUE_KW | FALSE_KW | VOID_TYPE
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
     boolean r;
@@ -948,7 +948,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, NULL_KW);
     if (!r) r = consumeToken(b, TRUE_KW);
     if (!r) r = consumeToken(b, FALSE_KW);
-    if (!r) r = consumeToken(b, VOID_KW);
+    if (!r) r = consumeToken(b, VOID_TYPE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

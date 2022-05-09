@@ -233,7 +233,6 @@ public interface HareTypes {
   IElementType VAEND_KW = new HareTokenType("VAEND_KW");
   IElementType VALIST_TYPE = new HareTokenType("VALIST_TYPE");
   IElementType VASTART_KW = new HareTokenType("VASTART_KW");
-  IElementType VOID_KW = new HareTokenType("VOID_KW");
   IElementType VOID_TYPE = new HareTokenType("VOID_TYPE");
   IElementType XOR_ASSIGN = new HareTokenType("XOR_ASSIGN");
   IElementType YIELD_KW = new HareTokenType("YIELD_KW");
