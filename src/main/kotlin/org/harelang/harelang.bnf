@@ -86,7 +86,7 @@ function_type ::= fntype_attr? FN_KW prototype
 alias_type ::= identifier_path
 unwrapped_alias ::= DOTDOTDOT identifier_path
 constant ::= integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
-integer_constant ::= DECIMAL_DIGITS integer_suffix?
+integer_constant ::= (DECIMAL_DIGITS | OCTAL_DIGITS | HEX_DIGITS | BIN_DIGITS) integer_suffix?
 integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64"
 string_const ::= STRING_LITERAL
 

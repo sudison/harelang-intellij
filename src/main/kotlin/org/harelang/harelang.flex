@@ -24,6 +24,9 @@ COMMENT = "//" [^\n]* \n?
 STRING_LITERAL = \".*\"
 WHITESPACE      = \s
 DECIMAL_DIGITS = \d+
+OCTAL_DIGITS = 0o [0-7]+
+HEX_DIGITS = 0x [0-9a-fA-F]+
+BIN_DIGITS = 0b [0-1]+
 %%
 
 
@@ -152,6 +155,9 @@ DECIMAL_DIGITS = \d+
 
     {WHITESPACE} { return TokenType.WHITE_SPACE; }
     {DECIMAL_DIGITS} { return HareTypes.DECIMAL_DIGITS; }
+    {OCTAL_DIGITS}   {return HareTypes.OCTAL_DIGITS;}
+    {HEX_DIGITS}   {return HareTypes.HEX_DIGITS;}
+    {BIN_DIGITS}   {return HareTypes.BIN_DIGITS;}
 
     {IDENTIFIER} { return HareTypes.IDENTIFIER; }
     {COMMENT} {return HareElementType.Companion.getCOMMENT();}

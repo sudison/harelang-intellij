@@ -409,4 +409,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             type s = @noreturn fn () void;
         """.trimIndent())
     }
+
+    @Test
+    fun testParseIntegerConstant() {
+        doCodeTest("""
+            let a: i32 = 1234567890, b: i32 = 0x1234567890abcdefABCDEF, c: i32 = 0o1234567, d: i32 = 0b010101;
+        """.trimIndent())
+    }
 }

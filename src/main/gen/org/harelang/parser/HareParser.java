@@ -2041,15 +2041,25 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DECIMAL_DIGITS integer_suffix?
+  // (DECIMAL_DIGITS | OCTAL_DIGITS | HEX_DIGITS | BIN_DIGITS) integer_suffix?
   public static boolean integer_constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "integer_constant")) return false;
-    if (!nextTokenIs(b, DECIMAL_DIGITS)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, DECIMAL_DIGITS);
+    Marker m = enter_section_(b, l, _NONE_, INTEGER_CONSTANT, "<integer constant>");
+    r = integer_constant_0(b, l + 1);
     r = r && integer_constant_1(b, l + 1);
-    exit_section_(b, m, INTEGER_CONSTANT, r);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // DECIMAL_DIGITS | OCTAL_DIGITS | HEX_DIGITS | BIN_DIGITS
+  private static boolean integer_constant_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_constant_0")) return false;
+    boolean r;
+    r = consumeToken(b, DECIMAL_DIGITS);
+    if (!r) r = consumeToken(b, OCTAL_DIGITS);
+    if (!r) r = consumeToken(b, HEX_DIGITS);
+    if (!r) r = consumeToken(b, BIN_DIGITS);
     return r;
   }
 

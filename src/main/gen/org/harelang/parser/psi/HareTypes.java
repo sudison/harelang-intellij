@@ -121,6 +121,7 @@ public interface HareTypes {
   IElementType AS_KW = new HareTokenType("AS_KW");
   IElementType AT = new HareTokenType("AT");
   IElementType BANG = new HareTokenType("BANG");
+  IElementType BIN_DIGITS = new HareTokenType("BIN_DIGITS");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
   IElementType BREAK_KW = new HareTokenType("BREAK_KW");
   IElementType CASE_KW = new HareTokenType("CASE_KW");
@@ -151,6 +152,7 @@ public interface HareTypes {
   IElementType FN_KW = new HareTokenType("FN_KW");
   IElementType FOR_KW = new HareTokenType("FOR_KW");
   IElementType FREE_KW = new HareTokenType("FREE_KW");
+  IElementType HEX_DIGITS = new HareTokenType("HEX_DIGITS");
   IElementType I16_TYPE = new HareTokenType("I16_TYPE");
   IElementType I32_TYPE = new HareTokenType("I32_TYPE");
   IElementType I64_TYPE = new HareTokenType("I64_TYPE");
@@ -191,6 +193,7 @@ public interface HareTypes {
   IElementType NOT_EQUAL = new HareTokenType("NOT_EQUAL");
   IElementType NULLABLE_KW = new HareTokenType("NULLABLE_KW");
   IElementType NULL_KW = new HareTokenType("NULL_KW");
+  IElementType OCTAL_DIGITS = new HareTokenType("OCTAL_DIGITS");
   IElementType OFFSET_KW = new HareTokenType("OFFSET_KW");
   IElementType OR_ASSIGN = new HareTokenType("OR_ASSIGN");
   IElementType PLUS_ASSIGN = new HareTokenType("PLUS_ASSIGN");
