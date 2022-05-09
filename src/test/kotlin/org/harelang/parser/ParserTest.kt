@@ -5,7 +5,6 @@ import com.intellij.testFramework.ParsingTestCase
 import org.harelang.HareFileType
 import org.harelang.HareParserDefinition
 import org.junit.Test
-import java.util.regex.Pattern
 
 class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParserDefinition()) {
     override fun getTestDataPath() = "src/test/testdata/parsing"
@@ -25,9 +24,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testPrintParseImports() {
         printTree("""
-            fn huh(a:int) void = {
-                let a : i32 = 1;
-            };    
+           const buffered_vtable_r: io::vtable = io::vtable {
+	closer = &buffered_close_static,
+	reader = &buffered_read,
+	...
+};    
             """.trimIndent())
     }
 
@@ -429,19 +430,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testParseRuneConstant() {
         doCodeTest("""
             @test fn ctype() void = {
-
 	let a = '\'', b = '\t', c = ' ';
-	
 };
         """.trimIndent())
-    }
-
-    @Test
-    fun testParseRuneConst() {
-       val a = """'\t'"""
-        val m = Pattern.compile("'(\\\\'|[^']*)'").matcher(a)
-        val b = m.find()
-        val r = m.group(1)
-        println(r)
     }
 }

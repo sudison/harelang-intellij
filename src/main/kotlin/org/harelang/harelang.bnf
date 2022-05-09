@@ -128,13 +128,13 @@ private buildin_expression ::= variadic_expression |
                                                            alloc_expression | postfix_expression
 private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
-plan_expression ::= enum_literal | struct_literal | IDENTIFIER | constant | array_literal
+plan_expression ::= struct_literal | enum_literal | IDENTIFIER | constant | array_literal
 array_literal ::= LB array_members? RB
 array_members ::= expression DOTDOTDOT COMMA? | expression COMMA array_members | expression COMMA?
 
 enum_literal ::= IDENTIFIER (SCOPE IDENTIFIER)+
 
-struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR | IDENTIFIER LBR struct_initializer COMMA? RBR
+struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR | identifier_path LBR struct_initializer COMMA? RBR
 field_values ::= field_value (COMMA field_value)*
 field_value ::= struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
 struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT

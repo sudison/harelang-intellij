@@ -2713,13 +2713,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // enum_literal | struct_literal | IDENTIFIER | constant | array_literal
+  // struct_literal | enum_literal | IDENTIFIER | constant | array_literal
   public static boolean plan_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "plan_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PLAN_EXPRESSION, "<plan expression>");
-    r = enum_literal(b, l + 1);
-    if (!r) r = struct_literal(b, l + 1);
+    r = struct_literal(b, l + 1);
+    if (!r) r = enum_literal(b, l + 1);
     if (!r) r = consumeToken(b, IDENTIFIER);
     if (!r) r = constant(b, l + 1);
     if (!r) r = array_literal(b, l + 1);
@@ -3057,7 +3057,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRUCT_KW LBR field_values COMMA? RBR | IDENTIFIER LBR struct_initializer COMMA? RBR
+  // STRUCT_KW LBR field_values COMMA? RBR | identifier_path LBR struct_initializer COMMA? RBR
   public static boolean struct_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_literal")) return false;
     if (!nextTokenIs(b, "<struct literal>", IDENTIFIER, STRUCT_KW)) return false;
@@ -3089,12 +3089,13 @@ public class HareParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // IDENTIFIER LBR struct_initializer COMMA? RBR
+  // identifier_path LBR struct_initializer COMMA? RBR
   private static boolean struct_literal_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_literal_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFIER, LBR);
+    r = identifier_path(b, l + 1);
+    r = r && consumeToken(b, LBR);
     r = r && struct_initializer(b, l + 1);
     r = r && struct_literal_1_3(b, l + 1);
     r = r && consumeToken(b, RBR);

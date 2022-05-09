@@ -11,6 +11,9 @@ public interface HareStructLiteral extends PsiElement {
   HareFieldValues getFieldValues();
 
   @Nullable
+  HareIdentifierPath getIdentifierPath();
+
+  @Nullable
   HareStructInitializer getStructInitializer();
 
 }
