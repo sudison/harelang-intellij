@@ -29,6 +29,7 @@ FILE
                             HareConstantImpl(CONSTANT)
                               HareIntegerConstantImpl(INTEGER_CONSTANT)
                                 PsiElement(DECIMAL_DIGITS)('1')
+                      PsiElement(COMMA)(',')
                     PsiElement(RBR)('}')
     PsiElement(EOS)(';')
     HareDeclarationImpl(DECLARATION)

@@ -63,7 +63,7 @@ integer_type ::= I8_TYPE | I16_TYPE | I32_TYPE | I64_TYPE | U8_TYPE | U16_TYPE |
 floating_type ::= F32_TYPE | F64_TYPE
 
 enum_type ::= ENUM_KW enum_storage? LBR enum_values RBR
-enum_values ::= enum_value (COMMA enum_value)*
+enum_values ::= enum_value (COMMA enum_value)* COMMA?
 enum_value ::= IDENTIFIER ASSIGN expression | IDENTIFIER
 enum_storage ::= integer_type | RUNE_KW
 

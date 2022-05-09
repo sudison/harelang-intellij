@@ -1255,7 +1255,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // enum_value (COMMA enum_value)*
+  // enum_value (COMMA enum_value)* COMMA?
   public static boolean enum_values(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_values")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
@@ -1263,6 +1263,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = enum_value(b, l + 1);
     r = r && enum_values_1(b, l + 1);
+    r = r && enum_values_2(b, l + 1);
     exit_section_(b, m, ENUM_VALUES, r);
     return r;
   }
@@ -1287,6 +1288,13 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = r && enum_value(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean enum_values_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_values_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
