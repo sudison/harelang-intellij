@@ -180,7 +180,7 @@ assignment ::= object_selector assignment_op expression | MULTIPLIES unary_expre
 assignment_op ::=  ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | MULTIPLIES_ASSIGN | DIVIDES_ASSIGN |
 MODULUS_ASSIGN | AND_ASSIGN | OR_ASSIGN | XOR_ASSIGN | LEFT_SHIFT_ASSIGN | RIGHT_SHIFT_ASSIGN | LOGICAL_AND_ASSIGN |
 LOGICAL_OR_ASSIGN | LOGICAL_XOR_ASSIGN
-object_selector ::=  nested_expression (field_access_op | indexing_op)* | IDENTIFIER
+object_selector ::=  nested_expression (field_access_op | slicing_op | indexing_op)* | IDENTIFIER
 
 if_expression ::=  IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression | IF_KW conditional_branch
 conditional_branch ::= LP expression RP expression

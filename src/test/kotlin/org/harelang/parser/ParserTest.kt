@@ -24,11 +24,10 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testPrintParseImports() {
         printTree("""
-           const buffered_vtable_r: io::vtable = io::vtable {
-	closer = &buffered_close_static,
-	reader = &buffered_read,
-	...
-};    
+           fn fo() void = {
+           	s.rbuffer[..len(s.rbuffer) - n] = s.rbuffer[n..];
+
+           };
             """.trimIndent())
     }
 
@@ -227,6 +226,9 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         doCodeTest("""
             fn foo(a:int) void = {
             let a = a[1..2], b = a[..2], c = a[..];
+            a[kdk..1] = b[..len(a)];
+            a[..1] = b[a..len(a)];
+
             };
         """.trimIndent())
     }

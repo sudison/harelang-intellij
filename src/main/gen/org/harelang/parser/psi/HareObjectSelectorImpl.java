@@ -51,6 +51,12 @@ public class HareObjectSelectorImpl extends ASTWrapperPsiElement implements Hare
   }
 
   @Override
+  @NotNull
+  public List<HareSlicingOp> getSlicingOpList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareSlicingOp.class);
+  }
+
+  @Override
   @Nullable
   public HareTupleItems getTupleItems() {
     return findChildByClass(HareTupleItems.class);

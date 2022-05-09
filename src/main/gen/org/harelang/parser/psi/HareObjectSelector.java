@@ -19,6 +19,9 @@ public interface HareObjectSelector extends PsiElement {
   @Nullable
   HarePlanExpression getPlanExpression();
 
+  @NotNull
+  List<HareSlicingOp> getSlicingOpList();
+
   @Nullable
   HareTupleItems getTupleItems();
 

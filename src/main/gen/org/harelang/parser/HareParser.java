@@ -2570,7 +2570,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // nested_expression (field_access_op | indexing_op)* | IDENTIFIER
+  // nested_expression (field_access_op | slicing_op | indexing_op)* | IDENTIFIER
   public static boolean object_selector(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_selector")) return false;
     boolean r;
@@ -2581,7 +2581,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // nested_expression (field_access_op | indexing_op)*
+  // nested_expression (field_access_op | slicing_op | indexing_op)*
   private static boolean object_selector_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_selector_0")) return false;
     boolean r;
@@ -2592,7 +2592,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (field_access_op | indexing_op)*
+  // (field_access_op | slicing_op | indexing_op)*
   private static boolean object_selector_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_selector_0_1")) return false;
     while (true) {
@@ -2603,11 +2603,12 @@ public class HareParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // field_access_op | indexing_op
+  // field_access_op | slicing_op | indexing_op
   private static boolean object_selector_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_selector_0_1_0")) return false;
     boolean r;
     r = field_access_op(b, l + 1);
+    if (!r) r = slicing_op(b, l + 1);
     if (!r) r = indexing_op(b, l + 1);
     return r;
   }
