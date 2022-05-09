@@ -15,13 +15,14 @@ import com.intellij.psi.TokenType;
 %type IElementType
 %eof{  return;
 %eof}
-
+%{
+StringBuilder string = new StringBuilder();
+%}
 NON_DIGIT = [A-Z] | [a-z] | "_"
 DIGIT = [0-9]
 ALNUM = {NON_DIGIT} | {DIGIT}
 IDENTIFIER = {NON_DIGIT} {ALNUM}*
 COMMENT = "//" [^\n]* \n?
-STRING_LITERAL = \"[^\"]*\"
 RAWSTRING = \`[^\`]*\`
 RUNE_LITERAL = \'\\'\' | \'[^']*\'
 WHITESPACE      = \s
@@ -29,10 +30,14 @@ DECIMAL_DIGITS = \d+
 OCTAL_DIGITS = 0o [0-7]+
 HEX_DIGITS = 0x [0-9a-fA-F]+
 BIN_DIGITS = 0b [0-1]+
+StringCharacter = [^\r\n\"\\]
+
+%state STRING
 %%
 
 
 <YYINITIAL> {
+    \" { yybegin(STRING); string.setLength(0); }
     "~" {return HareTypes.NOT;}
     "_" {return HareTypes.UNDERSCORE;}
     "=" {return HareTypes.ASSIGN;}
@@ -162,12 +167,19 @@ BIN_DIGITS = 0b [0-1]+
 
     {IDENTIFIER} { return HareTypes.IDENTIFIER; }
     {COMMENT} {return HareElementType.Companion.getCOMMENT();}
-    {STRING_LITERAL} {return HareTypes.STRING_LITERAL;}
     {RUNE_LITERAL} {return HareTypes.RUNE_LITERAL;}
     {RAWSTRING} {return HareTypes.RAWSTRING;}
 
 }
+<STRING> {
+  \"                             { yybegin(YYINITIAL); return HareTypes.STRING_LITERAL; }
+  {StringCharacter}+ { string.append( yytext() ); }
+  "\\\""                         { string.append( '\"' ); }
+  "\\0"|"\\a"|"\\b"|"\\f"|"\\r"|"\\n"|"\\t"|"\\v"|"\\\\"|"\\'"  { string.append( yytext() ); }
 
+
+  \r|\n|\r\n  { throw new RuntimeException("Unterminated string at end of line"); }
+}
 [^]  { return TokenType.BAD_CHARACTER; }
 
 

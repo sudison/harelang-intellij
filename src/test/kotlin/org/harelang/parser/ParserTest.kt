@@ -25,7 +25,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            fn fo() void = {
-           		
+           		const in = "\"a\" \"b\" \"\\a\" \"\\b\" \"\\f\" \"\\n\" \"\\r\" "
+		"\"\\t\" \"\\v\" \"\\0\" \"\\\\\" \"\\\'\"";
 
 
            };
@@ -136,6 +137,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             let rr : str = `one-line`
                            `two-line`
                            "third-line";
+            const in:str = "\"a\" \"b\" \"\\a\" \"\\b\" \"\\f\" \"\\n\" \"\\r\" "
+		"\"\\t\" \"\\v\" \"\\0\" \"\\\\\" \"\\\'\"";               
         """.trimIndent())
     }
 
