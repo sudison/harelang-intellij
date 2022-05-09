@@ -2997,13 +2997,18 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING_LITERAL
+  // STRING_LITERAL+
   public static boolean string_const(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "string_const")) return false;
     if (!nextTokenIs(b, STRING_LITERAL)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, STRING_LITERAL);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, STRING_LITERAL)) break;
+      if (!empty_element_parsed_guard_(b, "string_const", c)) break;
+    }
     exit_section_(b, m, STRING_CONST, r);
     return r;
   }

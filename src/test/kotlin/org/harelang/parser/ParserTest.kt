@@ -25,7 +25,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            fn fo() void = {
-           		assert(replace("Hello world!", "world", "there") == "Hello there!");
+           		let a = "fdf"
+                        "fdf";
 
 
            };
@@ -130,6 +131,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testParseString() {
         doCodeTest("""
             let s : str = "a", b : str = "c";
+            let s : str = "line-one"
+                           "line-two";
         """.trimIndent())
     }
 
