@@ -45,8 +45,8 @@ function_declaration ::= fndec_attr* FN_KW identifier_path prototype (ASSIGN exp
 pin=2
 }
 
-fndec_attr ::= AT (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
-fntype_attr ::= AT NORETURN_ATTR
+fndec_attr ::= (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
+fntype_attr ::= NORETURN_ATTR
 
 prototype ::= LP parameter_list? RP type
 

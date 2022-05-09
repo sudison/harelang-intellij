@@ -21,7 +21,7 @@ DIGIT = [0-9]
 ALNUM = {NON_DIGIT} | {DIGIT}
 IDENTIFIER = {NON_DIGIT} {ALNUM}*
 COMMENT = "//" [^\n]* \n?
-STRING_LITERAL = \".*\"
+STRING_LITERAL = \"[^\"]*\"
 RUNE_LITERAL = \'\\'\' | \'[^']*\'
 WHITESPACE      = \s
 DECIMAL_DIGITS = \d+
@@ -32,7 +32,6 @@ BIN_DIGITS = 0b [0-1]+
 
 
 <YYINITIAL> {
-    "@" {return HareTypes.AT;}
     "~" {return HareTypes.NOT;}
     "_" {return HareTypes.UNDERSCORE;}
     "=" {return HareTypes.ASSIGN;}
@@ -142,10 +141,10 @@ BIN_DIGITS = 0b [0-1]+
     "continue" {return HareTypes.CONTINUE_KW;}
     "return" {return HareTypes.RETURN_KW;}
     "yield" {return HareTypes.YIELD_KW;}
-    "fini" {return HareTypes.FINI_ATTR;}
-    "init" {return HareTypes.INIT_ATTR;}
-    "test" {return HareTypes.TEST_ATTR;}
-    "noreturn" {return HareTypes.NORETURN_ATTR;}
+    "@fini" {return HareTypes.FINI_ATTR;}
+    "@init" {return HareTypes.INIT_ATTR;}
+    "@test" {return HareTypes.TEST_ATTR;}
+    "@noreturn" {return HareTypes.NORETURN_ATTR;}
 
 
     ".." {return HareTypes.DOTDOT;}

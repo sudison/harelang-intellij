@@ -122,7 +122,6 @@ public interface HareTypes {
   IElementType ASSERT_KW = new HareTokenType("ASSERT_KW");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType AS_KW = new HareTokenType("AS_KW");
-  IElementType AT = new HareTokenType("AT");
   IElementType BANG = new HareTokenType("BANG");
   IElementType BIN_DIGITS = new HareTokenType("BIN_DIGITS");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");

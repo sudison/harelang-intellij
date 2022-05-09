@@ -25,11 +25,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            fn fo() void = {
-           	match (io::readall(file, b[..1])?) {
-	case let n: size => void;
-	case io::EOF =>
-		return io::EOF;
-	};
+           		assert(replace("Hello world!", "world", "there") == "Hello there!");
+
 
            };
             """.trimIndent())
@@ -132,7 +129,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testParseString() {
         doCodeTest("""
-            let s : str = "a";
+            let s : str = "a", b : str = "c";
         """.trimIndent())
     }
 
@@ -412,8 +409,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testParseFnAttr() {
         doCodeTest("""
-            @init @test @init @noreturn fn foo(a:int) void;
-            @init fn foo(a:int) void;
+            @init @test @init @noreturn fn init(a:int) void;
+            @init fn test(a:int) void;
             type s = @noreturn fn () void;
         """.trimIndent())
     }

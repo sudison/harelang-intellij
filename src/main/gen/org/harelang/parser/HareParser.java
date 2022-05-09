@@ -1628,32 +1628,20 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // AT (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
+  // (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
   public static boolean fndec_attr(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fndec_attr")) return false;
-    if (!nextTokenIs(b, AT)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, FNDEC_ATTR, "<fndec attr>");
     r = fndec_attr_0(b, l + 1);
     if (!r) r = fntype_attr(b, l + 1);
-    exit_section_(b, m, FNDEC_ATTR, r);
-    return r;
-  }
-
-  // AT (FINI_ATTR | TEST_ATTR | INIT_ATTR)
-  private static boolean fndec_attr_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "fndec_attr_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, AT);
-    r = r && fndec_attr_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // FINI_ATTR | TEST_ATTR | INIT_ATTR
-  private static boolean fndec_attr_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "fndec_attr_0_1")) return false;
+  private static boolean fndec_attr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fndec_attr_0")) return false;
     boolean r;
     r = consumeToken(b, FINI_ATTR);
     if (!r) r = consumeToken(b, TEST_ATTR);
@@ -1662,13 +1650,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // AT NORETURN_ATTR
+  // NORETURN_ATTR
   public static boolean fntype_attr(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fntype_attr")) return false;
-    if (!nextTokenIs(b, AT)) return false;
+    if (!nextTokenIs(b, NORETURN_ATTR)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, AT, NORETURN_ATTR);
+    r = consumeToken(b, NORETURN_ATTR);
     exit_section_(b, m, FNTYPE_ATTR, r);
     return r;
   }
@@ -1744,7 +1732,6 @@ public class HareParser implements PsiParser, LightPsiParser {
   // fndec_attr* FN_KW identifier_path prototype (ASSIGN expression)?
   public static boolean function_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_declaration")) return false;
-    if (!nextTokenIs(b, "<function declaration>", AT, FN_KW)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_DECLARATION, "<function declaration>");
     r = function_declaration_0(b, l + 1);
@@ -1790,7 +1777,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   // fntype_attr? FN_KW prototype
   public static boolean function_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_type")) return false;
-    if (!nextTokenIs(b, "<function type>", AT, FN_KW)) return false;
+    if (!nextTokenIs(b, "<function type>", FN_KW, NORETURN_ATTR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_TYPE, "<function type>");
     r = function_type_0(b, l + 1);
