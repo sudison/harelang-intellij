@@ -3356,13 +3356,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expression (COMMA expression)+
+  // expression (COMMA expression)+ COMMA?
   public static boolean tuple_items(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "tuple_items")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TUPLE_ITEMS, "<tuple items>");
     r = expression(b, l + 1);
     r = r && tuple_items_1(b, l + 1);
+    r = r && tuple_items_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -3393,6 +3394,13 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  // COMMA?
+  private static boolean tuple_items_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_items_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
   /* ********************************************************** */
   // LP tuple_types RP
   public static boolean tuple_type(PsiBuilder b, int l) {
@@ -3408,13 +3416,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // type (COMMA type)+
+  // type (COMMA type)+ COMMA?
   public static boolean tuple_types(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "tuple_types")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TUPLE_TYPES, "<tuple types>");
     r = type(b, l + 1);
     r = r && tuple_types_1(b, l + 1);
+    r = r && tuple_types_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -3443,6 +3452,13 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = r && type(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean tuple_types_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "tuple_types_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */

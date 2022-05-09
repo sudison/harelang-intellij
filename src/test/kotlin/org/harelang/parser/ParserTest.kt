@@ -108,7 +108,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testParseTuple() {
         doCodeTest("""
-            type a = (i32, i8, f64);
+            type a = (i32, i8, f64), b = (a,b,);
         """.trimIndent())
     }
 
@@ -193,7 +193,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testParseTupleItems() {
         doCodeTest("""
             fn foo(a:int) void = {
-            let a = (1, 2, 3), b = (1);
+            let a = (1, 2, 3,), b = (1);
             };
         """.trimIndent())
     }
