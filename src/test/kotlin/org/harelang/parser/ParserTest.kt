@@ -416,4 +416,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             let a: i32 = 1234567890, b: i32 = 0x1234567890abcdefABCDEF, c: i32 = 0o1234567, d: i32 = 0b010101;
         """.trimIndent())
     }
+
+    @Test
+    fun testParseFloatingConstant() {
+        doCodeTest("""
+            let a: f32 = 12.12, b: f32 = 12.12e+12f32, c: f64 = 1.1e-12f64;
+        """.trimIndent())
+    }
 }

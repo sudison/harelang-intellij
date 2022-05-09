@@ -38,11 +38,13 @@ public interface HareTypes {
   IElementType ENUM_VALUE = new HareElementType("ENUM_VALUE");
   IElementType ENUM_VALUES = new HareElementType("ENUM_VALUES");
   IElementType ERROR_PROPAGATION_OP = new HareElementType("ERROR_PROPAGATION_OP");
+  IElementType EXPONENT = new HareElementType("EXPONENT");
   IElementType EXPRESSION = new HareElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new HareElementType("EXPRESSION_LIST");
   IElementType FIELD_ACCESS_OP = new HareElementType("FIELD_ACCESS_OP");
   IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
   IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
+  IElementType FLOATING_CONSTANT = new HareElementType("FLOATING_CONSTANT");
   IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
   IElementType FNDEC_ATTR = new HareElementType("FNDEC_ATTR");
   IElementType FNTYPE_ATTR = new HareElementType("FNTYPE_ATTR");
@@ -330,6 +332,9 @@ public interface HareTypes {
       else if (type == ERROR_PROPAGATION_OP) {
         return new HareErrorPropagationOpImpl(node);
       }
+      else if (type == EXPONENT) {
+        return new HareExponentImpl(node);
+      }
       else if (type == EXPRESSION) {
         return new HareExpressionImpl(node);
       }
@@ -344,6 +349,9 @@ public interface HareTypes {
       }
       else if (type == FIELD_VALUES) {
         return new HareFieldValuesImpl(node);
+      }
+      else if (type == FLOATING_CONSTANT) {
+        return new HareFloatingConstantImpl(node);
       }
       else if (type == FLOATING_TYPE) {
         return new HareFloatingTypeImpl(node);

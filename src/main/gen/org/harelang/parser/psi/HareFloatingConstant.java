@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareConstant extends PsiElement {
+public interface HareFloatingConstant extends PsiElement {
 
   @Nullable
-  HareFloatingConstant getFloatingConstant();
-
-  @Nullable
-  HareIntegerConstant getIntegerConstant();
-
-  @Nullable
-  HareStringConst getStringConst();
+  HareExponent getExponent();
 
 }

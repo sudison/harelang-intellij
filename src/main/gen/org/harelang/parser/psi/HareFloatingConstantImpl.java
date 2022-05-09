@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareConstantImpl extends ASTWrapperPsiElement implements HareConstant {
+public class HareFloatingConstantImpl extends ASTWrapperPsiElement implements HareFloatingConstant {
 
-  public HareConstantImpl(@NotNull ASTNode node) {
+  public HareFloatingConstantImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitConstant(this);
+    visitor.visitFloatingConstant(this);
   }
 
   @Override
@@ -28,20 +28,8 @@ public class HareConstantImpl extends ASTWrapperPsiElement implements HareConsta
 
   @Override
   @Nullable
-  public HareFloatingConstant getFloatingConstant() {
-    return findChildByClass(HareFloatingConstant.class);
-  }
-
-  @Override
-  @Nullable
-  public HareIntegerConstant getIntegerConstant() {
-    return findChildByClass(HareIntegerConstant.class);
-  }
-
-  @Override
-  @Nullable
-  public HareStringConst getStringConst() {
-    return findChildByClass(HareStringConst.class);
+  public HareExponent getExponent() {
+    return findChildByClass(HareExponent.class);
   }
 
 }

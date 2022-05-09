@@ -932,12 +932,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
+  // floating_constant | integer_constant | string_const | NULL_KW | TRUE_KW | FALSE_KW | VOID_KW
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CONSTANT, "<constant>");
-    r = integer_constant(b, l + 1);
+    r = floating_constant(b, l + 1);
+    if (!r) r = integer_constant(b, l + 1);
     if (!r) r = string_const(b, l + 1);
     if (!r) r = consumeToken(b, NULL_KW);
     if (!r) r = consumeToken(b, TRUE_KW);
@@ -1388,6 +1389,44 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS
+  public static boolean exponent(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPONENT, "<exponent>");
+    r = exponent_0(b, l + 1);
+    r = r && exponent_1(b, l + 1);
+    r = r && consumeToken(b, DECIMAL_DIGITS);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // "e" | "E"
+  private static boolean exponent_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent_0")) return false;
+    boolean r;
+    r = consumeToken(b, "e");
+    if (!r) r = consumeToken(b, "E");
+    return r;
+  }
+
+  // (ADDS | SUBSTRACTS)?
+  private static boolean exponent_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent_1")) return false;
+    exponent_1_0(b, l + 1);
+    return true;
+  }
+
+  // ADDS | SUBSTRACTS
+  private static boolean exponent_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent_1_0")) return false;
+    boolean r;
+    r = consumeToken(b, ADDS);
+    if (!r) r = consumeToken(b, SUBSTRACTS);
+    return r;
+  }
+
+  /* ********************************************************** */
   // assignment | binding_list | logical_or_expression | if_expression | for_loop | control_expression
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
@@ -1530,6 +1569,43 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, COMMA);
     r = r && field_value(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)?
+  public static boolean floating_constant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant")) return false;
+    if (!nextTokenIs(b, DECIMAL_DIGITS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, DECIMAL_DIGITS, DOT, DECIMAL_DIGITS);
+    r = r && floating_constant_3(b, l + 1);
+    r = r && floating_constant_4(b, l + 1);
+    exit_section_(b, m, FLOATING_CONSTANT, r);
+    return r;
+  }
+
+  // exponent?
+  private static boolean floating_constant_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_3")) return false;
+    exponent(b, l + 1);
+    return true;
+  }
+
+  // (F32_TYPE | F64_TYPE)?
+  private static boolean floating_constant_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_4")) return false;
+    floating_constant_4_0(b, l + 1);
+    return true;
+  }
+
+  // F32_TYPE | F64_TYPE
+  private static boolean floating_constant_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_4_0")) return false;
+    boolean r;
+    r = consumeToken(b, F32_TYPE);
+    if (!r) r = consumeToken(b, F64_TYPE);
     return r;
   }
 
