@@ -25,7 +25,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            fn fo() void = {
-           	s.rbuffer[..len(s.rbuffer) - n] = s.rbuffer[n..];
+           	return ra: u32 : int - rb: u32;
 
            };
             """.trimIndent())
@@ -374,7 +374,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testParseCastExpression() {
         doCodeTest("""
             fn foo(a:int) void = {
-            let a = a::bc : i32, b = a as bool, c = a is bool;
+            let a = a::bc : i32:int, b = a as bool, c = a is bool;
             };
         """.trimIndent())
     }

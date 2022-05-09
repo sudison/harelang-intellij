@@ -785,7 +785,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // unary_expression (COLON type | AS_KW type | IS_KW type)?
+  // unary_expression (COLON type | AS_KW type | IS_KW type)*
   static boolean cast_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "cast_expression")) return false;
     boolean r;
@@ -796,10 +796,14 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (COLON type | AS_KW type | IS_KW type)?
+  // (COLON type | AS_KW type | IS_KW type)*
   private static boolean cast_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "cast_expression_1")) return false;
-    cast_expression_1_0(b, l + 1);
+    while (true) {
+      int c = current_position_(b);
+      if (!cast_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "cast_expression_1", c)) break;
+    }
     return true;
   }
 
