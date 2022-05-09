@@ -44,6 +44,8 @@ public interface HareTypes {
   IElementType FIELD_VALUE = new HareElementType("FIELD_VALUE");
   IElementType FIELD_VALUES = new HareElementType("FIELD_VALUES");
   IElementType FLOATING_TYPE = new HareElementType("FLOATING_TYPE");
+  IElementType FNDEC_ATTR = new HareElementType("FNDEC_ATTR");
+  IElementType FNTYPE_ATTR = new HareElementType("FNTYPE_ATTR");
   IElementType FOR_LOOP = new HareElementType("FOR_LOOP");
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
@@ -117,6 +119,7 @@ public interface HareTypes {
   IElementType ASSERT_KW = new HareTokenType("ASSERT_KW");
   IElementType ASSIGN = new HareTokenType("ASSIGN");
   IElementType AS_KW = new HareTokenType("AS_KW");
+  IElementType AT = new HareTokenType("AT");
   IElementType BANG = new HareTokenType("BANG");
   IElementType BOOL_TYPE = new HareTokenType("BOOL_TYPE");
   IElementType BREAK_KW = new HareTokenType("BREAK_KW");
@@ -144,6 +147,7 @@ public interface HareTypes {
   IElementType F32_TYPE = new HareTokenType("F32_TYPE");
   IElementType F64_TYPE = new HareTokenType("F64_TYPE");
   IElementType FALSE_KW = new HareTokenType("FALSE_KW");
+  IElementType FINI_ATTR = new HareTokenType("FINI_ATTR");
   IElementType FN_KW = new HareTokenType("FN_KW");
   IElementType FOR_KW = new HareTokenType("FOR_KW");
   IElementType FREE_KW = new HareTokenType("FREE_KW");
@@ -154,6 +158,7 @@ public interface HareTypes {
   IElementType IDENTIFIER = new HareTokenType("IDENTIFIER");
   IElementType IF_KW = new HareTokenType("IF_KW");
   IElementType INCLUSIVE_OR = new HareTokenType("INCLUSIVE_OR");
+  IElementType INIT_ATTR = new HareTokenType("INIT_ATTR");
   IElementType INSERT_KW = new HareTokenType("INSERT_KW");
   IElementType INT_TYPE = new HareTokenType("INT_TYPE");
   IElementType IS_KW = new HareTokenType("IS_KW");
@@ -181,6 +186,7 @@ public interface HareTypes {
   IElementType MODULUS_ASSIGN = new HareTokenType("MODULUS_ASSIGN");
   IElementType MULTIPLIES = new HareTokenType("MULTIPLIES");
   IElementType MULTIPLIES_ASSIGN = new HareTokenType("MULTIPLIES_ASSIGN");
+  IElementType NORETURN_ATTR = new HareTokenType("NORETURN_ATTR");
   IElementType NOT = new HareTokenType("NOT");
   IElementType NOT_EQUAL = new HareTokenType("NOT_EQUAL");
   IElementType NULLABLE_KW = new HareTokenType("NULLABLE_KW");
@@ -204,6 +210,7 @@ public interface HareTypes {
   IElementType STR_TYPE = new HareTokenType("STR_TYPE");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType SWITCH_KW = new HareTokenType("SWITCH_KW");
+  IElementType TEST_ATTR = new HareTokenType("TEST_ATTR");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
   IElementType TYPE_KW = new HareTokenType("TYPE_KW");
   IElementType U16_TYPE = new HareTokenType("U16_TYPE");
@@ -337,6 +344,12 @@ public interface HareTypes {
       }
       else if (type == FLOATING_TYPE) {
         return new HareFloatingTypeImpl(node);
+      }
+      else if (type == FNDEC_ATTR) {
+        return new HareFndecAttrImpl(node);
+      }
+      else if (type == FNTYPE_ATTR) {
+        return new HareFntypeAttrImpl(node);
       }
       else if (type == FOR_LOOP) {
         return new HareForLoopImpl(node);

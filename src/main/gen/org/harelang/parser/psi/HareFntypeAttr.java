@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareFunctionType extends PsiElement {
-
-  @Nullable
-  HareFntypeAttr getFntypeAttr();
-
-  @NotNull
-  HarePrototype getPrototype();
+public interface HareFntypeAttr extends PsiElement {
 
 }

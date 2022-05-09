@@ -10,6 +10,9 @@ public interface HareFunctionDeclaration extends PsiElement {
   @Nullable
   HareExpression getExpression();
 
+  @NotNull
+  List<HareFndecAttr> getFndecAttrList();
+
   @Nullable
   HareIdentifierPath getIdentifierPath();
 

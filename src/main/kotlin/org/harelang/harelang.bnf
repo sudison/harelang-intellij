@@ -41,9 +41,12 @@ constant_binding ::= identifier_path COLON type ASSIGN expression
 type_declaration ::= TYPE_KW type_bindings
 type_bindings ::= type_binding (COMMA type_binding)*
 type_binding ::= identifier_path ASSIGN type
-function_declaration ::= FN_KW identifier_path prototype (ASSIGN expression)? {
-pin=1
+function_declaration ::= fndec_attr* FN_KW identifier_path prototype (ASSIGN expression)? {
+pin=2
 }
+
+fndec_attr ::= AT (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
+fntype_attr ::= AT NORETURN_ATTR
 
 prototype ::= LP parameter_list? RP type
 
@@ -78,7 +81,7 @@ tagged_types ::= type (INCLUSIVE_OR type)+
 
 slice_array_type ::= LB (expression | MULTIPLIES | UNDERSCORE)? RB type
 
-function_type ::= FN_KW prototype
+function_type ::= fntype_attr? FN_KW prototype
 
 alias_type ::= identifier_path
 unwrapped_alias ::= DOTDOTDOT identifier_path

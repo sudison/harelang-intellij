@@ -10,32 +10,20 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareFunctionTypeImpl extends ASTWrapperPsiElement implements HareFunctionType {
+public class HareFntypeAttrImpl extends ASTWrapperPsiElement implements HareFntypeAttr {
 
-  public HareFunctionTypeImpl(@NotNull ASTNode node) {
+  public HareFntypeAttrImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitFunctionType(this);
+    visitor.visitFntypeAttr(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof HareVisitor) accept((HareVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public HareFntypeAttr getFntypeAttr() {
-    return findChildByClass(HareFntypeAttr.class);
-  }
-
-  @Override
-  @NotNull
-  public HarePrototype getPrototype() {
-    return findNotNullChildByClass(HarePrototype.class);
   }
 
 }

@@ -1521,6 +1521,52 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // AT (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
+  public static boolean fndec_attr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fndec_attr")) return false;
+    if (!nextTokenIs(b, AT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = fndec_attr_0(b, l + 1);
+    if (!r) r = fntype_attr(b, l + 1);
+    exit_section_(b, m, FNDEC_ATTR, r);
+    return r;
+  }
+
+  // AT (FINI_ATTR | TEST_ATTR | INIT_ATTR)
+  private static boolean fndec_attr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fndec_attr_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, AT);
+    r = r && fndec_attr_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // FINI_ATTR | TEST_ATTR | INIT_ATTR
+  private static boolean fndec_attr_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fndec_attr_0_1")) return false;
+    boolean r;
+    r = consumeToken(b, FINI_ATTR);
+    if (!r) r = consumeToken(b, TEST_ATTR);
+    if (!r) r = consumeToken(b, INIT_ATTR);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // AT NORETURN_ATTR
+  public static boolean fntype_attr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fntype_attr")) return false;
+    if (!nextTokenIs(b, AT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, AT, NORETURN_ATTR);
+    exit_section_(b, m, FNTYPE_ATTR, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // FOR_KW LP for_predicate RP expression
   public static boolean for_loop(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "for_loop")) return false;
@@ -1588,31 +1634,43 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FN_KW identifier_path prototype (ASSIGN expression)?
+  // fndec_attr* FN_KW identifier_path prototype (ASSIGN expression)?
   public static boolean function_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_declaration")) return false;
-    if (!nextTokenIs(b, FN_KW)) return false;
+    if (!nextTokenIs(b, "<function declaration>", AT, FN_KW)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, FUNCTION_DECLARATION, null);
-    r = consumeToken(b, FN_KW);
-    p = r; // pin = 1
+    Marker m = enter_section_(b, l, _NONE_, FUNCTION_DECLARATION, "<function declaration>");
+    r = function_declaration_0(b, l + 1);
+    r = r && consumeToken(b, FN_KW);
+    p = r; // pin = 2
     r = r && report_error_(b, identifier_path(b, l + 1));
     r = p && report_error_(b, prototype(b, l + 1)) && r;
-    r = p && function_declaration_3(b, l + 1) && r;
+    r = p && function_declaration_4(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
+  // fndec_attr*
+  private static boolean function_declaration_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_declaration_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!fndec_attr(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "function_declaration_0", c)) break;
+    }
+    return true;
+  }
+
   // (ASSIGN expression)?
-  private static boolean function_declaration_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "function_declaration_3")) return false;
-    function_declaration_3_0(b, l + 1);
+  private static boolean function_declaration_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_declaration_4")) return false;
+    function_declaration_4_0(b, l + 1);
     return true;
   }
 
   // ASSIGN expression
-  private static boolean function_declaration_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "function_declaration_3_0")) return false;
+  private static boolean function_declaration_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_declaration_4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ASSIGN);
@@ -1622,16 +1680,24 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FN_KW prototype
+  // fntype_attr? FN_KW prototype
   public static boolean function_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_type")) return false;
-    if (!nextTokenIs(b, FN_KW)) return false;
+    if (!nextTokenIs(b, "<function type>", AT, FN_KW)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, FN_KW);
+    Marker m = enter_section_(b, l, _NONE_, FUNCTION_TYPE, "<function type>");
+    r = function_type_0(b, l + 1);
+    r = r && consumeToken(b, FN_KW);
     r = r && prototype(b, l + 1);
-    exit_section_(b, m, FUNCTION_TYPE, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // fntype_attr?
+  private static boolean function_type_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_type_0")) return false;
+    fntype_attr(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

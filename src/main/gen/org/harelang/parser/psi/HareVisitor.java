@@ -155,6 +155,14 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFndecAttr(@NotNull HareFndecAttr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFntypeAttr(@NotNull HareFntypeAttr o) {
+    visitPsiElement(o);
+  }
+
   public void visitForLoop(@NotNull HareForLoop o) {
     visitPsiElement(o);
   }

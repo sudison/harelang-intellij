@@ -33,6 +33,12 @@ public class HareFunctionDeclarationImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
+  @NotNull
+  public List<HareFndecAttr> getFndecAttrList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareFndecAttr.class);
+  }
+
+  @Override
   @Nullable
   public HareIdentifierPath getIdentifierPath() {
     return findChildByClass(HareIdentifierPath.class);

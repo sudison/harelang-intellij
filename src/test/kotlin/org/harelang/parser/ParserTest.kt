@@ -400,4 +400,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
             };
         """.trimIndent())
     }
+
+    @Test
+    fun testParseFnAttr() {
+        doCodeTest("""
+            @init @test @init @noreturn fn foo(a:int) void;
+            @init fn foo(a:int) void;
+            type s = @noreturn fn () void;
+        """.trimIndent())
+    }
 }

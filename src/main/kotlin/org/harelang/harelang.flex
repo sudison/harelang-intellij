@@ -28,6 +28,7 @@ DECIMAL_DIGITS = \d+
 
 
 <YYINITIAL> {
+    "@" {return HareTypes.AT;}
     "~" {return HareTypes.NOT;}
     "_" {return HareTypes.UNDERSCORE;}
     "=" {return HareTypes.ASSIGN;}
@@ -137,6 +138,11 @@ DECIMAL_DIGITS = \d+
     "continue" {return HareTypes.CONTINUE_KW;}
     "return" {return HareTypes.RETURN_KW;}
     "yield" {return HareTypes.YIELD_KW;}
+    "fini" {return HareTypes.FINI_ATTR;}
+    "init" {return HareTypes.INIT_ATTR;}
+    "test" {return HareTypes.TEST_ATTR;}
+    "noreturn" {return HareTypes.NORETURN_ATTR;}
+
 
     ".." {return HareTypes.DOTDOT;}
     "..." {return HareTypes.DOTDOTDOT;}
