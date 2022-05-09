@@ -88,7 +88,7 @@ unwrapped_alias ::= DOTDOTDOT identifier_path
 constant ::= floating_constant | integer_constant | string_const | rune_constant | NULL_KW | TRUE_KW | FALSE_KW | VOID_TYPE
 integer_constant ::= (DECIMAL_DIGITS | OCTAL_DIGITS | HEX_DIGITS | BIN_DIGITS) integer_suffix?
 integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64"
-string_const ::= STRING_LITERAL+
+string_const ::= (STRING_LITERAL | RAWSTRING)+
 
 floating_constant ::= DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)?
 exponent ::= ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS
@@ -130,8 +130,7 @@ private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
 plan_expression ::= struct_literal | enum_literal | IDENTIFIER | constant | array_literal
 array_literal ::= LB array_members? RB
-array_members ::= expression DOTDOTDOT COMMA? | expression COMMA array_members | expression COMMA?
-
+array_members ::= expression (COMMA expression)* DOTDOTDOT? COMMA?
 enum_literal ::= IDENTIFIER (SCOPE IDENTIFIER)+
 
 struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR | identifier_path LBR struct_initializer COMMA? RBR

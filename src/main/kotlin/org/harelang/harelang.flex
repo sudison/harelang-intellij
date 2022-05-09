@@ -22,6 +22,7 @@ ALNUM = {NON_DIGIT} | {DIGIT}
 IDENTIFIER = {NON_DIGIT} {ALNUM}*
 COMMENT = "//" [^\n]* \n?
 STRING_LITERAL = \"[^\"]*\"
+RAWSTRING = \`[^\`]*\`
 RUNE_LITERAL = \'\\'\' | \'[^']*\'
 WHITESPACE      = \s
 DECIMAL_DIGITS = \d+
@@ -163,6 +164,7 @@ BIN_DIGITS = 0b [0-1]+
     {COMMENT} {return HareElementType.Companion.getCOMMENT();}
     {STRING_LITERAL} {return HareTypes.STRING_LITERAL;}
     {RUNE_LITERAL} {return HareTypes.RUNE_LITERAL;}
+    {RAWSTRING} {return HareTypes.RAWSTRING;}
 
 }
 

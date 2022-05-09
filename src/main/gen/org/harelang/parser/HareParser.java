@@ -315,63 +315,51 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expression DOTDOTDOT COMMA? | expression COMMA array_members | expression COMMA?
+  // expression (COMMA expression)* DOTDOTDOT? COMMA?
   public static boolean array_members(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_members")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARRAY_MEMBERS, "<array members>");
-    r = array_members_0(b, l + 1);
-    if (!r) r = array_members_1(b, l + 1);
-    if (!r) r = array_members_2(b, l + 1);
+    r = expression(b, l + 1);
+    r = r && array_members_1(b, l + 1);
+    r = r && array_members_2(b, l + 1);
+    r = r && array_members_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // expression DOTDOTDOT COMMA?
-  private static boolean array_members_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array_members_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = expression(b, l + 1);
-    r = r && consumeToken(b, DOTDOTDOT);
-    r = r && array_members_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA?
-  private static boolean array_members_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array_members_0_2")) return false;
-    consumeToken(b, COMMA);
+  // (COMMA expression)*
+  private static boolean array_members_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!array_members_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "array_members_1", c)) break;
+    }
     return true;
   }
 
-  // expression COMMA array_members
-  private static boolean array_members_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array_members_1")) return false;
+  // COMMA expression
+  private static boolean array_members_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = expression(b, l + 1);
-    r = r && consumeToken(b, COMMA);
-    r = r && array_members(b, l + 1);
+    r = consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // expression COMMA?
+  // DOTDOTDOT?
   private static boolean array_members_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_members_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = expression(b, l + 1);
-    r = r && array_members_2_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    consumeToken(b, DOTDOTDOT);
+    return true;
   }
 
   // COMMA?
-  private static boolean array_members_2_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array_members_2_1")) return false;
+  private static boolean array_members_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_members_3")) return false;
     consumeToken(b, COMMA);
     return true;
   }
@@ -2997,19 +2985,28 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING_LITERAL+
+  // (STRING_LITERAL | RAWSTRING)+
   public static boolean string_const(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "string_const")) return false;
-    if (!nextTokenIs(b, STRING_LITERAL)) return false;
+    if (!nextTokenIs(b, "<string const>", RAWSTRING, STRING_LITERAL)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, STRING_LITERAL);
+    Marker m = enter_section_(b, l, _NONE_, STRING_CONST, "<string const>");
+    r = string_const_0(b, l + 1);
     while (r) {
       int c = current_position_(b);
-      if (!consumeToken(b, STRING_LITERAL)) break;
+      if (!string_const_0(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "string_const", c)) break;
     }
-    exit_section_(b, m, STRING_CONST, r);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STRING_LITERAL | RAWSTRING
+  private static boolean string_const_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string_const_0")) return false;
+    boolean r;
+    r = consumeToken(b, STRING_LITERAL);
+    if (!r) r = consumeToken(b, RAWSTRING);
     return r;
   }
 

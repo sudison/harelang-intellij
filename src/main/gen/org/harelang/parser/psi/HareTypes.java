@@ -200,6 +200,7 @@ public interface HareTypes {
   IElementType OR_ASSIGN = new HareTokenType("OR_ASSIGN");
   IElementType PLUS_ASSIGN = new HareTokenType("PLUS_ASSIGN");
   IElementType QUESTION = new HareTokenType("QUESTION");
+  IElementType RAWSTRING = new HareTokenType("RAWSTRING");
   IElementType RB = new HareTokenType("RB");
   IElementType RBR = new HareTokenType("RBR");
   IElementType RETURN_KW = new HareTokenType("RETURN_KW");
