@@ -27,15 +27,9 @@ public class HareArgumentListImpl extends ASTWrapperPsiElement implements HareAr
   }
 
   @Override
-  @Nullable
-  public HareArgumentList getArgumentList() {
-    return findChildByClass(HareArgumentList.class);
-  }
-
-  @Override
   @NotNull
-  public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+  public List<HareExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareExpression.class);
   }
 
 }

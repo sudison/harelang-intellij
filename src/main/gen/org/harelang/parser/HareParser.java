@@ -258,39 +258,53 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expression DOTDOTDOT  | expression COMMA argument_list | expression
+  // expression (COMMA expression)* DOTDOTDOT? COMMA?
   public static boolean argument_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_list")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARGUMENT_LIST, "<argument list>");
-    r = argument_list_0(b, l + 1);
-    if (!r) r = argument_list_1(b, l + 1);
-    if (!r) r = expression(b, l + 1);
+    r = expression(b, l + 1);
+    r = r && argument_list_1(b, l + 1);
+    r = r && argument_list_2(b, l + 1);
+    r = r && argument_list_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // expression DOTDOTDOT
-  private static boolean argument_list_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "argument_list_0")) return false;
+  // (COMMA expression)*
+  private static boolean argument_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!argument_list_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "argument_list_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA expression
+  private static boolean argument_list_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = expression(b, l + 1);
-    r = r && consumeToken(b, DOTDOTDOT);
+    r = consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // expression COMMA argument_list
-  private static boolean argument_list_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "argument_list_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = expression(b, l + 1);
-    r = r && consumeToken(b, COMMA);
-    r = r && argument_list(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  // DOTDOTDOT?
+  private static boolean argument_list_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list_2")) return false;
+    consumeToken(b, DOTDOTDOT);
+    return true;
+  }
+
+  // COMMA?
+  private static boolean argument_list_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_list_3")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */

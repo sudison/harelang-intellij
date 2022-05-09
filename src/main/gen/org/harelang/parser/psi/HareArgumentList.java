@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface HareArgumentList extends PsiElement {
 
-  @Nullable
-  HareArgumentList getArgumentList();
-
   @NotNull
-  HareExpression getExpression();
+  List<HareExpression> getExpressionList();
 
 }

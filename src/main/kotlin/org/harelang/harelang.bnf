@@ -188,7 +188,7 @@ for_loop ::= FOR_KW LP for_predicate RP expression
 for_predicate ::= binding_list EOS expression EOS expression | binding_list EOS expression | expression EOS expression | expression
 
 call_op ::= LP argument_list? RP
-argument_list ::= expression DOTDOTDOT  | expression COMMA argument_list | expression
+argument_list ::= expression (COMMA expression)* DOTDOTDOT? COMMA?
 
 control_expression ::= BREAK_KW label? | CONTINUE_KW label? | RETURN_KW expression? | yield_expression
 yield_expression ::= YIELD_KW ((label COMMA expression) | expression | label)?
