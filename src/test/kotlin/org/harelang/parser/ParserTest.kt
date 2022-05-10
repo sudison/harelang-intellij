@@ -25,9 +25,15 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            fn fo() void = {
-           		let a = 6.022e23;
-
-
+           		let atype = parse_type("struct {
+		x: int,
+		y: int,
+		struct {
+			z: int,
+			q: int,
+		},
+		p: int,
+	}");
            };
             """.trimIndent())
     }

@@ -176,9 +176,7 @@ StringCharacter = [^\r\n\"\\]
   {StringCharacter}+ { string.append( yytext() ); }
   "\\\""                         { string.append( '\"' ); }
   "\\0"|"\\a"|"\\b"|"\\f"|"\\r"|"\\n"|"\\t"|"\\v"|"\\\\"|"\\'"  { string.append( yytext() ); }
-
-
-  \r|\n|\r\n  { throw new RuntimeException("Unterminated string at end of line"); }
+  \r|\n|\r\n { string.append( yytext() ); }
 }
 [^]  { return TokenType.BAD_CHARACTER; }
 
