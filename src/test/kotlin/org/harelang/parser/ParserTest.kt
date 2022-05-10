@@ -25,8 +25,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            fn fo() void = {
-           		const in = "\"a\" \"b\" \"\\a\" \"\\b\" \"\\f\" \"\\n\" \"\\r\" "
-		"\"\\t\" \"\\v\" \"\\0\" \"\\\\\" \"\\\'\"";
+           		let a = 6.022e23;
 
 
            };
@@ -434,7 +433,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testParseFloatingConstant() {
         doCodeTest("""
-            let a: f32 = 12.12, b: f32 = 12.12e+12f32, c: f64 = 1.1e-12f64;
+            let a: f32 = 12.12, b: f32 = 12.12e+12f32, c: f64 = 1.1e-12f64, d: f64 = 1e5f64;
         """.trimIndent())
     }
 

@@ -1404,21 +1404,32 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS
+  // ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS | IDENTIFIER
   public static boolean exponent(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exponent")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPONENT, "<exponent>");
     r = exponent_0(b, l + 1);
-    r = r && exponent_1(b, l + 1);
-    r = r && consumeToken(b, DECIMAL_DIGITS);
+    if (!r) r = consumeToken(b, IDENTIFIER);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // "e" | "E"
+  // ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS
   private static boolean exponent_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exponent_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = exponent_0_0(b, l + 1);
+    r = r && exponent_0_1(b, l + 1);
+    r = r && consumeToken(b, DECIMAL_DIGITS);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // "e" | "E"
+  private static boolean exponent_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent_0_0")) return false;
     boolean r;
     r = consumeToken(b, "e");
     if (!r) r = consumeToken(b, "E");
@@ -1426,15 +1437,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   // (ADDS | SUBSTRACTS)?
-  private static boolean exponent_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "exponent_1")) return false;
-    exponent_1_0(b, l + 1);
+  private static boolean exponent_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent_0_1")) return false;
+    exponent_0_1_0(b, l + 1);
     return true;
   }
 
   // ADDS | SUBSTRACTS
-  private static boolean exponent_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "exponent_1_0")) return false;
+  private static boolean exponent_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exponent_0_1_0")) return false;
     boolean r;
     r = consumeToken(b, ADDS);
     if (!r) r = consumeToken(b, SUBSTRACTS);
@@ -1588,36 +1599,76 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)?
+  // DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)? | DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE) | DECIMAL_DIGITS IDENTIFIER
   public static boolean floating_constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "floating_constant")) return false;
     if (!nextTokenIs(b, DECIMAL_DIGITS)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DECIMAL_DIGITS, DOT, DECIMAL_DIGITS);
-    r = r && floating_constant_3(b, l + 1);
-    r = r && floating_constant_4(b, l + 1);
+    r = floating_constant_0(b, l + 1);
+    if (!r) r = floating_constant_1(b, l + 1);
+    if (!r) r = parseTokens(b, 0, DECIMAL_DIGITS, IDENTIFIER);
     exit_section_(b, m, FLOATING_CONSTANT, r);
     return r;
   }
 
+  // DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)?
+  private static boolean floating_constant_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, DECIMAL_DIGITS, DOT, DECIMAL_DIGITS);
+    r = r && floating_constant_0_3(b, l + 1);
+    r = r && floating_constant_0_4(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // exponent?
-  private static boolean floating_constant_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "floating_constant_3")) return false;
+  private static boolean floating_constant_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_0_3")) return false;
     exponent(b, l + 1);
     return true;
   }
 
   // (F32_TYPE | F64_TYPE)?
-  private static boolean floating_constant_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "floating_constant_4")) return false;
-    floating_constant_4_0(b, l + 1);
+  private static boolean floating_constant_0_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_0_4")) return false;
+    floating_constant_0_4_0(b, l + 1);
     return true;
   }
 
   // F32_TYPE | F64_TYPE
-  private static boolean floating_constant_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "floating_constant_4_0")) return false;
+  private static boolean floating_constant_0_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_0_4_0")) return false;
+    boolean r;
+    r = consumeToken(b, F32_TYPE);
+    if (!r) r = consumeToken(b, F64_TYPE);
+    return r;
+  }
+
+  // DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)
+  private static boolean floating_constant_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DECIMAL_DIGITS);
+    r = r && floating_constant_1_1(b, l + 1);
+    r = r && floating_constant_1_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // exponent?
+  private static boolean floating_constant_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_1_1")) return false;
+    exponent(b, l + 1);
+    return true;
+  }
+
+  // F32_TYPE | F64_TYPE
+  private static boolean floating_constant_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "floating_constant_1_2")) return false;
     boolean r;
     r = consumeToken(b, F32_TYPE);
     if (!r) r = consumeToken(b, F64_TYPE);

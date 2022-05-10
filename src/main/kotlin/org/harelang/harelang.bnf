@@ -90,8 +90,8 @@ integer_constant ::= (DECIMAL_DIGITS | OCTAL_DIGITS | HEX_DIGITS | BIN_DIGITS) i
 integer_suffix ::= "i" | "u" | "z" | "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64"
 string_const ::= (STRING_LITERAL | RAWSTRING)+
 
-floating_constant ::= DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)?
-exponent ::= ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS
+floating_constant ::= DECIMAL_DIGITS DOT DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE)? | DECIMAL_DIGITS exponent? (F32_TYPE | F64_TYPE) | DECIMAL_DIGITS IDENTIFIER
+exponent ::= ("e" | "E") (ADDS | SUBSTRACTS)? DECIMAL_DIGITS | IDENTIFIER
 
 rune_constant ::= RUNE_LITERAL
 expression ::= assignment | binding_list | logical_or_expression | if_expression | for_loop | control_expression
