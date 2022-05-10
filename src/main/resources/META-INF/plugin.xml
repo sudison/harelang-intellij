@@ -11,6 +11,9 @@
                   fieldName="INSTANCE" language="Hare" extensions="ha"/>
         <lang.parserDefinition language="Hare"
                                implementationClass="org.harelang.HareParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="Hare"
+                implementationClass="org.harelang.syntax.HareSyntaxHighlighterFactory"/>
         <applicationService serviceImplementation="org.jetbrains.plugins.template.services.MyApplicationService"/>
         <projectService serviceImplementation="org.jetbrains.plugins.template.services.MyProjectService"/>
     </extensions>
