@@ -23,13 +23,15 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
 
     @Test
     fun testPrintParseImports() {
-        printTree("""
+        printTree(
+            """
            
 export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
 	reason = abort_reason { loc = "", msg = msg };
 	longjmp(&jmp, 1);
 };
-            """.trimIndent())
+            """.trimIndent()
+        )
     }
 
     @Test
@@ -57,78 +59,99 @@ export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
 
     @Test
     fun testParseGlobalBinding() {
-        doCodeTest("""
+        doCodeTest(
+            """
             let a:i32 = 1;
             const a:i64 = 1232;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseDef() {
-        doCodeTest("""
+        doCodeTest(
+            """
             def a: i32 = i;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseTypeDef() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = i32; type a::b = i16, c = i32;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseEnum() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = enum { a, b, c = 1,}; type b = enum i32 {a = 1};
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParsePointer() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = *i32, b = nullable * i8;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseStruct() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = struct {i : i32, b : struct { i : i64}, a::bc,};
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseUnion() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = union {i : i32, b : union { i : i64}, a::bc};
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseTuple() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = (i32, i8, f64), b = (a,b,);
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseTagged() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = (i32|i8|f64);
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseSlicedArray() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type a = []i32, b = [3]i32, c = [*]i32, d = [_]i8;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseString() {
-        doCodeTest("""
+        doCodeTest(
+            """
             let s : str = "a", b : str = "c";
             let s : str = "line-one"
                            "line-two";
@@ -138,165 +161,199 @@ export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
                            "third-line";
             const in:str = "\"a\" \"b\" \"\\a\" \"\\b\" \"\\f\" \"\\n\" \"\\r\" "
 		"\"\\t\" \"\\v\" \"\\0\" \"\\\\\" \"\\\'\"";               
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseFunctionType() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type s = fn () void, b = fn (a:i32) i32, c = fn (a:i8...,) i32, d = fn (_:i8...) i32, e = fn (a:i32, b:i32) void;
             type a = fn (a:i32,...,) void, b = fn(a:i32...,) void, c = fn(a:i32, ...) void;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseAliasType() {
-        doCodeTest("""
+        doCodeTest(
+            """
             type s = a, b = a::b, c = ... a;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseArrayLiteral() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = [1,2,3,], b = [1...,], c = [1,2,3...,], d = [];
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseEnumLiteral() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a::c, b = a::b::c;
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseStructLiteral() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = struct {x = 1, y:int = 2,}, b = coords {x = 1, y: int = 2}, c = coords {...}, d = coords {x = 1, ...};
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseNestedStructLiteral() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = struct {x = 1, struct {x = 1}}, b = struct {coords {x = 1, ...}};
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseTupleItems() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = (1, 2, 3,), b = (1);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseStructAccess() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a.b.c;
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseArrayAccess() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a[1].a;
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseCallExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a(1,b,c,);
             let b = a(1,b...,);
             let c = a();
             let d = a[1].a(1,2);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseSlicingOp() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a[1..2], b = a[..2], c = a[..];
             a[kdk..1] = b[..len(a)];
             a[..1] = b[a..len(a)];
 
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseErrorPropagation() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a!, b = a?, c = a?.a!.c;
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseAllocExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = alloc(1), b = alloc(1, 2), c = alloc(1...);
             free(a);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseAssertExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             assert(a == b);
             assert(1, "failure");
             abort();
             abort("failure");
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseDeferExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             defer free(a);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseMeasurementExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             size(a);
             len(a);
             offset(a.b.c);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseSliceMutationExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             append(a[1], 1, 1);
             append(a[1], a...);
@@ -306,23 +363,27 @@ export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
             delete(a[1]);
             
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParsevaExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             vastart ();
             vaarg(1);
             vaend(1);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseMatchExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = match (a) {
              case let b:i32 => "dfd";
@@ -330,24 +391,28 @@ export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
              case => "default";
             };
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseSwitchExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = switch (a) {
              case 1,2 => "dfd";
              case => "hello";
             };
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseControlExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
                 :l {
                     for (i < len(items); i += 1) {
@@ -368,42 +433,50 @@ export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
 	                };
                 };
           };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseUnaryExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = &b, b = +1, c = -1, d = ~1, e = *1, f = !1;
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseCastExpression() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a = a::bc : i32:int, b = a as bool, c = a is bool;
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseAssignment() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             a.b.c = 1;
             a[1].b[2].c = 3;
             *p = 1;
             a[1..2] = [1,2];
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseBindings() {
-        doCodeTest("""
+        doCodeTest(
+            """
             fn foo(a:int) void = {
             let a: i32 = 1, b = null, c = void;
             const a : int = 1;
@@ -412,39 +485,48 @@ export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
             let (a, b) = (a,b);
             const (a, b) = (a, b);
             };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseFnAttr() {
-        doCodeTest("""
+        doCodeTest(
+            """
             @init @test @init @noreturn fn init(a:int) void;
             @init @symbol("test") fn test(a:int) void;
             type s = @noreturn fn () void;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseIntegerConstant() {
-        doCodeTest("""
+        doCodeTest(
+            """
             let a: i32 = 1234567890, b: i32 = 0x1234567890abcdefABCDEF, c: i32 = 0o1234567, d: i32 = 0b010101;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseFloatingConstant() {
-        doCodeTest("""
+        doCodeTest(
+            """
             let a: f32 = 12.12, b: f32 = 12.12e+12f32, c: f64 = 1.1e-12f64, d: f64 = 1e5f64;
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
     fun testParseRuneConstant() {
-        doCodeTest("""
+        doCodeTest(
+            """
             @test fn ctype() void = {
 	let a = '\'', b = '\t', c = ' ';
 };
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     @Test
