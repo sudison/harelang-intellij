@@ -8,6 +8,8 @@ open class HareTokenType(debugName: String) : IElementType(debugName, HareLang) 
         val n = toString()
         return if (n.endsWith("KW")) {
             n.replace("_KW", "").lowercase()
+        } else if (n.endsWith("TYPE")) {
+            n.replace("_TYPE", "").lowercase()
         } else {
             n
         }
