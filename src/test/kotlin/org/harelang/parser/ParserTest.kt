@@ -24,17 +24,13 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testPrintParseImports() {
         printTree("""
-           fn fo() void = {
-           		let atype = parse_type("struct {
-		x: int,
-		y: int,
-		struct {
-			z: int,
-			q: int,
-		},
-		p: int,
-	}");
-           };
+           
+export fn encrypt(
+	key: *sessionkey,
+	nonce: *nonce,
+	plaintext: []u8,
+	additional: []u8,
+) box;
             """.trimIndent())
     }
 
@@ -150,7 +146,8 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     @Test
     fun testParseFunctionType() {
         doCodeTest("""
-            type s = fn () void, b = fn (a:i32) i32, c = fn (a:i8...) i32, d = fn (_:i8...) i32, e = fn (a:i32, b:i32) void;
+            type s = fn () void, b = fn (a:i32) i32, c = fn (a:i8...,) i32, d = fn (_:i8...) i32, e = fn (a:i32, b:i32) void;
+            type a = fn (a:i32,...,) void, b = fn(a:i32...,) void, c = fn(a:i32, ...) void;
         """.trimIndent())
     }
 

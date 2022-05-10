@@ -50,7 +50,7 @@ fntype_attr ::= NORETURN_ATTR
 
 prototype ::= LP parameter_list? RP type
 
-parameter_list ::= parameters COMMA? DOTDOTDOT?
+parameter_list ::= parameters COMMA? DOTDOTDOT? COMMA?
 parameters ::= parameter (COMMA parameter)*
 parameter ::= (IDENTIFIER | UNDERSCORE) COLON type
 type ::= CONST_KW? BANG? storage_class

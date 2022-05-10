@@ -2703,7 +2703,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // parameters COMMA? DOTDOTDOT?
+  // parameters COMMA? DOTDOTDOT? COMMA?
   public static boolean parameter_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter_list")) return false;
     if (!nextTokenIs(b, "<parameter list>", IDENTIFIER, UNDERSCORE)) return false;
@@ -2712,6 +2712,7 @@ public class HareParser implements PsiParser, LightPsiParser {
     r = parameters(b, l + 1);
     r = r && parameter_list_1(b, l + 1);
     r = r && parameter_list_2(b, l + 1);
+    r = r && parameter_list_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -2727,6 +2728,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   private static boolean parameter_list_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter_list_2")) return false;
     consumeToken(b, DOTDOTDOT);
+    return true;
+  }
+
+  // COMMA?
+  private static boolean parameter_list_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_list_3")) return false;
+    consumeToken(b, COMMA);
     return true;
   }
 
