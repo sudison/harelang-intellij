@@ -151,6 +151,7 @@ StringCharacter = [^\r\n\"\\]
     "@init" {return HareTypes.INIT_ATTR;}
     "@test" {return HareTypes.TEST_ATTR;}
     "@noreturn" {return HareTypes.NORETURN_ATTR;}
+    "@symbol" {return HareTypes.SYMBOL_ATTR;}
 
 
     ".." {return HareTypes.DOTDOT;}

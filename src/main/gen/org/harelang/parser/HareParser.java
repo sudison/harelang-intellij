@@ -1088,6 +1088,20 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // SYMBOL_ATTR LP string_const RP
+  public static boolean decl_attr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "decl_attr")) return false;
+    if (!nextTokenIs(b, SYMBOL_ATTR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, SYMBOL_ATTR, LP);
+    r = r && string_const(b, l + 1);
+    r = r && consumeToken(b, RP);
+    exit_section_(b, m, DECL_ATTR, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // function_declaration | global_declaration | constant_declaration | type_declaration
   public static boolean declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declaration")) return false;
@@ -1689,13 +1703,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
+  // (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr | decl_attr
   public static boolean fndec_attr(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fndec_attr")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FNDEC_ATTR, "<fndec attr>");
     r = fndec_attr_0(b, l + 1);
     if (!r) r = fntype_attr(b, l + 1);
+    if (!r) r = decl_attr(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1856,30 +1871,38 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier_path COLON type (ASSIGN expression)?
+  // decl_attr? identifier_path COLON type (ASSIGN expression)?
   public static boolean global_binding(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_binding")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, "<global binding>", IDENTIFIER, SYMBOL_ATTR)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = identifier_path(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, GLOBAL_BINDING, "<global binding>");
+    r = global_binding_0(b, l + 1);
+    r = r && identifier_path(b, l + 1);
     r = r && consumeToken(b, COLON);
     r = r && type(b, l + 1);
-    r = r && global_binding_3(b, l + 1);
-    exit_section_(b, m, GLOBAL_BINDING, r);
+    r = r && global_binding_4(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
+  // decl_attr?
+  private static boolean global_binding_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_binding_0")) return false;
+    decl_attr(b, l + 1);
+    return true;
+  }
+
   // (ASSIGN expression)?
-  private static boolean global_binding_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "global_binding_3")) return false;
-    global_binding_3_0(b, l + 1);
+  private static boolean global_binding_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_binding_4")) return false;
+    global_binding_4_0(b, l + 1);
     return true;
   }
 
   // ASSIGN expression
-  private static boolean global_binding_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "global_binding_3_0")) return false;
+  private static boolean global_binding_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_binding_4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ASSIGN);
@@ -1892,12 +1915,12 @@ public class HareParser implements PsiParser, LightPsiParser {
   // global_binding (COMMA global_binding)*
   public static boolean global_bindings(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_bindings")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, "<global bindings>", IDENTIFIER, SYMBOL_ATTR)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, GLOBAL_BINDINGS, "<global bindings>");
     r = global_binding(b, l + 1);
     r = r && global_bindings_1(b, l + 1);
-    exit_section_(b, m, GLOBAL_BINDINGS, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

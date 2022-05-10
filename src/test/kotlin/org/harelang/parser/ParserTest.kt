@@ -25,12 +25,10 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree("""
            
-export fn encrypt(
-	key: *sessionkey,
-	nonce: *nonce,
-	plaintext: []u8,
-	additional: []u8,
-) box;
+export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
+	reason = abort_reason { loc = "", msg = msg };
+	longjmp(&jmp, 1);
+};
             """.trimIndent())
     }
 
@@ -421,7 +419,7 @@ export fn encrypt(
     fun testParseFnAttr() {
         doCodeTest("""
             @init @test @init @noreturn fn init(a:int) void;
-            @init fn test(a:int) void;
+            @init @symbol("test") fn test(a:int) void;
             type s = @noreturn fn () void;
         """.trimIndent())
     }

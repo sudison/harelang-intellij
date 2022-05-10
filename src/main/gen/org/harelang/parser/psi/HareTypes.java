@@ -30,6 +30,7 @@ public interface HareTypes {
   IElementType CONTROL_EXPRESSION = new HareElementType("CONTROL_EXPRESSION");
   IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
+  IElementType DECL_ATTR = new HareElementType("DECL_ATTR");
   IElementType DEFER_EXPRESSION = new HareElementType("DEFER_EXPRESSION");
   IElementType DELETE_EXPRESSION = new HareElementType("DELETE_EXPRESSION");
   IElementType ENUM_LITERAL = new HareElementType("ENUM_LITERAL");
@@ -217,6 +218,7 @@ public interface HareTypes {
   IElementType STR_TYPE = new HareTokenType("STR_TYPE");
   IElementType SUBSTRACTS = new HareTokenType("SUBSTRACTS");
   IElementType SWITCH_KW = new HareTokenType("SWITCH_KW");
+  IElementType SYMBOL_ATTR = new HareTokenType("SYMBOL_ATTR");
   IElementType TEST_ATTR = new HareTokenType("TEST_ATTR");
   IElementType TRUE_KW = new HareTokenType("TRUE_KW");
   IElementType TYPE_KW = new HareTokenType("TYPE_KW");
@@ -308,6 +310,9 @@ public interface HareTypes {
       }
       else if (type == DECLARATIONS) {
         return new HareDeclarationsImpl(node);
+      }
+      else if (type == DECL_ATTR) {
+        return new HareDeclAttrImpl(node);
       }
       else if (type == DEFER_EXPRESSION) {
         return new HareDeferExpressionImpl(node);

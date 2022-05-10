@@ -32,8 +32,8 @@ declaration ::= function_declaration | global_declaration | constant_declaration
 
 global_declaration ::= LET_KW global_bindings | CONST_KW global_bindings
 global_bindings ::= global_binding (COMMA global_binding)*
-global_binding ::= identifier_path COLON type (ASSIGN expression)?
-
+global_binding ::= decl_attr? identifier_path COLON type (ASSIGN expression)?
+decl_attr ::= SYMBOL_ATTR LP string_const RP
 constant_declaration ::= DEF_KW constant_bindings
 constant_bindings ::= constant_binding (COMMA constant_binding)*
 constant_binding ::= identifier_path COLON type ASSIGN expression
@@ -45,7 +45,7 @@ function_declaration ::= fndec_attr* FN_KW identifier_path prototype (ASSIGN exp
 pin=2
 }
 
-fndec_attr ::= (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr
+fndec_attr ::= (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr | decl_attr
 fntype_attr ::= NORETURN_ATTR
 
 prototype ::= LP parameter_list? RP type

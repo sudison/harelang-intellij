@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 
-public class HareFndecAttrImpl extends ASTWrapperPsiElement implements HareFndecAttr {
+public class HareDeclAttrImpl extends ASTWrapperPsiElement implements HareDeclAttr {
 
-  public HareFndecAttrImpl(@NotNull ASTNode node) {
+  public HareDeclAttrImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitFndecAttr(this);
+    visitor.visitDeclAttr(this);
   }
 
   @Override
@@ -27,15 +27,9 @@ public class HareFndecAttrImpl extends ASTWrapperPsiElement implements HareFndec
   }
 
   @Override
-  @Nullable
-  public HareDeclAttr getDeclAttr() {
-    return findChildByClass(HareDeclAttr.class);
-  }
-
-  @Override
-  @Nullable
-  public HareFntypeAttr getFntypeAttr() {
-    return findChildByClass(HareFntypeAttr.class);
+  @NotNull
+  public HareStringConst getStringConst() {
+    return findNotNullChildByClass(HareStringConst.class);
   }
 
 }

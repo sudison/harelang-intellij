@@ -91,6 +91,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDeclAttr(@NotNull HareDeclAttr o) {
+    visitPsiElement(o);
+  }
+
   public void visitDeclaration(@NotNull HareDeclaration o) {
     visitPsiElement(o);
   }

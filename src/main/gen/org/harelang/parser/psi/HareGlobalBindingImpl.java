@@ -28,6 +28,12 @@ public class HareGlobalBindingImpl extends ASTWrapperPsiElement implements HareG
 
   @Override
   @Nullable
+  public HareDeclAttr getDeclAttr() {
+    return findChildByClass(HareDeclAttr.class);
+  }
+
+  @Override
+  @Nullable
   public HareExpression getExpression() {
     return findChildByClass(HareExpression.class);
   }

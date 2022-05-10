@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface HareGlobalBinding extends PsiElement {
 
   @Nullable
+  HareDeclAttr getDeclAttr();
+
+  @Nullable
   HareExpression getExpression();
 
   @NotNull

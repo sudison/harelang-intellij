@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareFndecAttr extends PsiElement {
+public interface HareDeclAttr extends PsiElement {
 
-  @Nullable
-  HareDeclAttr getDeclAttr();
-
-  @Nullable
-  HareFntypeAttr getFntypeAttr();
+  @NotNull
+  HareStringConst getStringConst();
 
 }
