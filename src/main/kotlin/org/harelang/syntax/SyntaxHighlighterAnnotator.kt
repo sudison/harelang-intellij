@@ -6,10 +6,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.PsiElement
-import org.harelang.parser.psi.HareFloatingConstant
-import org.harelang.parser.psi.HareFunctionDeclaration
-import org.harelang.parser.psi.HareIntegerConstant
-import org.harelang.parser.psi.HareRuneConstant
+import org.harelang.parser.psi.*
 
 class SyntaxHighlighterAnnotator : Annotator {
     companion object {
@@ -30,6 +27,24 @@ class SyntaxHighlighterAnnotator : Annotator {
                 "FUNCTION_NAME",
                 DefaultLanguageHighlighterColors.FUNCTION_DECLARATION
             )
+
+        private val globalVar =
+            TextAttributesKey.createTextAttributesKey(
+                "GLOBAL_VARIABLE",
+                DefaultLanguageHighlighterColors.STATIC_FIELD
+            )
+
+        private val constant =
+            TextAttributesKey.createTextAttributesKey(
+                "CONSTANT",
+                DefaultLanguageHighlighterColors.CONSTANT
+            )
+
+        private val type =
+            TextAttributesKey.createTextAttributesKey(
+                "TYPE",
+                DefaultLanguageHighlighterColors.CLASS_NAME
+            )
     }
 
 
@@ -48,6 +63,30 @@ class SyntaxHighlighterAnnotator : Annotator {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .range(i.textRange).textAttributes(fnName).create()
+            }
+            is HareGlobalDeclaration -> {
+                element.globalBindings.globalBindingList.forEach {
+                    val i = it.identifierPath
+                    holder
+                        .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                        .range(i.textRange).textAttributes(globalVar).create()
+                }
+            }
+            is HareConstantDeclaration -> {
+                element.constantBindings.constantBindingList.forEach {
+                    val i = it.identifierPath
+                    holder
+                        .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                        .range(i.textRange).textAttributes(constant).create()
+                }
+            }
+            is HareTypeDeclaration -> {
+                element.typeBindings.typeBindingList.forEach {
+                    val i = it.identifierPath
+                    holder
+                        .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                        .range(i.textRange).textAttributes(type).create()
+                }
             }
         }
 
