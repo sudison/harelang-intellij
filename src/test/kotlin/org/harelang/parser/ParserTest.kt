@@ -25,11 +25,10 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree(
             """
-           
-export @noreturn @symbol("rt.abort") fn _abort(msg: str) void = {
-	reason = abort_reason { loc = "", msg = msg };
-	longjmp(&jmp, 1);
-};
+           fn huh(a:int) void = {
+            	s.rbuffer[..len(s.rbuffer) - n] = s.rbuffer[n..];
+
+            };
             """.trimIndent()
         )
     }

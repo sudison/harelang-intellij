@@ -16,7 +16,9 @@
                 implementationClass="org.harelang.syntax.HareSyntaxHighlighterFactory"/>
         <completion.contributor language="Hare"
                                 implementationClass="org.harelang.completion.HareCompletionContributor"/>
-
+        <annotator
+                language="Hare"
+                implementationClass="org.harelang.syntax.SyntaxHighlighterAnnotator"/>
         <applicationService serviceImplementation="org.jetbrains.plugins.template.services.MyApplicationService"/>
         <projectService serviceImplementation="org.jetbrains.plugins.template.services.MyProjectService"/>
     </extensions>

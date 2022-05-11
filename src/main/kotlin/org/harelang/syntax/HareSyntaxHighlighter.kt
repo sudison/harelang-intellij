@@ -25,6 +25,15 @@ object HareSyntaxHighlighter : SyntaxHighlighterBase() {
                 DefaultLanguageHighlighterColors.LINE_COMMENT
             )
         )
+    private val stringLiteral =
+        arrayOf(
+            TextAttributesKey.createTextAttributesKey(
+                "STRING_LITERAL",
+                DefaultLanguageHighlighterColors.STRING
+            )
+        )
+
+
 
     override fun getHighlightingLexer(): Lexer {
         return HareLexerAdapter()
@@ -34,6 +43,7 @@ object HareSyntaxHighlighter : SyntaxHighlighterBase() {
         return when (tokenType) {
             in keywords -> keywordsAttrs
             HareElementType.COMMENT -> lineComment
+            HareTypes.STRING_LITERAL, HareTypes.RAWSTRING -> stringLiteral
             else -> emptyArray()
         }
     }
