@@ -92,7 +92,7 @@ class HareCompletionContributor : CompletionContributor() {
             HareTypes.NULL_KW,
             HareTypes.VALIST_TYPE,
             HareTypes.CHAR_TYPE,
-
+            HareTypes.STR_TYPE,
             ).map {
             val t = it as HareTokenType
             LookupElementBuilder
