@@ -2,6 +2,12 @@
 
 # HareLang Plugin for IntelliJ Changelog
 
+## [0.0.4]
+### Added
+- More syntax highlight
+- Auto-completion for buildin type
+
+
 ## [0.0.2]
 ### Added
 - Update project description

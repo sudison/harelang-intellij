@@ -8,5 +8,5 @@
 This plugin adds the support for HareLang in IntelliJ platform.
 <!-- Plugin description end -->
 
-#Install
+# Install
 Search for "HareLang" and click install.
