@@ -35,6 +35,14 @@ fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Sel
         .firstOrNull() ?: return@with false
     pattern.accepts(sibling)
 }
+
+fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Self>.hasPrevSibling(
+    pattern: ElementPattern<out T>
+): Self = with("hasPrevSibling") { e ->
+    val a = e.leftSiblings.toList()
+    e.leftSiblings.filter { pattern.accepts(it) }.any()
+}
+
 class OnStatementBeginning : PatternCondition<PsiElement>("on statement beginning") {
     override fun accepts(t: PsiElement, context: ProcessingContext?): Boolean {
         val prev = t.prevLeafs.filter { it !is PsiWhiteSpace }.firstOrNull()
@@ -113,6 +121,15 @@ class HareCompletionContributor : CompletionContributor() {
         extend(
             CompletionType.BASIC,
             psiElement(HareTypes.IDENTIFIER).withPrevSiblingSkipping(psiElement().whitespace(), psiElement(HareTypes.COLON)),
+            HareCompletionProvider(buildinTypes)
+        )
+
+        // : function return type
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER)
+                .withSuperParent(1, HareFile::class.java)
+                .hasPrevSibling(psiElement(HareTypes.FN_KW)),
             HareCompletionProvider(buildinTypes)
         )
     }

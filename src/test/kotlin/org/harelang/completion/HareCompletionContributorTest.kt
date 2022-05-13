@@ -37,4 +37,22 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testFunctionArgTypeCompletion() {
+        listOf(
+            Pair("fn huh(a:i3", "i32"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionReturnTypeCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) i3", "i32"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }
