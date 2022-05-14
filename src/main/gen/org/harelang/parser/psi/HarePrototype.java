@@ -10,7 +10,7 @@ public interface HarePrototype extends PsiElement {
   @Nullable
   HareParameterList getParameterList();
 
-  @NotNull
+  @Nullable
   HareType getType();
 
 }

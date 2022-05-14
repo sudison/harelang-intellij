@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface HareDeclarations extends PsiElement {
 
   @NotNull
-  List<HareDeclaration> getDeclarationList();
+  List<HareGeneralDeclaration> getGeneralDeclarationList();
 
 }

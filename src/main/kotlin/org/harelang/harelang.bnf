@@ -27,7 +27,10 @@ import_alias ::= IDENTIFIER ASSIGN
 import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 
-declarations ::= (EXPORT_KW? declaration EOS)+
+declarations ::= general_declaration+
+general_declaration ::= EXPORT_KW? declaration EOS {
+pin=2
+}
 declaration ::= function_declaration | global_declaration | constant_declaration | type_declaration
 
 global_declaration ::= LET_KW global_bindings | CONST_KW global_bindings
@@ -48,11 +51,15 @@ pin=2
 fndec_attr ::= (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr | decl_attr
 fntype_attr ::= NORETURN_ATTR
 
-prototype ::= LP parameter_list? RP type
+prototype ::= LP parameter_list? RP type {
+pin=1
+}
 
 parameter_list ::= parameters COMMA? DOTDOTDOT? COMMA?
 parameters ::= parameter (COMMA parameter)*
-parameter ::= (IDENTIFIER | UNDERSCORE) COLON type
+parameter ::= (IDENTIFIER | UNDERSCORE) COLON type {
+pin=1
+}
 type ::= CONST_KW? BANG? storage_class
 storage_class ::= scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | function_type | alias_type | unwrapped_alias | STR_TYPE
 

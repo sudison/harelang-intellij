@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface HareParameter extends PsiElement {
 
-  @NotNull
+  @Nullable
   HareType getType();
 
 }

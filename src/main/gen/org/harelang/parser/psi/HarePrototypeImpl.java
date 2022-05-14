@@ -33,9 +33,9 @@ public class HarePrototypeImpl extends ASTWrapperPsiElement implements HareProto
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareType getType() {
-    return findNotNullChildByClass(HareType.class);
+    return findChildByClass(HareType.class);
   }
 
 }

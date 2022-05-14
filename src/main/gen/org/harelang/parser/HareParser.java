@@ -1116,38 +1116,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (EXPORT_KW? declaration EOS)+
+  // general_declaration+
   public static boolean declarations(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declarations")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECLARATIONS, "<declarations>");
-    r = declarations_0(b, l + 1);
+    r = general_declaration(b, l + 1);
     while (r) {
       int c = current_position_(b);
-      if (!declarations_0(b, l + 1)) break;
+      if (!general_declaration(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "declarations", c)) break;
     }
     exit_section_(b, l, m, r, false, null);
     return r;
-  }
-
-  // EXPORT_KW? declaration EOS
-  private static boolean declarations_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "declarations_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = declarations_0_0(b, l + 1);
-    r = r && declaration(b, l + 1);
-    r = r && consumeToken(b, EOS);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // EXPORT_KW?
-  private static boolean declarations_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "declarations_0_0")) return false;
-    consumeToken(b, EXPORT_KW);
-    return true;
   }
 
   /* ********************************************************** */
@@ -1867,6 +1848,27 @@ public class HareParser implements PsiParser, LightPsiParser {
   private static boolean function_type_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_type_0")) return false;
     fntype_attr(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // EXPORT_KW? declaration EOS
+  public static boolean general_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "general_declaration")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, GENERAL_DECLARATION, "<general declaration>");
+    r = general_declaration_0(b, l + 1);
+    r = r && declaration(b, l + 1);
+    p = r; // pin = 2
+    r = r && consumeToken(b, EOS);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // EXPORT_KW?
+  private static boolean general_declaration_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "general_declaration_0")) return false;
+    consumeToken(b, EXPORT_KW);
     return true;
   }
 
@@ -2707,13 +2709,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter")) return false;
     if (!nextTokenIs(b, "<parameter>", IDENTIFIER, UNDERSCORE)) return false;
-    boolean r;
+    boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, PARAMETER, "<parameter>");
     r = parameter_0(b, l + 1);
-    r = r && consumeToken(b, COLON);
-    r = r && type(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, consumeToken(b, COLON));
+    r = p && type(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // IDENTIFIER | UNDERSCORE
@@ -2875,14 +2878,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean prototype(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "prototype")) return false;
     if (!nextTokenIs(b, LP)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, PROTOTYPE, null);
     r = consumeToken(b, LP);
-    r = r && prototype_1(b, l + 1);
-    r = r && consumeToken(b, RP);
-    r = r && type(b, l + 1);
-    exit_section_(b, m, PROTOTYPE, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, prototype_1(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, RP)) && r;
+    r = p && type(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // parameter_list?

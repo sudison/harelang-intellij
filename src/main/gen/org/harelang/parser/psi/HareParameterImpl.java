@@ -27,9 +27,9 @@ public class HareParameterImpl extends ASTWrapperPsiElement implements HareParam
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareType getType() {
-    return findNotNullChildByClass(HareType.class);
+    return findChildByClass(HareType.class);
   }
 
 }

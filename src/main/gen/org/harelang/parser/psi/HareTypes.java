@@ -53,6 +53,7 @@ public interface HareTypes {
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
   IElementType FUNCTION_TYPE = new HareElementType("FUNCTION_TYPE");
+  IElementType GENERAL_DECLARATION = new HareElementType("GENERAL_DECLARATION");
   IElementType GLOBAL_BINDING = new HareElementType("GLOBAL_BINDING");
   IElementType GLOBAL_BINDINGS = new HareElementType("GLOBAL_BINDINGS");
   IElementType GLOBAL_DECLARATION = new HareElementType("GLOBAL_DECLARATION");
@@ -379,6 +380,9 @@ public interface HareTypes {
       }
       else if (type == FUNCTION_TYPE) {
         return new HareFunctionTypeImpl(node);
+      }
+      else if (type == GENERAL_DECLARATION) {
+        return new HareGeneralDeclarationImpl(node);
       }
       else if (type == GLOBAL_BINDING) {
         return new HareGlobalBindingImpl(node);
