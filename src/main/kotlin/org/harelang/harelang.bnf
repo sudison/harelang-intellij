@@ -89,10 +89,14 @@ enum_storage ::= integer_type | RUNE_KW
 
 pointer_type ::= NULLABLE_KW? MULTIPLIES type
 
-struct_union_type ::= (STRUCT_KW | UNION_KW) LBR struct_union_fields RBR
+struct_union_type ::= (STRUCT_KW | UNION_KW) LBR struct_union_fields RBR {
+pin=1
+}
 struct_union_fields ::=  struct_union_field COMMA struct_union_fields | struct_union_field COMMA?
-struct_union_field ::= IDENTIFIER COLON type | struct_union_type | identifier_path
-
+struct_union_field ::= struct_union_field_type_def | struct_union_type | identifier_path
+private struct_union_field_type_def ::= IDENTIFIER COLON type {
+pin=2
+}
 tuple_type ::= LP tuple_types RP
 tuple_types ::= type (COMMA type)+ COMMA?
 

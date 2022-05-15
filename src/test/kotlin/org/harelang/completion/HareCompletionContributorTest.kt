@@ -144,4 +144,40 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testEnumCompletion() {
+        listOf(
+            Pair("type e = e", "enum"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testStructCompletion() {
+        listOf(
+            Pair("type e = s", "struct"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testUnionCompletion() {
+        listOf(
+            Pair("type e = u", "union"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testStructTypeDefCompletion() {
+        listOf(
+            Pair("type e = struct {i:i3", "i32"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

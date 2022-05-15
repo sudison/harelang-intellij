@@ -25,10 +25,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree(
             """
-          fn fo() void = { match (a) {
-             case => "default";
-            };
-            };
+         type a = struct {a:i
             """.trimIndent()
         )
     }

@@ -27,9 +27,9 @@ public class HareDeferExpressionImpl extends ASTWrapperPsiElement implements Har
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+    return findChildByClass(HareExpression.class);
   }
 
 }

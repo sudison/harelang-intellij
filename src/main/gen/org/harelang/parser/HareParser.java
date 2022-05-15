@@ -1119,12 +1119,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean defer_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "defer_expression")) return false;
     if (!nextTokenIs(b, DEFER_KW)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, DEFER_EXPRESSION, null);
     r = consumeToken(b, DEFER_KW);
+    p = r; // pin = 1
     r = r && expression(b, l + 1);
-    exit_section_(b, m, DEFER_EXPRESSION, r);
-    return r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -3233,27 +3234,30 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER COLON type | struct_union_type | identifier_path
+  // struct_union_field_type_def | struct_union_type | identifier_path
   public static boolean struct_union_field(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_union_field")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_UNION_FIELD, "<struct union field>");
-    r = struct_union_field_0(b, l + 1);
+    r = struct_union_field_type_def(b, l + 1);
     if (!r) r = struct_union_type(b, l + 1);
     if (!r) r = identifier_path(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
+  /* ********************************************************** */
   // IDENTIFIER COLON type
-  private static boolean struct_union_field_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_union_field_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFIER, COLON);
+  static boolean struct_union_field_type_def(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_union_field_type_def")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = consumeTokens(b, 2, IDENTIFIER, COLON);
+    p = r; // pin = 2
     r = r && type(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -3303,14 +3307,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean struct_union_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_union_type")) return false;
     if (!nextTokenIs(b, "<struct union type>", STRUCT_KW, UNION_KW)) return false;
-    boolean r;
+    boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_UNION_TYPE, "<struct union type>");
     r = struct_union_type_0(b, l + 1);
-    r = r && consumeToken(b, LBR);
-    r = r && struct_union_fields(b, l + 1);
-    r = r && consumeToken(b, RBR);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, consumeToken(b, LBR));
+    r = p && report_error_(b, struct_union_fields(b, l + 1)) && r;
+    r = p && consumeToken(b, RBR) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // STRUCT_KW | UNION_KW

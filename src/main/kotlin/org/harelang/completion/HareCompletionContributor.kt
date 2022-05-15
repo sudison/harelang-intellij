@@ -5,11 +5,8 @@ import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.AutoCompletionPolicy
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.patterns.ElementPattern
-import com.intellij.patterns.ObjectPattern
-import com.intellij.patterns.PatternCondition
+import com.intellij.patterns.*
 import com.intellij.patterns.PlatformPatterns.psiElement
-import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.util.elementType
@@ -39,14 +36,12 @@ fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Sel
 fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Self>.hasPrevSibling(
     pattern: ElementPattern<out T>
 ): Self = with("hasPrevSibling") { e ->
-    val a = e.leftSiblings.toList()
     e.leftSiblings.filter { pattern.accepts(it) }.any()
 }
 
 fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Self>.hasPrevSiblings(
     vararg patterns: ElementPattern<out T>
 ): Self = with("hasPrevSibling") { e ->
-    val a = e.leftSiblings.toList()
     var ps = patterns.toList()
     e.leftSiblings.filter {
         val f = ps.firstOrNull()
@@ -113,6 +108,19 @@ class HareCompletionContributor : CompletionContributor() {
                 .withAutoCompletionPolicy(AutoCompletionPolicy.NEVER_AUTOCOMPLETE)
         }
 
+        private val typeDefinitionKeyWords = listOf(
+            HareTypes.ENUM_KW,
+            HareTypes.STRUCT_KW,
+            HareTypes.UNION_KW,
+            ).map {
+            val t = it as HareTokenType
+            LookupElementBuilder
+                .create(t.realName())
+                .withPresentableText(t.realName())
+                .withAutoCompletionPolicy(AutoCompletionPolicy.NEVER_AUTOCOMPLETE)
+        }
+
+
         private val buildinTypes = listOf(
             HareTypes.I8_TYPE,
             HareTypes.I16_TYPE,
@@ -134,7 +142,7 @@ class HareCompletionContributor : CompletionContributor() {
             HareTypes.VALIST_TYPE,
             HareTypes.CHAR_TYPE,
             HareTypes.STR_TYPE,
-            ).map {
+        ).map {
             val t = it as HareTokenType
             LookupElementBuilder
                 .create(t.realName())
@@ -153,13 +161,31 @@ class HareCompletionContributor : CompletionContributor() {
         // : type
         extend(
             CompletionType.BASIC,
-            psiElement(HareTypes.IDENTIFIER).withSuperParent(4, psiElement(HareTypes.TYPE)),
+            psiElement(HareTypes.IDENTIFIER).withSuperParent(
+                4, StandardPatterns.or(
+                    psiElement(HareTypes.TYPE).withPrevSiblingSkipping(
+                        psiElement().whitespace(), psiElement(HareTypes.COLON)
+                    ), (psiElement(HareTypes.TYPE).withPrevSiblingSkipping(
+                        psiElement().whitespace(), psiElement(HareTypes.RP)
+                    ))
+                )
+            ),
             HareCompletionProvider(buildinTypes)
         )
         extend(
             CompletionType.BASIC,
-            psiElement(HareTypes.IDENTIFIER).withSuperParent(3, psiElement(HareTypes.EXPRESSION_LIST)).with(OnStatementBeginning()),
+            psiElement(HareTypes.IDENTIFIER).withSuperParent(3, psiElement(HareTypes.EXPRESSION_LIST))
+                .with(OnStatementBeginning()),
             HareCompletionProvider(localKeyWords)
+        )
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER).withSuperParent(
+                4, psiElement(HareTypes.TYPE).withPrevSiblingSkipping(
+                    psiElement().whitespace(), psiElement(HareTypes.ASSIGN)
+                )
+            ),
+            HareCompletionProvider(typeDefinitionKeyWords)
         )
     }
 }

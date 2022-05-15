@@ -27,9 +27,9 @@ public class HareStructUnionTypeImpl extends ASTWrapperPsiElement implements Har
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareStructUnionFields getStructUnionFields() {
-    return findNotNullChildByClass(HareStructUnionFields.class);
+    return findChildByClass(HareStructUnionFields.class);
   }
 
 }
