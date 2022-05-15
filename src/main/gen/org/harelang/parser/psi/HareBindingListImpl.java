@@ -27,9 +27,9 @@ public class HareBindingListImpl extends ASTWrapperPsiElement implements HareBin
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareBindings getBindings() {
-    return findNotNullChildByClass(HareBindings.class);
+    return findChildByClass(HareBindings.class);
   }
 
 }

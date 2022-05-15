@@ -28,8 +28,8 @@ public class HareDeclarationsImpl extends ASTWrapperPsiElement implements HareDe
 
   @Override
   @NotNull
-  public List<HareGeneralDeclaration> getGeneralDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareGeneralDeclaration.class);
+  public List<HareDeclaration> getDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareDeclaration.class);
   }
 
 }

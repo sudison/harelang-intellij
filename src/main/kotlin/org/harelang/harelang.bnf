@@ -28,7 +28,7 @@ import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 
 declarations ::= general_declaration+
-general_declaration ::= EXPORT_KW? declaration EOS {
+private general_declaration ::= EXPORT_KW? declaration EOS {
 pin=2
 }
 declaration ::= function_declaration | global_declaration | constant_declaration | type_declaration
@@ -176,8 +176,17 @@ case_options ::= expression (COMMA expression)*
 
 compound_expression ::= label? LBR expression_list RBR
 label ::= COLON IDENTIFIER
-expression_list ::= (expression EOS)+
-binding_list ::= STATIC_KW* LET_KW bindings | STATIC_KW* CONST_KW bindings
+expression_list ::= expression_with_ending+
+private expression_with_ending ::= expression EOS {
+pin=1
+}
+binding_list ::= let_bindings | const_bindings
+private let_bindings ::= STATIC_KW* LET_KW bindings {
+pin=2
+}
+private const_bindings ::= STATIC_KW* CONST_KW bindings {
+pin=2
+}
 bindings ::= binding (COMMA binding)*
 binding ::= IDENTIFIER (COLON type)? ASSIGN expression | LP IDENTIFIER (COMMA IDENTIFIER)+ RP ASSIGN expression
 
