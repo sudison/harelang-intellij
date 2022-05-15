@@ -6,6 +6,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.elementType
 import org.harelang.parser.psi.*
 
 class SyntaxHighlighterAnnotator : Annotator {
@@ -37,6 +38,12 @@ class SyntaxHighlighterAnnotator : Annotator {
             TextAttributesKey.createTextAttributesKey(
                 "ENUM_VALUE",
                 DefaultLanguageHighlighterColors.STATIC_FIELD
+            )
+
+        private val structField =
+            TextAttributesKey.createTextAttributesKey(
+                "STRUCT_FIELD",
+                DefaultLanguageHighlighterColors.INSTANCE_FIELD
             )
         private val constant =
             TextAttributesKey.createTextAttributesKey(
@@ -96,6 +103,13 @@ class SyntaxHighlighterAnnotator : Annotator {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .range(element.firstChild.textRange).textAttributes(enumValue).create()
+            }
+            is HareStructUnionField -> {
+                if (element.firstChild.elementType == HareTypes.IDENTIFIER) {
+                    holder
+                        .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                        .range(element.firstChild.textRange).textAttributes(structField).create()
+                }
             }
         }
 
