@@ -33,7 +33,11 @@ class SyntaxHighlighterAnnotator : Annotator {
                 "GLOBAL_VARIABLE",
                 DefaultLanguageHighlighterColors.STATIC_FIELD
             )
-
+        private val enumValue =
+            TextAttributesKey.createTextAttributesKey(
+                "ENUM_VALUE",
+                DefaultLanguageHighlighterColors.STATIC_FIELD
+            )
         private val constant =
             TextAttributesKey.createTextAttributesKey(
                 "CONSTANT",
@@ -87,6 +91,11 @@ class SyntaxHighlighterAnnotator : Annotator {
                         .newSilentAnnotation(HighlightSeverity.INFORMATION)
                         .range(i.textRange).textAttributes(type).create()
                 }
+            }
+            is HareEnumValue -> {
+                holder
+                    .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                    .range(element.firstChild.textRange).textAttributes(enumValue).create()
             }
         }
 
