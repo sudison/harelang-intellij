@@ -56,6 +56,11 @@ class SyntaxHighlighterAnnotator : Annotator {
                 "TYPE",
                 DefaultLanguageHighlighterColors.CLASS_NAME
             )
+        private val paramter =
+            TextAttributesKey.createTextAttributesKey(
+                "PARAMETER",
+                DefaultLanguageHighlighterColors.PARAMETER
+            )
     }
 
 
@@ -110,6 +115,11 @@ class SyntaxHighlighterAnnotator : Annotator {
                         .newSilentAnnotation(HighlightSeverity.INFORMATION)
                         .range(element.firstChild.textRange).textAttributes(structField).create()
                 }
+            }
+            is HareParameter -> {
+                holder
+                    .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                    .range(element.firstChild.textRange).textAttributes(structField).create()
             }
         }
 
