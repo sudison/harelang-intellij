@@ -8,6 +8,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.patterns.*
 import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.util.elementType
 import com.intellij.psi.util.prevLeafs
@@ -54,9 +55,12 @@ fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Sel
     }.any()
 }
 
-class OnStatementBeginning : PatternCondition<PsiElement>("on statement beginning") {
+class OnStatementBeginning(private val e: PsiElementPattern.Capture<PsiElement>? = null) : PatternCondition<PsiElement>("on statement beginning") {
     override fun accepts(t: PsiElement, context: ProcessingContext?): Boolean {
         val prev = t.prevLeafs.filter { it !is PsiWhiteSpace }.firstOrNull()
+        if (prev != null && e != null) {
+            return e.accepts(prev)
+        }
         return prev == null || prev.elementType == HareTypes.EOS || prev.elementType == HareTypes.LBR
     }
 }
@@ -78,6 +82,20 @@ class HareCompletionContributor : CompletionContributor() {
         private val topKeyWords = listOf(
             HareTypes.USE_KW,
             HareTypes.EXPORT_KW,
+            HareTypes.FN_KW,
+            HareTypes.LET_KW,
+            HareTypes.CONST_KW,
+            HareTypes.DEF_KW,
+            HareTypes.TYPE_KW,
+        ).map {
+            val t = it as HareTokenType
+            LookupElementBuilder
+                .create(t.realName())
+                .withPresentableText(t.realName())
+                .withAutoCompletionPolicy(AutoCompletionPolicy.NEVER_AUTOCOMPLETE)
+        }
+
+        private val topKeyWordsAfterExport = listOf(
             HareTypes.FN_KW,
             HareTypes.LET_KW,
             HareTypes.CONST_KW,
@@ -157,6 +175,13 @@ class HareCompletionContributor : CompletionContributor() {
             CompletionType.BASIC,
             psiElement(HareTypes.IDENTIFIER).withSuperParent(2, HareFile::class.java).with(OnStatementBeginning()),
             HareCompletionProvider(topKeyWords)
+        )
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER)
+                .withParents(PsiErrorElement::class.java, HareFile::class.java)
+                .with(OnStatementBeginning(psiElement(HareTypes.EXPORT_KW))),
+            HareCompletionProvider(topKeyWordsAfterExport)
         )
         // : type
         extend(

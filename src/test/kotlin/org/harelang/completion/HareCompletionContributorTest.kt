@@ -30,6 +30,19 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
     }
 
     @Test
+    fun testTopLevelKeywordsAfterExportCompletion() {
+        listOf(
+            Pair("export f", "fn"),
+            Pair("export d", "def"),
+            Pair("export l", "let"),
+            Pair("export c", "const"),
+            Pair("export t", "type"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
     fun testDefCompletion() {
         listOf(
             Pair("def i: i3", "i32"),
