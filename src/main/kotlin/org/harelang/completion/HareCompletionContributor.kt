@@ -62,7 +62,7 @@ fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Sel
 class OnStatementBeginning : PatternCondition<PsiElement>("on statement beginning") {
     override fun accepts(t: PsiElement, context: ProcessingContext?): Boolean {
         val prev = t.prevLeafs.filter { it !is PsiWhiteSpace }.firstOrNull()
-        return prev == null || prev.elementType == HareTypes.EOS
+        return prev == null || prev.elementType == HareTypes.EOS || prev.elementType == HareTypes.LBR
     }
 }
 
@@ -88,6 +88,23 @@ class HareCompletionContributor : CompletionContributor() {
             HareTypes.CONST_KW,
             HareTypes.DEF_KW,
             HareTypes.TYPE_KW,
+        ).map {
+            val t = it as HareTokenType
+            LookupElementBuilder
+                .create(t.realName())
+                .withPresentableText(t.realName())
+                .withAutoCompletionPolicy(AutoCompletionPolicy.NEVER_AUTOCOMPLETE)
+        }
+
+        private val localKeyWords = listOf(
+            HareTypes.LET_KW,
+            HareTypes.CONST_KW,
+            HareTypes.DEFER_KW,
+            HareTypes.FOR_KW,
+            HareTypes.IF_KW,
+            HareTypes.MATCH_KW,
+            HareTypes.RETURN_KW,
+            HareTypes.SWITCH_KW,
         ).map {
             val t = it as HareTokenType
             LookupElementBuilder
@@ -138,6 +155,11 @@ class HareCompletionContributor : CompletionContributor() {
             CompletionType.BASIC,
             psiElement(HareTypes.IDENTIFIER).withSuperParent(4, psiElement(HareTypes.TYPE)),
             HareCompletionProvider(buildinTypes)
+        )
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER).withSuperParent(3, psiElement(HareTypes.EXPRESSION_LIST)).with(OnStatementBeginning()),
+            HareCompletionProvider(localKeyWords)
         )
     }
 }

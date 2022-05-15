@@ -27,9 +27,9 @@ public class HareCompoundExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpressionList getExpressionList() {
-    return findNotNullChildByClass(HareExpressionList.class);
+    return findChildByClass(HareExpressionList.class);
   }
 
   @Override

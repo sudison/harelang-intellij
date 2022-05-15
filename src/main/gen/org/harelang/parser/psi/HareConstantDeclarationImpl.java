@@ -27,9 +27,9 @@ public class HareConstantDeclarationImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareConstantBindings getConstantBindings() {
-    return findNotNullChildByClass(HareConstantBindings.class);
+    return findChildByClass(HareConstantBindings.class);
   }
 
 }

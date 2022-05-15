@@ -27,9 +27,9 @@ public class HareConstantBindingImpl extends ASTWrapperPsiElement implements Har
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+    return findChildByClass(HareExpression.class);
   }
 
   @Override
@@ -39,9 +39,9 @@ public class HareConstantBindingImpl extends ASTWrapperPsiElement implements Har
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareType getType() {
-    return findNotNullChildByClass(HareType.class);
+    return findChildByClass(HareType.class);
   }
 
 }

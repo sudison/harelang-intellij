@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface HareConstantDeclaration extends PsiElement {
 
-  @NotNull
+  @Nullable
   HareConstantBindings getConstantBindings();
 
 }

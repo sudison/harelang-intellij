@@ -27,9 +27,9 @@ public class HareGlobalDeclarationImpl extends ASTWrapperPsiElement implements H
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareGlobalBindings getGlobalBindings() {
-    return findNotNullChildByClass(HareGlobalBindings.class);
+    return findChildByClass(HareGlobalBindings.class);
   }
 
 }

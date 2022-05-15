@@ -33,19 +33,32 @@ pin=2
 }
 declaration ::= function_declaration | global_declaration | constant_declaration | type_declaration
 
-global_declaration ::= LET_KW global_bindings | CONST_KW global_bindings
+global_declaration ::= global_let_bindings | global_const_bindings
+private global_let_bindings ::= LET_KW global_bindings {
+pin=1
+}
+private global_const_bindings ::= CONST_KW global_bindings {
+pin=1
+}
 global_bindings ::= global_binding (COMMA global_binding)*
 global_binding ::= decl_attr? identifier_path COLON type (ASSIGN expression)?
 decl_attr ::= SYMBOL_ATTR LP string_const RP
-constant_declaration ::= DEF_KW constant_bindings
+constant_declaration ::= DEF_KW constant_bindings {
+pin=1
+}
 constant_bindings ::= constant_binding (COMMA constant_binding)*
-constant_binding ::= identifier_path COLON type ASSIGN expression
+constant_binding ::= identifier_path COLON type ASSIGN expression {
+pin=2
+}
 
 type_declaration ::= TYPE_KW type_bindings
 type_bindings ::= type_binding (COMMA type_binding)*
 type_binding ::= identifier_path ASSIGN type
-function_declaration ::= fndec_attr* FN_KW identifier_path prototype (ASSIGN expression)? {
+function_declaration ::= fndec_attr* FN_KW identifier_path prototype function_definition? {
 pin=2
+}
+private function_definition ::= ASSIGN expression {
+pin=1
 }
 
 fndec_attr ::= (FINI_ATTR | TEST_ATTR | INIT_ATTR) | fntype_attr | decl_attr
@@ -155,7 +168,9 @@ field_access_op ::= DOT IDENTIFIER | DOT integer_constant
 slicing_expression ::= nested_expression slicing_op
 alloc_expression ::= ALLOC_KW LP (expression COMMA expression | expression DOTDOTDOT | expression) RP | FREE_KW LP expression RP
 assertion_expression ::= STATIC_KW? ASSERT_KW LP (expression COMMA string_const | expression) RP | STATIC_KW? ABORT_KW LP string_const? RP
-defer_expression ::= DEFER_KW expression
+defer_expression ::= DEFER_KW expression {
+pin=1
+}
 
 measurement_expression ::= size_expression | length_expression | offset_expression
 size_expression ::= SIZE_TYPE LP type RP
@@ -174,7 +189,9 @@ switch_expression ::= SWITCH_KW LP expression RP LBR switch_case+ RBR
 switch_case ::= CASE_KW case_options? MATCH_OP expression_list
 case_options ::= expression (COMMA expression)*
 
-compound_expression ::= label? LBR expression_list RBR
+compound_expression ::= label? LBR expression_list RBR {
+pin=2
+}
 label ::= COLON IDENTIFIER
 expression_list ::= expression_with_ending+
 private expression_with_ending ::= expression EOS {

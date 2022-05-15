@@ -65,7 +65,7 @@ class SyntaxHighlighterAnnotator : Annotator {
                     .range(i.textRange).textAttributes(fnName).create()
             }
             is HareGlobalDeclaration -> {
-                element.globalBindings.globalBindingList.forEach {
+                element.globalBindings?.globalBindingList?.forEach {
                     val i = it.identifierPath
                     holder
                         .newSilentAnnotation(HighlightSeverity.INFORMATION)
@@ -73,7 +73,7 @@ class SyntaxHighlighterAnnotator : Annotator {
                 }
             }
             is HareConstantDeclaration -> {
-                element.constantBindings.constantBindingList.forEach {
+                element.constantBindings?.constantBindingList?.forEach {
                     val i = it.identifierPath
                     holder
                         .newSilentAnnotation(HighlightSeverity.INFORMATION)

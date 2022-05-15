@@ -25,7 +25,10 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree(
             """
-           le
+          fn fo() void = { match (a) {
+             case => "default";
+            };
+            };
             """.trimIndent()
         )
     }

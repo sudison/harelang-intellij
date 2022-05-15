@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface HareCompoundExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   HareExpressionList getExpressionList();
 
   @Nullable

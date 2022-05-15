@@ -30,6 +30,15 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
     }
 
     @Test
+    fun testDefCompletion() {
+        listOf(
+            Pair("def i: i3", "i32"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
     fun testTypeCompletion() {
         listOf(
             Pair("let i: i3", "i32"),
@@ -51,6 +60,86 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
     fun testFunctionReturnTypeCompletion() {
         listOf(
             Pair("fn huh(a:i32) i3", "i32"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionExpressionCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { l", "let"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionExpressionConstCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { c", "const"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionExpressionConstMultipleStatementsCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { const i = 1; c", "const"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionDeferExpressionCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { d", "defer"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+    @Test
+    fun testFunctionReturnCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { r", "return"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionForCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { f", "for"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionIfCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { i", "if"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionMatchCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { m", "match"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testFunctionSwitchCompletion() {
+        listOf(
+            Pair("fn huh(a:i32) void = { s", "switch"),
         ).forEach {
             keywordCompletion(it.first, it.second)
         }
