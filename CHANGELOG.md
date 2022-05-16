@@ -2,6 +2,12 @@
 
 # HareLang Plugin for IntelliJ Changelog
 
+## [0.0.5]
+### Added
+- More syntax highlight
+- More auto completion
+
+
 ## [0.0.4]
 ### Added
 - More syntax highlight
