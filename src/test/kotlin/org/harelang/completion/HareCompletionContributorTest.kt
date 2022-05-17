@@ -222,9 +222,9 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
     }
 
     @Test
-    fun testExpressionGlobalFunctionExcludeTypeCompletion() {
+    fun testEnumValueCompletion() {
         listOf(
-            Pair("type ga = i32;fn gfoo() void = {return 1;}; fn v()void = {g", "gfoo"),
+            Pair("export type ga = enum {RED,BLACK,}; fn v()void = {ga::R", "RED"),
         ).forEach {
             keywordCompletion(it.first, it.second)
         }

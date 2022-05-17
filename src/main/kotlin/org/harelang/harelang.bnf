@@ -100,7 +100,10 @@ floating_type ::= F32_TYPE | F64_TYPE
 
 enum_type ::= ENUM_KW enum_storage? LBR enum_values RBR
 enum_values ::= enum_value (COMMA enum_value)* COMMA?
-enum_value ::= IDENTIFIER ASSIGN expression | IDENTIFIER
+enum_value ::= IDENTIFIER ASSIGN expression | IDENTIFIER {
+    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.EnumValueMixin'
+}
 enum_storage ::= integer_type | RUNE_KW
 
 pointer_type ::= NULLABLE_KW? MULTIPLIES type

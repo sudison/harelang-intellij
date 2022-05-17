@@ -125,7 +125,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitEnumValue(@NotNull HareEnumValue o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitEnumValues(@NotNull HareEnumValues o) {

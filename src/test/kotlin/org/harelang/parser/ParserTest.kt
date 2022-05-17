@@ -25,7 +25,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree(
             """
-        u
+        fn huh(a:int) void = { a::R
             """.trimIndent()
         )
     }

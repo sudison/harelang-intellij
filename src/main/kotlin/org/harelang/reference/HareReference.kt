@@ -6,7 +6,7 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import org.harelang.parser.psi.*
 
-fun PsiFile.globalDeclarations(excludeType: Boolean = true): List<PsiNameIdentifierOwner> {
+fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdentifierOwner> {
     val types = mutableListOf<PsiNameIdentifierOwner>()
 
     PsiTreeUtil.collectElementsOfType(this, HareGlobalBinding::class.java).forEach {
@@ -38,7 +38,7 @@ class HareReference(element: PsiElement, private val id: PsiElement) :
     }
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val r = mutableListOf<ResolveResult>()
-        val e = element.containingFile?.globalDeclarations()?.find {
+        val e = element.containingFile?.globalDeclarations(false)?.find {
             it.nameIdentifier?.text == id.text
         }
         if (e != null) r.add(PsiElementResolveResult(e, true))

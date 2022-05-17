@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.EnumValueMixin;
 
-public class HareEnumValueImpl extends ASTWrapperPsiElement implements HareEnumValue {
+public class HareEnumValueImpl extends EnumValueMixin implements HareEnumValue {
 
   public HareEnumValueImpl(@NotNull ASTNode node) {
     super(node);
