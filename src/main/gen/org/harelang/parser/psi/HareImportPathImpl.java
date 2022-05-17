@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.ImportPathMixin;
 
-public class HareImportPathImpl extends ASTWrapperPsiElement implements HareImportPath {
+public class HareImportPathImpl extends ImportPathMixin implements HareImportPath {
 
   public HareImportPathImpl(@NotNull ASTNode node) {
     super(node);

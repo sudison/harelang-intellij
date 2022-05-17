@@ -4,8 +4,9 @@ package org.harelang.parser.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNameIdentifierOwner;
 
-public interface HareFunctionDeclaration extends PsiElement {
+public interface HareFunctionDeclaration extends PsiNameIdentifierOwner {
 
   @Nullable
   HareExpression getExpression();

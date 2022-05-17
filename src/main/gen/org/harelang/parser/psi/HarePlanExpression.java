@@ -19,4 +19,7 @@ public interface HarePlanExpression extends PsiElement {
   @Nullable
   HareStructLiteral getStructLiteral();
 
+  @Nullable
+  HareSymbol getSymbol();
+
 }

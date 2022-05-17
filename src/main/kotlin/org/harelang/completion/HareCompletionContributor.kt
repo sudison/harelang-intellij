@@ -16,6 +16,7 @@ import com.intellij.util.ProcessingContext
 import org.harelang.parser.psi.HareFile
 import org.harelang.parser.psi.HareTokenType
 import org.harelang.parser.psi.HareTypes
+import org.harelang.reference.globalDeclarations
 
 val PsiElement.leftSiblings: Sequence<PsiElement>
     get() = generateSequence(this.prevSibling) { it.prevSibling }
@@ -74,6 +75,32 @@ class HareCompletionProvider(private val les: List<LookupElement>) : CompletionP
         val p = result.prefixMatcher.prefix
         val a = les.filter { it.lookupString.startsWith(p) }
         a.forEach(result::addElement)
+    }
+}
+
+fun createLookup(t: String?): LookupElement? {
+    t ?: return null
+    return LookupElementBuilder
+        .create(t)
+        .withPresentableText(t)
+        .withAutoCompletionPolicy(AutoCompletionPolicy.NEVER_AUTOCOMPLETE)
+}
+
+class HareReferenceProvider : CompletionProvider<CompletionParameters>() {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
+        val p = result.prefixMatcher.prefix
+        parameters.position.containingFile?.globalDeclarations()?.forEach {
+            if (it.nameIdentifier?.text?.startsWith(p) == true) {
+                val t = createLookup(it.nameIdentifier?.text)
+                if (t != null) {
+                    result.addElement(t)
+                }
+            }
+        }
     }
 }
 
@@ -199,7 +226,7 @@ class HareCompletionContributor : CompletionContributor() {
         )
         extend(
             CompletionType.BASIC,
-            psiElement(HareTypes.IDENTIFIER).withSuperParent(3, psiElement(HareTypes.EXPRESSION_LIST))
+            psiElement(HareTypes.IDENTIFIER).withSuperParent(4, psiElement(HareTypes.EXPRESSION_LIST))
                 .with(OnStatementBeginning()),
             HareCompletionProvider(localKeyWords)
         )
@@ -211,6 +238,12 @@ class HareCompletionContributor : CompletionContributor() {
                 )
             ),
             HareCompletionProvider(typeDefinitionKeyWords)
+        )
+
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.SYMBOL).withParent(psiElement(HareTypes.PLAN_EXPRESSION))),
+            HareReferenceProvider()
         )
     }
 }

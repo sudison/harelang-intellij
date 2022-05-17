@@ -98,6 +98,7 @@ public interface HareTypes {
   IElementType STRUCT_UNION_TYPE = new HareElementType("STRUCT_UNION_TYPE");
   IElementType SWITCH_CASE = new HareElementType("SWITCH_CASE");
   IElementType SWITCH_EXPRESSION = new HareElementType("SWITCH_EXPRESSION");
+  IElementType SYMBOL = new HareElementType("SYMBOL");
   IElementType TAGGED_TYPES = new HareElementType("TAGGED_TYPES");
   IElementType TAGGED_UNION_TYPE = new HareElementType("TAGGED_UNION_TYPE");
   IElementType TUPLE_ITEMS = new HareElementType("TUPLE_ITEMS");
@@ -514,6 +515,9 @@ public interface HareTypes {
       }
       else if (type == SWITCH_EXPRESSION) {
         return new HareSwitchExpressionImpl(node);
+      }
+      else if (type == SYMBOL) {
+        return new HareSymbolImpl(node);
       }
       else if (type == TAGGED_TYPES) {
         return new HareTaggedTypesImpl(node);

@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.GlobalBindingMixin;
 
-public class HareGlobalBindingImpl extends ASTWrapperPsiElement implements HareGlobalBinding {
+public class HareGlobalBindingImpl extends GlobalBindingMixin implements HareGlobalBinding {
 
   public HareGlobalBindingImpl(@NotNull ASTNode node) {
     super(node);

@@ -4,7 +4,8 @@ package org.harelang.parser.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNameIdentifierOwner;
 
-public interface HareImportPath extends PsiElement {
+public interface HareImportPath extends PsiNameIdentifierOwner {
 
 }

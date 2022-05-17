@@ -50,4 +50,10 @@ public class HarePlanExpressionImpl extends ASTWrapperPsiElement implements Hare
     return findChildByClass(HareStructLiteral.class);
   }
 
+  @Override
+  @Nullable
+  public HareSymbol getSymbol() {
+    return findChildByClass(HareSymbol.class);
+  }
+
 }

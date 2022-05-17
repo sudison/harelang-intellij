@@ -26,4 +26,10 @@ public class HareEnumLiteralImpl extends ASTWrapperPsiElement implements HareEnu
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<HareSymbol> getSymbolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareSymbol.class);
+  }
+
 }

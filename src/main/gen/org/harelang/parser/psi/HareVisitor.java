@@ -4,6 +4,7 @@ package org.harelang.parser.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNameIdentifierOwner;
 
 public class HareVisitor extends PsiElementVisitor {
 
@@ -76,7 +77,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitConstantBinding(@NotNull HareConstantBinding o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitConstantBindings(@NotNull HareConstantBindings o) {
@@ -184,7 +185,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitFunctionDeclaration(@NotNull HareFunctionDeclaration o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitFunctionType(@NotNull HareFunctionType o) {
@@ -192,7 +193,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitGlobalBinding(@NotNull HareGlobalBinding o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitGlobalBindings(@NotNull HareGlobalBindings o) {
@@ -216,7 +217,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitImportPath(@NotNull HareImportPath o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitImports(@NotNull HareImports o) {
@@ -371,6 +372,10 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSymbol(@NotNull HareSymbol o) {
+    visitPsiElement(o);
+  }
+
   public void visitTaggedTypes(@NotNull HareTaggedTypes o) {
     visitPsiElement(o);
   }
@@ -396,7 +401,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitTypeBinding(@NotNull HareTypeBinding o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitTypeBindings(@NotNull HareTypeBindings o) {
@@ -429,6 +434,10 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitYieldExpression(@NotNull HareYieldExpression o) {
     visitPsiElement(o);
+  }
+
+  public void visitPsiNameIdentifierOwner(@NotNull PsiNameIdentifierOwner o) {
+    visitElement(o);
   }
 
   public void visitPsiElement(@NotNull PsiElement o) {

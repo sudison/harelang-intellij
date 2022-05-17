@@ -20,11 +20,17 @@ imports ::= (use_statement_member_list | use_statement)+
 use_statement ::= USE_KW import_alias* import_path (SCOPE "*")? EOS {
 pin=1
 }
+symbol ::= IDENTIFIER {
+    mixin='org.harelang.reference.SymbolMixin'
+}
 use_statement_member_list ::= USE_KW import_alias* import_path SCOPE LBR member_list RBR EOS
 member_list ::= member (COMMA member)*
 member ::= IDENTIFIER ASSIGN IDENTIFIER | IDENTIFIER
 import_alias ::= IDENTIFIER ASSIGN
-import_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
+import_path ::= IDENTIFIER (SCOPE IDENTIFIER)* {
+    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.ImportPathMixin'
+}
 identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 
 declarations ::= general_declaration+
@@ -41,21 +47,31 @@ private global_const_bindings ::= CONST_KW global_bindings {
 pin=1
 }
 global_bindings ::= global_binding (COMMA global_binding)*
-global_binding ::= decl_attr? identifier_path COLON type (ASSIGN expression)?
+global_binding ::= decl_attr? identifier_path COLON type (ASSIGN expression)? {
+    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.GlobalBindingMixin'
+}
 decl_attr ::= SYMBOL_ATTR LP string_const RP
 constant_declaration ::= DEF_KW constant_bindings {
 pin=1
 }
 constant_bindings ::= constant_binding (COMMA constant_binding)*
 constant_binding ::= identifier_path COLON type ASSIGN expression {
-pin=2
+    pin=2
+    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.GlobalBindingMixin'
 }
 
 type_declaration ::= TYPE_KW type_bindings
 type_bindings ::= type_binding (COMMA type_binding)*
-type_binding ::= identifier_path ASSIGN type
+type_binding ::= identifier_path ASSIGN type {
+    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.GlobalBindingMixin'
+}
 function_declaration ::= fndec_attr* FN_KW identifier_path prototype function_definition? {
-pin=2
+    pin=2
+    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.GlobalBindingMixin'
 }
 private function_definition ::= ASSIGN expression {
 pin=1
@@ -152,10 +168,10 @@ private buildin_expression ::= variadic_expression |
                                                            alloc_expression | postfix_expression
 private postfix_expression ::= nested_expression postfix_op*
 private nested_expression ::= plan_expression | LP tuple_items RP | LP expression RP
-plan_expression ::= struct_literal | enum_literal | IDENTIFIER | constant | array_literal
+plan_expression ::= struct_literal | enum_literal | symbol | constant | array_literal
 array_literal ::= LB array_members? RB
 array_members ::= expression (COMMA expression)* DOTDOTDOT? COMMA?
-enum_literal ::= IDENTIFIER (SCOPE IDENTIFIER)+
+enum_literal ::= symbol (SCOPE symbol)+
 
 struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR | identifier_path LBR struct_initializer COMMA? RBR
 field_values ::= field_value (COMMA field_value)*

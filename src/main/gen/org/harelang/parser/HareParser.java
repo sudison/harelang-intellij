@@ -1151,19 +1151,19 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER (SCOPE IDENTIFIER)+
+  // symbol (SCOPE symbol)+
   public static boolean enum_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_literal")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
+    r = symbol(b, l + 1);
     r = r && enum_literal_1(b, l + 1);
     exit_section_(b, m, ENUM_LITERAL, r);
     return r;
   }
 
-  // (SCOPE IDENTIFIER)+
+  // (SCOPE symbol)+
   private static boolean enum_literal_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_literal_1")) return false;
     boolean r;
@@ -1178,12 +1178,13 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // SCOPE IDENTIFIER
+  // SCOPE symbol
   private static boolean enum_literal_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_literal_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, SCOPE, IDENTIFIER);
+    r = consumeToken(b, SCOPE);
+    r = r && symbol(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -2821,14 +2822,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // struct_literal | enum_literal | IDENTIFIER | constant | array_literal
+  // struct_literal | enum_literal | symbol | constant | array_literal
   public static boolean plan_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "plan_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PLAN_EXPRESSION, "<plan expression>");
     r = struct_literal(b, l + 1);
     if (!r) r = enum_literal(b, l + 1);
-    if (!r) r = consumeToken(b, IDENTIFIER);
+    if (!r) r = symbol(b, l + 1);
     if (!r) r = constant(b, l + 1);
     if (!r) r = array_literal(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -3377,6 +3378,18 @@ public class HareParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "switch_expression_5", c)) break;
     }
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER
+  public static boolean symbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "symbol")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, m, SYMBOL, r);
     return r;
   }
 

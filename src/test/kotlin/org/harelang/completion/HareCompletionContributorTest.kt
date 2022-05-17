@@ -193,4 +193,40 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testExpressionGlobalLetCompletion() {
+        listOf(
+            Pair("let gi:i32 = 1; fn v()void = {g", "gi"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testExpressionGlobalConstCompletion() {
+        listOf(
+            Pair("const gi:i32 = 1; fn v()void = {g", "gi"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testExpressionGlobalFunctionCompletion() {
+        listOf(
+            Pair("fn gfoo() void = {return 1;}; fn v()void = {g", "gfoo"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testExpressionGlobalFunctionExcludeTypeCompletion() {
+        listOf(
+            Pair("type ga = i32;fn gfoo() void = {return 1;}; fn v()void = {g", "gfoo"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }
