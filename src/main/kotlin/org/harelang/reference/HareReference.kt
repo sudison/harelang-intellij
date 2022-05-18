@@ -29,19 +29,17 @@ fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdenti
     return types
 }
 
-class HareReference(element: PsiElement, private val id: PsiElement) :
+class HareReference(element: PsiElement, private val ref: PsiNameIdentifierOwner) :
     PsiPolyVariantReferenceBase<PsiElement>(element) {
     override fun getVariants(): Array<out LookupElement> = LookupElement.EMPTY_ARRAY
 
     override fun calculateDefaultRangeInElement(): TextRange {
-        return TextRange.from(id.startOffsetInParent, id.textLength)
+        val s = element as HareSymbol
+        return TextRange.from(s.firstChild.startOffsetInParent, s.firstChild.textLength)
     }
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val r = mutableListOf<ResolveResult>()
-        val e = element.containingFile?.globalDeclarations(false)?.find {
-            it.nameIdentifier?.text == id.text
-        }
-        if (e != null) r.add(PsiElementResolveResult(e, true))
+        r.add(PsiElementResolveResult(ref, true))
         return r.toTypedArray()
     }
 }
