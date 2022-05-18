@@ -12,37 +12,10 @@ import com.intellij.psi.util.elementType
 import com.intellij.psi.util.prevLeafs
 import com.intellij.util.ProcessingContext
 import org.harelang.parser.psi.*
+import org.harelang.reference.evaluate
 import org.harelang.reference.globalDeclarations
+import org.harelang.reference.hareReference
 
-fun PsiElement.lookup(id: String): List<PsiNameIdentifierOwner> {
-    return when(this) {
-        is HareTypeBinding -> this.lookup(id)
-        is HareEnumLiteral -> this.lookup(id)
-        else -> listOf()
-    }
-
-}
-fun HareTypeBinding.lookup(id: String): List<PsiNameIdentifierOwner> {
-    val r = mutableListOf<PsiNameIdentifierOwner>()
-
-    this.type.storageClass.scalaType?.enumType?.enumValues?.enumValueList?.forEach {
-        if (it.firstChild.text.startsWith(id)) {
-            r.add(it)
-        }
-    }
-
-    return r
-}
-
-fun HareEnumLiteral.lookup(id: String): List<PsiNameIdentifierOwner> {
-    var currentPsiElement: PsiElement? = this.symbolList.first()?.reference?.resolve()
-
-    this.symbolList.drop(1).dropLast(1).forEach {
-        currentPsiElement = currentPsiElement?.lookup(it.firstChild.text)?.firstOrNull()
-    }
-
-    return currentPsiElement?.lookup(id)  ?: listOf()
-}
 
 val PsiElement.leftSiblings: Sequence<PsiElement>
     get() = generateSequence(this.prevSibling) { it.prevSibling }
@@ -138,7 +111,7 @@ class HareScopeReferenceProvider : CompletionProvider<CompletionParameters>() {
         result: CompletionResultSet
     ) {
         val p = result.prefixMatcher.prefix
-        parameters.position.parent?.parent?.lookup(p)?.forEach {
+        parameters.position.parent.prevSibling?.hareReference()?.evaluate()?.lookup(p)?.forEach {
             val t = createLookup(it.nameIdentifier?.text)
             if (t != null) {
                 result.addElement(t)
