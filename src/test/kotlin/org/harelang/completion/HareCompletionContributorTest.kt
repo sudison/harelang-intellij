@@ -229,4 +229,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testStructFieldAccessCompletion() {
+        listOf(
+            Pair("export type ga = struct {field1:i32}; fn v()void = {ga.fi", "field1"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

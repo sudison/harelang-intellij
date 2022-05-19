@@ -111,8 +111,11 @@ pointer_type ::= NULLABLE_KW? MULTIPLIES type
 struct_union_type ::= (STRUCT_KW | UNION_KW) LBR struct_union_fields RBR {
 pin=1
 }
-struct_union_fields ::=  struct_union_field COMMA struct_union_fields | struct_union_field COMMA?
-struct_union_field ::= struct_union_field_type_def | struct_union_type | identifier_path
+struct_union_fields ::=  struct_union_field (COMMA struct_union_field)* COMMA?
+struct_union_field ::= struct_union_field_type_def | struct_union_type | identifier_path {
+implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.StructFieldMixin'
+}
 private struct_union_field_type_def ::= IDENTIFIER COLON type {
 pin=2
 }
@@ -186,7 +189,10 @@ postfix_op ::= field_access_op | slicing_op | indexing_op | call_op | error_prop
 indexing_op ::= LB expression RB
 slicing_op ::= LB expression? DOTDOT expression? RB
 error_propagation_op ::= QUESTION | BANG
-field_access_op ::= DOT IDENTIFIER | DOT integer_constant
+field_access_op ::= DOT IDENTIFIER | DOT integer_constant {
+    mixin='org.harelang.reference.FieldAccessMixin'
+
+}
 
 slicing_expression ::= nested_expression slicing_op
 alloc_expression ::= ALLOC_KW LP (expression COMMA expression | expression DOTDOTDOT | expression) RP | FREE_KW LP expression RP

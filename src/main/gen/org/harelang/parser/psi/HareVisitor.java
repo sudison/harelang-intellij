@@ -353,7 +353,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitStructUnionField(@NotNull HareStructUnionField o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitStructUnionFields(@NotNull HareStructUnionFields o) {

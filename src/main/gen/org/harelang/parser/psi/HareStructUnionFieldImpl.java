@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.StructFieldMixin;
 
-public class HareStructUnionFieldImpl extends ASTWrapperPsiElement implements HareStructUnionField {
+public class HareStructUnionFieldImpl extends StructFieldMixin implements HareStructUnionField {
 
   public HareStructUnionFieldImpl(@NotNull ASTNode node) {
     super(node);

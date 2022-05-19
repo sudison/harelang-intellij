@@ -28,14 +28,8 @@ public class HareStructUnionFieldsImpl extends ASTWrapperPsiElement implements H
 
   @Override
   @NotNull
-  public HareStructUnionField getStructUnionField() {
-    return findNotNullChildByClass(HareStructUnionField.class);
-  }
-
-  @Override
-  @Nullable
-  public HareStructUnionFields getStructUnionFields() {
-    return findChildByClass(HareStructUnionFields.class);
+  public List<HareStructUnionField> getStructUnionFieldList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareStructUnionField.class);
   }
 
 }

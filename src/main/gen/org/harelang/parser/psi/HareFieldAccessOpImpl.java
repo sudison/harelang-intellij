@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.FieldAccessMixin;
 
-public class HareFieldAccessOpImpl extends ASTWrapperPsiElement implements HareFieldAccessOp {
+public class HareFieldAccessOpImpl extends FieldAccessMixin implements HareFieldAccessOp {
 
   public HareFieldAccessOpImpl(@NotNull ASTNode node) {
     super(node);

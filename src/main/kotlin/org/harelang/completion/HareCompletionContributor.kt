@@ -120,6 +120,22 @@ class HareScopeReferenceProvider : CompletionProvider<CompletionParameters>() {
     }
 }
 
+class HarePostFixProvider : CompletionProvider<CompletionParameters>() {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
+        val p = result.prefixMatcher.prefix
+        parameters.position.parent.parent.prevSibling?.hareReference()?.evaluate()?.lookup(p)?.forEach {
+            val t = createLookup(it.nameIdentifier?.text)
+            if (t != null) {
+                result.addElement(t)
+            }
+        }
+    }
+}
+
 class HareCompletionContributor : CompletionContributor() {
     companion object {
         private val topKeyWords = listOf(
@@ -266,6 +282,12 @@ class HareCompletionContributor : CompletionContributor() {
             CompletionType.BASIC,
             psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.SYMBOL).withParent(psiElement(HareTypes.ENUM_LITERAL))),
             HareScopeReferenceProvider()
+        )
+
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.FIELD_ACCESS_OP)),
+            HarePostFixProvider()
         )
     }
 }

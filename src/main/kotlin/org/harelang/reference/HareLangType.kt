@@ -25,6 +25,16 @@ class HareLangEnumType(override val owner: PsiNameIdentifierOwner, private val e
     }
 }
 
+class HareLangStructType(override val owner: PsiNameIdentifierOwner, private val structType: HareStructUnionType) : HareLangType(owner) {
+    override fun lookup(name: String): List<PsiNameIdentifierOwner> {
+        return structType.structUnionFields?.structUnionFieldList?.filter { it.firstChild?.text?.startsWith(name) == true } ?: listOf()
+    }
+
+    override fun exactMatch(name: String): PsiNameIdentifierOwner? {
+        return structType.structUnionFields?.structUnionFieldList?.find { it.firstChild?.text == name }
+    }
+}
+
 fun PsiNameIdentifierOwner.evaluate(): HareLangType? {
    return when(this) {
         is HareTypeBinding -> this.evaluate()
@@ -35,8 +45,11 @@ fun PsiNameIdentifierOwner.evaluate(): HareLangType? {
 
 fun HareTypeBinding.evaluate(): HareLangType? {
     val enumType = this.type.storageClass.scalaType?.enumType
+    val structType = this.type.storageClass.structUnionType
     return if (enumType != null) {
         HareLangEnumType(this, enumType)
+    } else if (structType != null) {
+        HareLangStructType(this, structType)
     } else {
         null
     }
@@ -46,6 +59,10 @@ fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
     return if (this.elementType == HareTypes.SCOPE) {
         this.prevSibling?.hareReference()
     } else if (this is HareSymbol) {
+        this.hareReference()
+    } else if (this is HarePostfixOp) {
+        this.hareReference()
+    } else if (this is HarePlanExpression) {
         this.hareReference()
     } else {
         null
@@ -59,4 +76,13 @@ fun HareSymbol.hareReference(): PsiNameIdentifierOwner? {
     } else {
         ps.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
     }
+}
+
+fun HarePlanExpression.hareReference(): PsiNameIdentifierOwner? {
+    return this.symbol?.hareReference()
+}
+
+fun HarePostfixOp.hareReference(): PsiNameIdentifierOwner? {
+    return null
+    //return this.prevSibling.hareReference()?.evaluate()?.exactMatch(this.fieldAccessOp?.symbol?.firstChild?.text!!)
 }
