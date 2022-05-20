@@ -5,7 +5,7 @@ import com.intellij.psi.PsiNameIdentifierOwner
 import com.intellij.psi.util.elementType
 import org.harelang.parser.psi.*
 
-open class HareLangType(open val owner: PsiNameIdentifierOwner) {
+open class HareLangType(open val owner: PsiElement) {
     open fun lookup(name: String): List<PsiNameIdentifierOwner> {
         return listOf()
     }
@@ -15,7 +15,7 @@ open class HareLangType(open val owner: PsiNameIdentifierOwner) {
     }
 }
 
-class HareLangEnumType(override val owner: PsiNameIdentifierOwner, private val enumType: HareEnumType) : HareLangType(owner) {
+class HareLangEnumType(override val owner: PsiElement, private val enumType: HareEnumType) : HareLangType(owner) {
     override fun lookup(name: String): List<PsiNameIdentifierOwner> {
         return enumType.enumValues.enumValueList.filter { it.nameIdentifier?.text?.startsWith(name) == true }
     }
@@ -25,7 +25,7 @@ class HareLangEnumType(override val owner: PsiNameIdentifierOwner, private val e
     }
 }
 
-class HareLangStructType(override val owner: PsiNameIdentifierOwner, private val structType: HareStructUnionType) : HareLangType(owner) {
+class HareLangStructType(override val owner: PsiElement, private val structType: HareStructUnionType) : HareLangType(owner) {
     override fun lookup(name: String): List<PsiNameIdentifierOwner> {
         return structType.structUnionFields?.structUnionFieldList?.filter { it.firstChild?.text?.startsWith(name) == true } ?: listOf()
     }
@@ -35,17 +35,18 @@ class HareLangStructType(override val owner: PsiNameIdentifierOwner, private val
     }
 }
 
-fun PsiNameIdentifierOwner.evaluate(): HareLangType? {
+fun PsiElement.evaluate(): HareLangType? {
    return when(this) {
         is HareTypeBinding -> this.evaluate()
+        is HareStructUnionField -> this.evaluate()
+        is HareType -> this.evaluate()
         else -> null
     }
 }
 
-
-fun HareTypeBinding.evaluate(): HareLangType? {
-    val enumType = this.type.storageClass.scalaType?.enumType
-    val structType = this.type.storageClass.structUnionType
+fun HareType.evaluate(): HareLangType? {
+    val enumType = this.storageClass.scalaType?.enumType
+    val structType = this.storageClass.structUnionType
     return if (enumType != null) {
         HareLangEnumType(this, enumType)
     } else if (structType != null) {
@@ -53,6 +54,14 @@ fun HareTypeBinding.evaluate(): HareLangType? {
     } else {
         null
     }
+}
+
+fun HareStructUnionField.evaluate(): HareLangType? {
+    return this.type?.evaluate()
+}
+
+fun HareTypeBinding.evaluate(): HareLangType? {
+    return this.type.evaluate()
 }
 
 fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
@@ -83,6 +92,5 @@ fun HarePlanExpression.hareReference(): PsiNameIdentifierOwner? {
 }
 
 fun HarePostfixOp.hareReference(): PsiNameIdentifierOwner? {
-    return null
-    //return this.prevSibling.hareReference()?.evaluate()?.exactMatch(this.fieldAccessOp?.symbol?.firstChild?.text!!)
+    return this.prevSibling.hareReference()?.evaluate()?.exactMatch(this.fieldAccessOp?.lastChild?.text!!)
 }

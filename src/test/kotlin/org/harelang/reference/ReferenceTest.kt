@@ -21,6 +21,19 @@ class ReferenceTest : ReferenceTestBase() {
     }
 
     @Test
+    fun testNestedStructFieldRef() {
+        val code = """
+        type sa = struct {field1:i32, c: struct {field2:i32,},};
+                                               //X
+        fn foo() void = {
+            sa.c.field2;
+               //^
+        };
+    """
+        checkReference(HareFieldAccessOp::class.java, HareStructUnionField::class.java, code)
+    }
+
+    @Test
     fun testEnumValueRef() {
         val code = """
         type color = enum {RED, WHITE};
