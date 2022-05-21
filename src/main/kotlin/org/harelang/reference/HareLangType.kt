@@ -5,6 +5,9 @@ import com.intellij.psi.PsiNameIdentifierOwner
 import com.intellij.psi.util.elementType
 import org.harelang.parser.psi.*
 
+
+
+
 open class HareLangType(open val owner: PsiElement) {
     open fun lookup(name: String): List<PsiNameIdentifierOwner> {
         return listOf()
@@ -81,7 +84,8 @@ fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
 fun HareSymbol.hareReference(): PsiNameIdentifierOwner? {
     val ps = this.prevSibling
     return if(ps == null) {
-        containingFile?.globalDeclarations()?.find { it.nameIdentifier?.text == this.firstChild.text }
+        getLocalReferences(this.firstChild.text, true).firstOrNull() ?: containingFile?.globalDeclarations()
+            ?.find { it.nameIdentifier?.text == this.firstChild.text }
     } else {
         ps.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
     }

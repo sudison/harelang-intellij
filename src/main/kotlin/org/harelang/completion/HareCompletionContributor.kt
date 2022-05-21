@@ -13,6 +13,7 @@ import com.intellij.psi.util.prevLeafs
 import com.intellij.util.ProcessingContext
 import org.harelang.parser.psi.*
 import org.harelang.reference.evaluate
+import org.harelang.reference.getLocalReferences
 import org.harelang.reference.globalDeclarations
 import org.harelang.reference.hareReference
 
@@ -93,6 +94,12 @@ class HareReferenceProvider : CompletionProvider<CompletionParameters>() {
         result: CompletionResultSet
     ) {
         val p = result.prefixMatcher.prefix
+        parameters.position.getLocalReferences(p, false).forEach {
+            val t = createLookup(it.nameIdentifier?.text)
+            if (t != null) {
+                result.addElement(t)
+            }
+        }
         parameters.position.containingFile?.globalDeclarations()?.forEach {
             if (it.nameIdentifier?.text?.startsWith(p) == true) {
                 val t = createLookup(it.nameIdentifier?.text)

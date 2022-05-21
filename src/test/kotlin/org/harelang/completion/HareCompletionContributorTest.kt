@@ -238,4 +238,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testLocalVarCompletion() {
+        listOf(
+            Pair("fn v()void = {let gi = 1; let a = g", "gi"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

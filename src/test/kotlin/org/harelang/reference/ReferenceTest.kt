@@ -1,9 +1,7 @@
 package org.harelang.reference
 
-import org.harelang.parser.psi.HareEnumValue
-import org.harelang.parser.psi.HareFieldAccessOp
-import org.harelang.parser.psi.HareStructUnionField
-import org.harelang.parser.psi.HareSymbol
+import com.intellij.psi.PsiElement
+import org.harelang.parser.psi.*
 import org.junit.Test
 
 class ReferenceTest : ReferenceTestBase() {
@@ -44,5 +42,18 @@ class ReferenceTest : ReferenceTestBase() {
         };
     """
         checkReference(HareSymbol::class.java, HareEnumValue::class.java, code)
+    }
+
+    @Test
+    fun testLocalVarRef() {
+        val code = """
+        fn foo() void = {
+            let a = 1;
+              //X
+            let i = a;
+                  //^
+        };
+    """
+        checkReference(HareSymbol::class.java, HareBinding::class.java, code)
     }
 }

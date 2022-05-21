@@ -45,7 +45,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitBinding(@NotNull HareBinding o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitBindingList(@NotNull HareBindingList o) {

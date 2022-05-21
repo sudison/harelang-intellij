@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.BindingMixin;
 
-public class HareBindingImpl extends ASTWrapperPsiElement implements HareBinding {
+public class HareBindingImpl extends BindingMixin implements HareBinding {
 
   public HareBindingImpl(@NotNull ASTNode node) {
     super(node);
@@ -27,9 +27,9 @@ public class HareBindingImpl extends ASTWrapperPsiElement implements HareBinding
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+    return findChildByClass(HareExpression.class);
   }
 
   @Override

@@ -6,6 +6,25 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import org.harelang.parser.psi.*
 
+tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (HareExpression) -> Boolean) {
+    if (element is HareFunctionDeclaration) {
+        return
+    }
+    if (element is HareExpression) {
+        if (consumer(element)) {
+            return
+        }
+    }
+
+    val nextElement = if (element.prevSibling == null) {
+        element.parent
+    } else {
+        element.prevSibling
+    }
+
+    psiTreeWalkupInsideFnBlock(nextElement, consumer)
+}
+
 fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdentifierOwner> {
     val types = mutableListOf<PsiNameIdentifierOwner>()
 
@@ -27,6 +46,24 @@ fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdenti
         types.add(it)
     }
     return types
+}
+
+fun PsiElement.getLocalReferences(s: String, exactMatch: Boolean = false): List<PsiNameIdentifierOwner> {
+    val refs = mutableListOf<PsiNameIdentifierOwner>()
+    psiTreeWalkupInsideFnBlock(this) {
+        val binding = it.bindingList?.bindings?.bindingList?.find { b ->
+            if (exactMatch) {
+                b.nameIdentifier?.text == s
+            } else {
+                b.nameIdentifier?.text?.startsWith(s) ?: false
+            }
+        }
+        if (binding != null) {
+            refs.add(binding)
+        }
+        exactMatch && binding != null
+    }
+    return refs
 }
 
 class HareReference(element: PsiElement, private val ref: PsiNameIdentifierOwner, private val rangeFn: () -> TextRange) :
