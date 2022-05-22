@@ -258,7 +258,9 @@ object_selector ::=  nested_expression (field_access_op | slicing_op | indexing_
 if_expression ::=  IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression | IF_KW conditional_branch
 conditional_branch ::= LP expression RP expression
 
-for_loop ::= FOR_KW LP for_predicate RP expression
+for_loop ::= FOR_KW LP for_predicate RP expression {
+pin=1
+}
 for_predicate ::= binding_list EOS expression EOS expression | binding_list EOS expression | expression EOS expression | expression
 
 call_op ::= LP argument_list? RP

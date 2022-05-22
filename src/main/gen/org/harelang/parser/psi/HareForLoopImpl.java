@@ -27,15 +27,15 @@ public class HareForLoopImpl extends ASTWrapperPsiElement implements HareForLoop
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+    return findChildByClass(HareExpression.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareForPredicate getForPredicate() {
-    return findNotNullChildByClass(HareForPredicate.class);
+    return findChildByClass(HareForPredicate.class);
   }
 
 }

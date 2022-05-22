@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface HareForLoop extends PsiElement {
 
-  @NotNull
+  @Nullable
   HareExpression getExpression();
 
-  @NotNull
+  @Nullable
   HareForPredicate getForPredicate();
 
 }
