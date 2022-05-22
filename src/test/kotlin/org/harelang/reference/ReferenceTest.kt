@@ -56,4 +56,16 @@ class ReferenceTest : ReferenceTestBase() {
     """
         checkReference(HareSymbol::class.java, HareBinding::class.java, code)
     }
+
+    @Test
+    fun testFunParameterRef() {
+        val code = """
+        fn foo(arg1: int) void = {
+             //X
+            let i = arg1;
+                  //^
+        };
+    """
+        checkReference(HareSymbol::class.java, HareParameter::class.java, code)
+    }
 }

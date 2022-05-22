@@ -247,4 +247,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testFunParameterCompletion() {
+        listOf(
+            Pair("fn v(arg1:int, arg21:int)void = {let gi = arg2", "arg21"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

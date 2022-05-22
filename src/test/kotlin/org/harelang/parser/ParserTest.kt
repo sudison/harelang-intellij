@@ -26,9 +26,10 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         printTree(
             """
        
-       fn foo() void = {
-            let a 
-         
+       fn foo(arg1:int) void = {
+         for(let i = 1;i += 1) {
+            let a = arg1
+         };
             """.trimIndent()
         )
     }

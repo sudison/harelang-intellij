@@ -281,7 +281,7 @@ public class HareVisitor extends PsiElementVisitor {
   }
 
   public void visitParameter(@NotNull HareParameter o) {
-    visitPsiElement(o);
+    visitPsiNameIdentifierOwner(o);
   }
 
   public void visitParameterList(@NotNull HareParameterList o) {

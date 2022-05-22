@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.ParameterMixin;
 
-public class HareParameterImpl extends ASTWrapperPsiElement implements HareParameter {
+public class HareParameterImpl extends ParameterMixin implements HareParameter {
 
   public HareParameterImpl(@NotNull ASTNode node) {
     super(node);

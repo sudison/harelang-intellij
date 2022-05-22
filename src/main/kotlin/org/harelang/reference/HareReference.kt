@@ -6,14 +6,13 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import org.harelang.parser.psi.*
 
-tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (HareExpression) -> Boolean) {
+tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (PsiElement) -> Boolean) {
     if (element is HareFunctionDeclaration) {
         return
     }
-    if (element is HareExpression) {
-        if (consumer(element)) {
-            return
-        }
+
+    if (consumer(element)) {
+        return
     }
 
     val nextElement = if (element.prevSibling == null) {
@@ -48,20 +47,38 @@ fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdenti
     return types
 }
 
+private fun findIdentifier(e: PsiNameIdentifierOwner, s: String, exactMatch: Boolean = false): Boolean {
+    return if (exactMatch) {
+        e.nameIdentifier?.text == s
+    } else {
+        e.nameIdentifier?.text?.startsWith(s) ?: false
+    }
+}
+private fun HareExpression.findIdentifier(s: String, exactMatch: Boolean = false): PsiNameIdentifierOwner? {
+   return this.bindingList?.bindings?.bindingList?.find {
+       findIdentifier(it, s, exactMatch)
+    }
+}
+
+private fun HarePrototype.findIdentifier(s: String, exactMatch: Boolean = false): PsiNameIdentifierOwner? {
+    return this.parameterList?.parameters?.parameterList?.find {
+        findIdentifier(it, s, exactMatch)
+    }
+}
+
 fun PsiElement.getLocalReferences(s: String, exactMatch: Boolean = false): List<PsiNameIdentifierOwner> {
     val refs = mutableListOf<PsiNameIdentifierOwner>()
     psiTreeWalkupInsideFnBlock(this) {
-        val binding = it.bindingList?.bindings?.bindingList?.find { b ->
-            if (exactMatch) {
-                b.nameIdentifier?.text == s
-            } else {
-                b.nameIdentifier?.text?.startsWith(s) ?: false
-            }
+        val id = when (it) {
+            is HareExpression -> it.findIdentifier(s, exactMatch)
+            is HarePrototype -> it.findIdentifier(s, exactMatch)
+            else -> null
         }
-        if (binding != null) {
-            refs.add(binding)
+        if (id != null) {
+            refs.add(id)
         }
-        exactMatch && binding != null
+
+        exactMatch && id != null
     }
     return refs
 }

@@ -88,6 +88,8 @@ parameter_list ::= parameters COMMA? DOTDOTDOT? COMMA?
 parameters ::= parameter (COMMA parameter)*
 parameter ::= (IDENTIFIER | UNDERSCORE) COLON type {
 pin=1
+implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.ParameterMixin'
 }
 type ::= CONST_KW? BANG? storage_class
 storage_class ::= scala_type | struct_union_type | tuple_type | tagged_union_type | slice_array_type | function_type | alias_type | unwrapped_alias | STR_TYPE
