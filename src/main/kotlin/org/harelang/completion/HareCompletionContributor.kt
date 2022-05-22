@@ -144,6 +144,24 @@ class HarePostFixProvider : CompletionProvider<CompletionParameters>() {
     }
 }
 
+class HareStructFieldNameProvider : CompletionProvider<CompletionParameters>() {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
+        val p = result.prefixMatcher.prefix
+        PsiTreeUtil.findFirstParent(parameters.position) {
+            it is HareStructLiteral
+        }?.hareReference()?.evaluate()?.lookup(p)?.forEach {
+            val t = createLookup(it.nameIdentifier?.text)
+            if (t != null) {
+                result.addElement(t)
+            }
+        }
+    }
+}
+
 class HareTypeProvider : CompletionProvider<CompletionParameters>() {
     override fun addCompletions(
         parameters: CompletionParameters,
@@ -319,6 +337,12 @@ class HareCompletionContributor : CompletionContributor() {
             CompletionType.BASIC,
             psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.FIELD_ACCESS_OP)),
             HarePostFixProvider()
+        )
+
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.SYMBOL).withParent(psiElement(HareTypes.FIELD_VALUE))),
+            HareStructFieldNameProvider()
         )
     }
 }

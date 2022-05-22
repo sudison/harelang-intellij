@@ -34,14 +34,14 @@ public class HareStructLiteralImpl extends ASTWrapperPsiElement implements HareS
 
   @Override
   @Nullable
-  public HareIdentifierPath getIdentifierPath() {
-    return findChildByClass(HareIdentifierPath.class);
+  public HareStructInitializer getStructInitializer() {
+    return findChildByClass(HareStructInitializer.class);
   }
 
   @Override
-  @Nullable
-  public HareStructInitializer getStructInitializer() {
-    return findChildByClass(HareStructInitializer.class);
+  @NotNull
+  public List<HareSymbol> getSymbolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareSymbol.class);
   }
 
 }

@@ -199,6 +199,29 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // STRUCT_KW LBR field_values COMMA? RBR
+  static boolean anonymous_struct_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "anonymous_struct_literal")) return false;
+    if (!nextTokenIs(b, STRUCT_KW)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = consumeTokens(b, 2, STRUCT_KW, LBR);
+    p = r; // pin = 2
+    r = r && report_error_(b, field_values(b, l + 1));
+    r = p && report_error_(b, anonymous_struct_literal_3(b, l + 1)) && r;
+    r = p && consumeToken(b, RBR) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // COMMA?
+  private static boolean anonymous_struct_literal_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "anonymous_struct_literal_3")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
+  /* ********************************************************** */
   // STATIC_KW? APPEND_KW LP expression COMMA (expression COMMA expression | expression DOTDOTDOT | expression) RP
   public static boolean append_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "append_expression")) return false;
@@ -1508,46 +1531,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
+  // struct_literal | named_field_value
   public static boolean field_value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field_value")) return false;
     if (!nextTokenIs(b, "<field value>", IDENTIFIER, STRUCT_KW)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FIELD_VALUE, "<field value>");
     r = struct_literal(b, l + 1);
-    if (!r) r = field_value_1(b, l + 1);
+    if (!r) r = named_field_value(b, l + 1);
     exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // IDENTIFIER (COLON type)? ASSIGN expression
-  private static boolean field_value_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_value_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    r = r && field_value_1_1(b, l + 1);
-    r = r && consumeToken(b, ASSIGN);
-    r = r && expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (COLON type)?
-  private static boolean field_value_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_value_1_1")) return false;
-    field_value_1_1_0(b, l + 1);
-    return true;
-  }
-
-  // COLON type
-  private static boolean field_value_1_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_value_1_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, COLON);
-    r = r && type(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -2676,6 +2668,64 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // symbol (COLON type)? ASSIGN expression
+  static boolean named_field_value(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "named_field_value")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = symbol(b, l + 1);
+    p = r; // pin = 1
+    r = r && report_error_(b, named_field_value_1(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, ASSIGN)) && r;
+    r = p && expression(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // (COLON type)?
+  private static boolean named_field_value_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "named_field_value_1")) return false;
+    named_field_value_1_0(b, l + 1);
+    return true;
+  }
+
+  // COLON type
+  private static boolean named_field_value_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "named_field_value_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COLON);
+    r = r && type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // identifier_path_symbol LBR struct_initializer COMMA? RBR
+  static boolean named_struct_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "named_struct_literal")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = identifier_path_symbol(b, l + 1);
+    r = r && consumeToken(b, LBR);
+    p = r; // pin = 2
+    r = r && report_error_(b, struct_initializer(b, l + 1));
+    r = p && report_error_(b, named_struct_literal_3(b, l + 1)) && r;
+    r = p && consumeToken(b, RBR) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // COMMA?
+  private static boolean named_struct_literal_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "named_struct_literal_3")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
+  /* ********************************************************** */
   // plan_expression | LP tuple_items RP | LP expression RP
   static boolean nested_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "nested_expression")) return false;
@@ -3225,57 +3275,16 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRUCT_KW LBR field_values COMMA? RBR | identifier_path LBR struct_initializer COMMA? RBR
+  // anonymous_struct_literal | named_struct_literal
   public static boolean struct_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_literal")) return false;
     if (!nextTokenIs(b, "<struct literal>", IDENTIFIER, STRUCT_KW)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_LITERAL, "<struct literal>");
-    r = struct_literal_0(b, l + 1);
-    if (!r) r = struct_literal_1(b, l + 1);
+    r = anonymous_struct_literal(b, l + 1);
+    if (!r) r = named_struct_literal(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
-  }
-
-  // STRUCT_KW LBR field_values COMMA? RBR
-  private static boolean struct_literal_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_literal_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, STRUCT_KW, LBR);
-    r = r && field_values(b, l + 1);
-    r = r && struct_literal_0_3(b, l + 1);
-    r = r && consumeToken(b, RBR);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA?
-  private static boolean struct_literal_0_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_literal_0_3")) return false;
-    consumeToken(b, COMMA);
-    return true;
-  }
-
-  // identifier_path LBR struct_initializer COMMA? RBR
-  private static boolean struct_literal_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_literal_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = identifier_path(b, l + 1);
-    r = r && consumeToken(b, LBR);
-    r = r && struct_initializer(b, l + 1);
-    r = r && struct_literal_1_3(b, l + 1);
-    r = r && consumeToken(b, RBR);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA?
-  private static boolean struct_literal_1_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "struct_literal_1_3")) return false;
-    consumeToken(b, COMMA);
-    return true;
   }
 
   /* ********************************************************** */

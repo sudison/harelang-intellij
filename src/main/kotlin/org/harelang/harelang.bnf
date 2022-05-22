@@ -182,9 +182,18 @@ array_literal ::= LB array_members? RB
 array_members ::= expression (COMMA expression)* DOTDOTDOT? COMMA?
 enum_literal ::= symbol (SCOPE symbol)+
 
-struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR | identifier_path LBR struct_initializer COMMA? RBR
+struct_literal ::= anonymous_struct_literal | named_struct_literal
+private anonymous_struct_literal ::= STRUCT_KW LBR field_values COMMA? RBR {
+pin=2
+}
+private named_struct_literal ::= identifier_path_symbol LBR struct_initializer COMMA? RBR {
+pin = 2
+}
 field_values ::= field_value (COMMA field_value)*
-field_value ::= struct_literal | IDENTIFIER (COLON type)? ASSIGN expression
+field_value ::= struct_literal | named_field_value
+private named_field_value ::= symbol (COLON type)? ASSIGN expression {
+pin=1
+}
 struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT
 
 tuple_items ::= expression (COMMA expression)+ COMMA?

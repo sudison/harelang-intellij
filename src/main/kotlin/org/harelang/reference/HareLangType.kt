@@ -2,6 +2,7 @@ package org.harelang.reference
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import org.harelang.parser.psi.*
 
@@ -84,16 +85,28 @@ fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
         this.hareReference()
     } else if (this is HarePlanExpression) {
         this.hareReference()
+    } else if (this is HareStructLiteral) {
+        this.hareReference()
     } else {
         null
     }
 }
 
+fun HareStructLiteral.hareReference(): PsiNameIdentifierOwner? {
+    return this.symbolList.last()?.hareReference()
+}
+
 fun HareSymbol.hareReference(): PsiNameIdentifierOwner? {
     val ps = this.prevSibling
     return if(ps == null) {
-        getLocalReferences(this.firstChild.text, true).firstOrNull() ?: containingFile?.globalDeclarations()
-            ?.find { it.nameIdentifier?.text == this.firstChild.text }
+        if (parent is HareFieldValue) {
+            PsiTreeUtil.findFirstParent(this) {
+                it is HareStructLiteral
+            }?.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
+        } else {
+            getLocalReferences(this.firstChild.text, true).firstOrNull() ?: containingFile?.globalDeclarations()
+                ?.find { it.nameIdentifier?.text == this.firstChild.text }
+        }
     } else {
         ps.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
     }

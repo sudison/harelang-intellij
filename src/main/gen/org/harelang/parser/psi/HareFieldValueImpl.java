@@ -40,6 +40,12 @@ public class HareFieldValueImpl extends ASTWrapperPsiElement implements HareFiel
 
   @Override
   @Nullable
+  public HareSymbol getSymbol() {
+    return findChildByClass(HareSymbol.class);
+  }
+
+  @Override
+  @Nullable
   public HareType getType() {
     return findChildByClass(HareType.class);
   }
