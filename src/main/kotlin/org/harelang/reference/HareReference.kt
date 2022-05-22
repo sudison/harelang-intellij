@@ -66,12 +66,17 @@ private fun HarePrototype.findIdentifier(s: String, exactMatch: Boolean = false)
     }
 }
 
+private fun HareForPredicate.findIdentifier(s: String, exactMatch: Boolean = false): PsiNameIdentifierOwner? {
+    return this.bindingList?.bindings?.bindingList?.find { findIdentifier(it, s, exactMatch) }
+}
+
 fun PsiElement.getLocalReferences(s: String, exactMatch: Boolean = false): List<PsiNameIdentifierOwner> {
     val refs = mutableListOf<PsiNameIdentifierOwner>()
     psiTreeWalkupInsideFnBlock(this) {
         val id = when (it) {
             is HareExpression -> it.findIdentifier(s, exactMatch)
             is HarePrototype -> it.findIdentifier(s, exactMatch)
+            is HareForPredicate -> it.findIdentifier(s ,exactMatch)
             else -> null
         }
         if (id != null) {

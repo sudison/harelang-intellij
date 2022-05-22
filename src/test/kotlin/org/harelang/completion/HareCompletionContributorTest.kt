@@ -256,4 +256,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testForPredicateCompletion() {
+        listOf(
+            Pair("fn v()void = {for(let ii = 0;ii+1) {let a = i", "ii"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }
