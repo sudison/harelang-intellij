@@ -21,6 +21,10 @@ tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (PsiElemen
         element.prevSibling
     }
 
+    if (nextElement == null) {
+        return
+    }
+
     psiTreeWalkupInsideFnBlock(nextElement, consumer)
 }
 

@@ -26,7 +26,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         printTree(
             """
        
-       type sa = struct {ii:i32}; fn bar() void = { let i = sa {i = b,};};
+       type sa = e
             """.trimIndent()
         )
     }
