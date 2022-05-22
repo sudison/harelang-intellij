@@ -2,6 +2,11 @@
 
 # HareLang Plugin for IntelliJ Changelog
 
+## [0.0.6]
+### Added
+- Add auto-completion for local variables
+
+
 ## [0.0.5]
 ### Added
 - More syntax highlight
