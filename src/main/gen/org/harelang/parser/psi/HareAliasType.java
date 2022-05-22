@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface HareAliasType extends PsiElement {
 
   @NotNull
-  HareIdentifierPath getIdentifierPath();
+  List<HareSymbol> getSymbolList();
 
 }

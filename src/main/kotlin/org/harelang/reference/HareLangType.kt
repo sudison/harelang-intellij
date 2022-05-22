@@ -43,6 +43,7 @@ fun PsiElement.evaluate(): HareLangType? {
         is HareTypeBinding -> this.evaluate()
         is HareStructUnionField -> this.evaluate()
         is HareType -> this.evaluate()
+        is HareFunctionDeclaration -> this.evaluate()
         else -> null
     }
 }
@@ -50,10 +51,13 @@ fun PsiElement.evaluate(): HareLangType? {
 fun HareType.evaluate(): HareLangType? {
     val enumType = this.storageClass.scalaType?.enumType
     val structType = this.storageClass.structUnionType
+    val aliasType = this.storageClass.aliasType
     return if (enumType != null) {
         HareLangEnumType(this, enumType)
     } else if (structType != null) {
         HareLangStructType(this, structType)
+    } else if (aliasType != null) {
+        aliasType.symbolList.last().hareReference()?.evaluate()
     } else {
         null
     }
@@ -65,6 +69,10 @@ fun HareStructUnionField.evaluate(): HareLangType? {
 
 fun HareTypeBinding.evaluate(): HareLangType? {
     return this.type.evaluate()
+}
+
+fun HareFunctionDeclaration.evaluate(): HareLangType? {
+    return this.prototype?.type?.evaluate()
 }
 
 fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
@@ -96,5 +104,8 @@ fun HarePlanExpression.hareReference(): PsiNameIdentifierOwner? {
 }
 
 fun HarePostfixOp.hareReference(): PsiNameIdentifierOwner? {
+    if (this.callOp != null) {
+        return this.prevSibling.hareReference()
+    }
     return this.prevSibling.hareReference()?.evaluate()?.exactMatch(this.fieldAccessOp?.lastChild?.text!!)
 }

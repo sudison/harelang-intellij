@@ -294,4 +294,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testFunctionReturnStructCompletion() {
+        listOf(
+            Pair("type sa = struct {ii:i32}; fn foo() sa = {i;}; fn bar() void = {foo().i", "ii"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

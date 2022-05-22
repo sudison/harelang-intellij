@@ -28,8 +28,8 @@ public class HareAliasTypeImpl extends ASTWrapperPsiElement implements HareAlias
 
   @Override
   @NotNull
-  public HareIdentifierPath getIdentifierPath() {
-    return findNotNullChildByClass(HareIdentifierPath.class);
+  public List<HareSymbol> getSymbolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareSymbol.class);
   }
 
 }

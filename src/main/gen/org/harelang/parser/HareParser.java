@@ -81,13 +81,13 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier_path
+  // identifier_path_symbol
   public static boolean alias_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "alias_type")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier_path(b, l + 1);
+    r = identifier_path_symbol(b, l + 1);
     exit_section_(b, m, ALIAS_TYPE, r);
     return r;
   }
@@ -2021,6 +2021,41 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // symbol (SCOPE symbol)*
+  static boolean identifier_path_symbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_path_symbol")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = symbol(b, l + 1);
+    r = r && identifier_path_symbol_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (SCOPE symbol)*
+  private static boolean identifier_path_symbol_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_path_symbol_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!identifier_path_symbol_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "identifier_path_symbol_1", c)) break;
+    }
+    return true;
+  }
+
+  // SCOPE symbol
+  private static boolean identifier_path_symbol_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_path_symbol_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SCOPE);
+    r = r && symbol(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // IF_KW conditional_branch ELSE_KW if_expression | IF_KW conditional_branch ELSE_KW expression | IF_KW conditional_branch
   public static boolean if_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_expression")) return false;
@@ -3730,14 +3765,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DOTDOTDOT identifier_path
+  // DOTDOTDOT identifier_path_symbol
   public static boolean unwrapped_alias(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unwrapped_alias")) return false;
     if (!nextTokenIs(b, DOTDOTDOT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, DOTDOTDOT);
-    r = r && identifier_path(b, l + 1);
+    r = r && identifier_path_symbol(b, l + 1);
     exit_section_(b, m, UNWRAPPED_ALIAS, r);
     return r;
   }
