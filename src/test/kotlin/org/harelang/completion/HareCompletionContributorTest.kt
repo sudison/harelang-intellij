@@ -274,4 +274,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testMatchCaseCompletion() {
+        listOf(
+            Pair("fn v()void = { match(p) { case let ii: i32 => i", "ii"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

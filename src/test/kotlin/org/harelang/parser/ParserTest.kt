@@ -26,7 +26,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         printTree(
             """
        
-       fn v()void = {for(let ii = 0;i
+       fn v()void = { match(p) { case let ii: i32  => i
             """.trimIndent()
         )
     }

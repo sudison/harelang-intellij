@@ -2456,14 +2456,15 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean match_case(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "match_case")) return false;
     if (!nextTokenIs(b, CASE_KW)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, MATCH_CASE, null);
     r = consumeToken(b, CASE_KW);
-    r = r && match_case_1(b, l + 1);
-    r = r && consumeToken(b, MATCH_OP);
-    r = r && expression_list(b, l + 1);
-    exit_section_(b, m, MATCH_CASE, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, match_case_1(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, MATCH_OP)) && r;
+    r = p && expression_list(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // ((LET_KW IDENTIFIER COLON)? type)?
@@ -2506,15 +2507,16 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean match_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "match_expression")) return false;
     if (!nextTokenIs(b, MATCH_KW)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MATCH_KW, LP);
-    r = r && expression(b, l + 1);
-    r = r && consumeTokens(b, 0, RP, LBR);
-    r = r && match_expression_5(b, l + 1);
-    r = r && consumeToken(b, RBR);
-    exit_section_(b, m, MATCH_EXPRESSION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, MATCH_EXPRESSION, null);
+    r = consumeTokens(b, 1, MATCH_KW, LP);
+    p = r; // pin = 1
+    r = r && report_error_(b, expression(b, l + 1));
+    r = p && report_error_(b, consumeTokens(b, -1, RP, LBR)) && r;
+    r = p && report_error_(b, match_expression_5(b, l + 1)) && r;
+    r = p && consumeToken(b, RBR) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // match_case+

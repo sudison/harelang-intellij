@@ -214,8 +214,14 @@ insert_expression ::= STATIC_KW? INSERT_KW LP expression COMMA expression DOTDOT
 delete_expression ::= STATIC_KW? DELETE_KW LP expression RP
 
 variadic_expression ::= VASTART_KW LP RP | VAARG_KW LP expression RP | VAEND_KW LP expression RP
-match_expression ::= MATCH_KW LP expression RP LBR match_case+ RBR
-match_case ::= CASE_KW ((LET_KW IDENTIFIER COLON)? type)? MATCH_OP expression_list
+match_expression ::= MATCH_KW LP expression RP LBR match_case+ RBR {
+pin=1
+}
+match_case ::= CASE_KW ((LET_KW IDENTIFIER COLON)? type)? MATCH_OP expression_list {
+pin=1
+implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    mixin='org.harelang.reference.MatchCaseMixin'
+}
 switch_expression ::= SWITCH_KW LP expression RP LBR switch_case+ RBR
 switch_case ::= CASE_KW case_options? MATCH_OP expression_list
 case_options ::= expression (COMMA expression)*

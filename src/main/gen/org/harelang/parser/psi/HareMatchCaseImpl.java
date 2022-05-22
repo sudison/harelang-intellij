@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.harelang.reference.MatchCaseMixin;
 
-public class HareMatchCaseImpl extends ASTWrapperPsiElement implements HareMatchCase {
+public class HareMatchCaseImpl extends MatchCaseMixin implements HareMatchCase {
 
   public HareMatchCaseImpl(@NotNull ASTNode node) {
     super(node);
@@ -27,9 +27,9 @@ public class HareMatchCaseImpl extends ASTWrapperPsiElement implements HareMatch
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpressionList getExpressionList() {
-    return findNotNullChildByClass(HareExpressionList.class);
+    return findChildByClass(HareExpressionList.class);
   }
 
   @Override
