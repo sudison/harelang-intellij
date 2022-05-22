@@ -283,4 +283,15 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
             keywordCompletion(it.first, it.second)
         }
     }
+
+    @Test
+    fun testCustomizedTypeCompletion() {
+        listOf(
+            Pair("type aa = i32; fn v()a", "aa"),
+            Pair("type aa = i32; fn v(i:a", "aa"),
+            Pair("type aa = i32; fn v()void = { let i:a", "aa"),
+            ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
 }

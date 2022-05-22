@@ -8,6 +8,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.patterns.*
 import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.*
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import com.intellij.psi.util.prevLeafs
 import com.intellij.util.ProcessingContext
@@ -143,6 +144,29 @@ class HarePostFixProvider : CompletionProvider<CompletionParameters>() {
     }
 }
 
+class HareTypeProvider : CompletionProvider<CompletionParameters>() {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
+        val p = result.prefixMatcher.prefix
+        PsiTreeUtil.collectElementsOfType(parameters.position.containingFile, HareTypeBinding::class.java).forEach {
+            if (it.nameIdentifier?.text?.startsWith(p) == true) {
+                val t = createLookup(it.nameIdentifier?.text)
+                if (t != null) {
+                    result.addElement(t)
+                }
+            }
+        }
+        HareCompletionContributor.buildinTypes.forEach {
+            if (it.lookupString.startsWith(p)) {
+                result.addElement(it)
+            }
+        }
+    }
+}
+
 class HareCompletionContributor : CompletionContributor() {
     companion object {
         private val topKeyWords = listOf(
@@ -205,7 +229,7 @@ class HareCompletionContributor : CompletionContributor() {
         }
 
 
-        private val buildinTypes = listOf(
+         val buildinTypes = listOf(
             HareTypes.I8_TYPE,
             HareTypes.I16_TYPE,
             HareTypes.I32_TYPE,
@@ -261,7 +285,7 @@ class HareCompletionContributor : CompletionContributor() {
                     ))
                 )
             ),
-            HareCompletionProvider(buildinTypes)
+            HareTypeProvider()
         )
         extend(
             CompletionType.BASIC,
