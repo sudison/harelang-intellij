@@ -45,6 +45,7 @@ fun PsiElement.evaluate(): HareLangType? {
         is HareStructUnionField -> this.evaluate()
         is HareType -> this.evaluate()
         is HareFunctionDeclaration -> this.evaluate()
+        is HareBinding -> this.evaluate()
         else -> null
     }
 }
@@ -74,6 +75,10 @@ fun HareTypeBinding.evaluate(): HareLangType? {
 
 fun HareFunctionDeclaration.evaluate(): HareLangType? {
     return this.prototype?.type?.evaluate()
+}
+
+fun HareBinding.evaluate(): HareLangType? {
+    return this.type?.evaluate()
 }
 
 fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
