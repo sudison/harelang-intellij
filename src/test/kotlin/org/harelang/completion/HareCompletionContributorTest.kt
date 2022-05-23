@@ -316,9 +316,18 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
     }
 
     @Test
-    fun testLocalStructCompletion() {
+    fun testLocalStructWithTypeDefCompletion() {
         listOf(
             Pair("type sa = struct {ii:i32}; fn bar() void = { let i:sa = sa {ii = 1}; let b = i.i", "ii"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
+    fun testLocalStructNoTypeDefCompletion() {
+        listOf(
+            Pair("type sa = struct {ii:i32}; fn bar() void = { let i = sa {ii = 1}; let b = i.i", "ii"),
         ).forEach {
             keywordCompletion(it.first, it.second)
         }

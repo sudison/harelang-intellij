@@ -78,7 +78,11 @@ fun HareFunctionDeclaration.evaluate(): HareLangType? {
 }
 
 fun HareBinding.evaluate(): HareLangType? {
-    return this.type?.evaluate()
+    return if (type == null) {
+         expression?.planExpressionList?.firstOrNull()?.structLiteral?.symbolList?.firstOrNull()?.hareReference()?.evaluate()
+    } else {
+        this.type?.evaluate()
+    }
 }
 
 fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
