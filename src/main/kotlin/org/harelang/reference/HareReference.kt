@@ -2,8 +2,10 @@ package org.harelang.reference
 
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import org.harelang.HareFileType
 import org.harelang.parser.psi.*
 
 tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (PsiElement) -> Boolean) {
@@ -28,7 +30,7 @@ tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (PsiElemen
     psiTreeWalkupInsideFnBlock(nextElement, consumer)
 }
 
-fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdentifierOwner> {
+private fun PsiFile.globalDeclarationsInFile(): List<PsiNameIdentifierOwner> {
     val types = mutableListOf<PsiNameIdentifierOwner>()
 
     PsiTreeUtil.collectElementsOfType(this, HareGlobalBinding::class.java).forEach {
@@ -40,16 +42,33 @@ fun PsiFile.globalDeclarations(excludeType: Boolean = false): List<PsiNameIdenti
     PsiTreeUtil.collectElementsOfType(this, HareConstantBinding::class.java).forEach {
         types.add(it)
     }
-    if (!excludeType) {
-        PsiTreeUtil.collectElementsOfType(this, HareTypeBinding::class.java).forEach {
-            types.add(it)
-        }
+
+    PsiTreeUtil.collectElementsOfType(this, HareTypeBinding::class.java).forEach {
+        types.add(it)
     }
+
     PsiTreeUtil.collectElementsOfType(this, HareImportPath::class.java).forEach {
         types.add(it)
     }
     return types
 }
+
+fun PsiFile.globalDeclarationsInModule(): List<PsiNameIdentifierOwner> {
+    val types = mutableListOf<PsiNameIdentifierOwner>()
+    val pfile = this.originalFile.parent?.virtualFile
+    if (pfile != null) {
+        val files = VfsUtil.getChildren(pfile) {
+            it.fileType == HareFileType
+        }
+
+        files.forEach {
+            this.manager.findFile(it)?.globalDeclarationsInFile()?.let { it1 -> types.addAll(it1) }
+        }
+    }
+
+    return types
+}
+
 
 private fun findIdentifier(e: PsiNameIdentifierOwner, s: String, exactMatch: Boolean = false): Boolean {
     return if (exactMatch) {

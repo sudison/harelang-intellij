@@ -15,7 +15,7 @@ import com.intellij.util.ProcessingContext
 import org.harelang.parser.psi.*
 import org.harelang.reference.evaluate
 import org.harelang.reference.getLocalReferences
-import org.harelang.reference.globalDeclarations
+import org.harelang.reference.globalDeclarationsInModule
 import org.harelang.reference.hareReference
 
 
@@ -101,7 +101,7 @@ class HareReferenceProvider : CompletionProvider<CompletionParameters>() {
                 result.addElement(t)
             }
         }
-        parameters.position.containingFile?.globalDeclarations()?.forEach {
+        parameters.position.containingFile?.globalDeclarationsInModule()?.forEach {
             if (it.nameIdentifier?.text?.startsWith(p) == true) {
                 val t = createLookup(it.nameIdentifier?.text)
                 if (t != null) {

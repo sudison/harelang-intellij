@@ -113,7 +113,7 @@ fun HareSymbol.hareReference(): PsiNameIdentifierOwner? {
                 it is HareStructLiteral
             }?.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
         } else {
-            getLocalReferences(this.firstChild.text, true).firstOrNull() ?: containingFile?.globalDeclarations()
+            getLocalReferences(this.firstChild.text, true).firstOrNull() ?: containingFile?.globalDeclarationsInModule()
                 ?.find { it.nameIdentifier?.text == this.firstChild.text }
         }
     } else {
