@@ -376,4 +376,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
         TestCase.assertTrue(l.size == 1)
         assertEquals(l[0].lookupString, "fa")
     }
+
+    @Test
+    fun testShouldNotRefPrivateDataCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "const fa: i32 = 0;")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use foo; const a: i32 = foo::f")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.isEmpty())
+    }
 }

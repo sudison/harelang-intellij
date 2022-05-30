@@ -38,10 +38,10 @@ identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
 private identifier_path_symbol ::= symbol (SCOPE symbol)*
 
 declarations ::= general_declaration+
-private general_declaration ::= EXPORT_KW? declaration EOS {
+general_declaration ::= EXPORT_KW? declaration EOS {
 pin=2
 }
-declaration ::= function_declaration | global_declaration | constant_declaration | type_declaration
+private declaration ::= function_declaration | global_declaration | constant_declaration | type_declaration
 
 global_declaration ::= global_let_bindings | global_const_bindings
 private global_let_bindings ::= LET_KW global_bindings {

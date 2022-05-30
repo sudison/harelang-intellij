@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HareDeclaration extends PsiElement {
+public interface HareGeneralDeclaration extends PsiElement {
 
   @Nullable
   HareConstantDeclaration getConstantDeclaration();

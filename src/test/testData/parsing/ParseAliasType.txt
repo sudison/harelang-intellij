@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareTypeDeclarationImpl(TYPE_DECLARATION)
         PsiElement(TYPE_KW)('type')
         HareTypeBindingsImpl(TYPE_BINDINGS)
@@ -37,4 +37,4 @@ FILE
                   PsiElement(DOTDOTDOT)('...')
                   HareSymbolImpl(SYMBOL)
                     PsiElement(IDENTIFIER)('a')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')

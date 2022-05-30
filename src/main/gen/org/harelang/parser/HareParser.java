@@ -1115,15 +1115,13 @@ public class HareParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // function_declaration | global_declaration | constant_declaration | type_declaration
-  public static boolean declaration(PsiBuilder b, int l) {
+  static boolean declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declaration")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, DECLARATION, "<declaration>");
     r = function_declaration(b, l + 1);
     if (!r) r = global_declaration(b, l + 1);
     if (!r) r = constant_declaration(b, l + 1);
     if (!r) r = type_declaration(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1842,10 +1840,10 @@ public class HareParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // EXPORT_KW? declaration EOS
-  static boolean general_declaration(PsiBuilder b, int l) {
+  public static boolean general_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "general_declaration")) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    Marker m = enter_section_(b, l, _NONE_, GENERAL_DECLARATION, "<general declaration>");
     r = general_declaration_0(b, l + 1);
     r = r && declaration(b, l + 1);
     p = r; // pin = 2

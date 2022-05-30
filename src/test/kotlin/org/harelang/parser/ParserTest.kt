@@ -26,7 +26,9 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         printTree(
             """
        
-       use ia::b
+       export let i :i32= 1;
+       export let i :i32= 1;
+
             """.trimIndent()
         )
     }

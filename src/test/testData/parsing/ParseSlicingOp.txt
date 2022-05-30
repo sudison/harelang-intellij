@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareFunctionDeclarationImpl(FUNCTION_DECLARATION)
         PsiElement(FN_KW)('fn')
         HareIdentifierPathImpl(IDENTIFIER_PATH)
@@ -168,4 +168,4 @@ FILE
                         PsiElement(RB)(']')
               PsiElement(EOS)(';')
             PsiElement(RBR)('}')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')

@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareConstantDeclarationImpl(CONSTANT_DECLARATION)
         PsiElement(DEF_KW)('def')
         HareConstantBindingsImpl(CONSTANT_BINDINGS)
@@ -18,4 +18,4 @@ FILE
               HarePlanExpressionImpl(PLAN_EXPRESSION)
                 HareSymbolImpl(SYMBOL)
                   PsiElement(IDENTIFIER)('i')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')

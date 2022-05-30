@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareTypeDeclarationImpl(TYPE_DECLARATION)
         PsiElement(TYPE_KW)('type')
         HareTypeBindingsImpl(TYPE_BINDINGS)
@@ -31,4 +31,4 @@ FILE
                           HareFloatingTypeImpl(FLOATING_TYPE)
                             PsiElement(F64_TYPE)('f64')
                   PsiElement(RP)(')')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')

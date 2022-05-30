@@ -28,7 +28,6 @@ public interface HareTypes {
   IElementType CONSTANT_BINDINGS = new HareElementType("CONSTANT_BINDINGS");
   IElementType CONSTANT_DECLARATION = new HareElementType("CONSTANT_DECLARATION");
   IElementType CONTROL_EXPRESSION = new HareElementType("CONTROL_EXPRESSION");
-  IElementType DECLARATION = new HareElementType("DECLARATION");
   IElementType DECLARATIONS = new HareElementType("DECLARATIONS");
   IElementType DECL_ATTR = new HareElementType("DECL_ATTR");
   IElementType DEFER_EXPRESSION = new HareElementType("DEFER_EXPRESSION");
@@ -53,6 +52,7 @@ public interface HareTypes {
   IElementType FOR_PREDICATE = new HareElementType("FOR_PREDICATE");
   IElementType FUNCTION_DECLARATION = new HareElementType("FUNCTION_DECLARATION");
   IElementType FUNCTION_TYPE = new HareElementType("FUNCTION_TYPE");
+  IElementType GENERAL_DECLARATION = new HareElementType("GENERAL_DECLARATION");
   IElementType GLOBAL_BINDING = new HareElementType("GLOBAL_BINDING");
   IElementType GLOBAL_BINDINGS = new HareElementType("GLOBAL_BINDINGS");
   IElementType GLOBAL_DECLARATION = new HareElementType("GLOBAL_DECLARATION");
@@ -307,9 +307,6 @@ public interface HareTypes {
       else if (type == CONTROL_EXPRESSION) {
         return new HareControlExpressionImpl(node);
       }
-      else if (type == DECLARATION) {
-        return new HareDeclarationImpl(node);
-      }
       else if (type == DECLARATIONS) {
         return new HareDeclarationsImpl(node);
       }
@@ -381,6 +378,9 @@ public interface HareTypes {
       }
       else if (type == FUNCTION_TYPE) {
         return new HareFunctionTypeImpl(node);
+      }
+      else if (type == GENERAL_DECLARATION) {
+        return new HareGeneralDeclarationImpl(node);
       }
       else if (type == GLOBAL_BINDING) {
         return new HareGlobalBindingImpl(node);

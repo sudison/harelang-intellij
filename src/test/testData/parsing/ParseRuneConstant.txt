@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareFunctionDeclarationImpl(FUNCTION_DECLARATION)
         HareFndecAttrImpl(FNDEC_ATTR)
           PsiElement(TEST_ATTR)('@test')
@@ -51,4 +51,4 @@ FILE
                               PsiElement(RUNE_LITERAL)('' '')
               PsiElement(EOS)(';')
             PsiElement(RBR)('}')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')

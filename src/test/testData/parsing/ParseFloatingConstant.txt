@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareGlobalDeclarationImpl(GLOBAL_DECLARATION)
         PsiElement(LET_KW)('let')
         HareGlobalBindingsImpl(GLOBAL_BINDINGS)
@@ -84,4 +84,4 @@ FILE
                   HareFloatingConstantImpl(FLOATING_CONSTANT)
                     PsiElement(DECIMAL_DIGITS)('1')
                     PsiElement(IDENTIFIER)('e5f64')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')

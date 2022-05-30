@@ -1,6 +1,6 @@
 FILE
   HareDeclarationsImpl(DECLARATIONS)
-    HareDeclarationImpl(DECLARATION)
+    HareGeneralDeclarationImpl(GENERAL_DECLARATION)
       HareGlobalDeclarationImpl(GLOBAL_DECLARATION)
         PsiElement(CONST_KW)('const')
         HareGlobalBindingsImpl(GLOBAL_BINDINGS)
@@ -3387,4 +3387,4 @@ FILE
                     PsiElement(DOTDOTDOT)('...')
                     PsiElement(COMMA)(',')
                   PsiElement(RB)(']')
-    PsiElement(EOS)(';')
+      PsiElement(EOS)(';')
