@@ -1,40 +1,46 @@
 package org.harelang.reference
 
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiNameIdentifierOwner
+import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import org.harelang.parser.psi.*
 
 
-
+interface HareNamedIdentifier {
+    fun name(): String?
+    fun psi(): PsiElement
+}
 
 open class HareLangType(open val owner: PsiElement) {
-    open fun lookup(name: String): List<PsiNameIdentifierOwner> {
+    open fun lookup(name: String): List<HareNamedIdentifier> {
         return listOf()
     }
 
-    open fun exactMatch(name: String): PsiNameIdentifierOwner? {
+    open fun exactMatch(name: String): HareNamedIdentifier? {
         return null
     }
 }
 
 class HareLangEnumType(override val owner: PsiElement, private val enumType: HareEnumType) : HareLangType(owner) {
-    override fun lookup(name: String): List<PsiNameIdentifierOwner> {
+    override fun lookup(name: String): List<HareNamedIdentifier> {
         return enumType.enumValues.enumValueList.filter { it.nameIdentifier?.text?.startsWith(name) == true }
     }
 
-    override fun exactMatch(name: String): PsiNameIdentifierOwner? {
+    override fun exactMatch(name: String): HareNamedIdentifier? {
         return enumType.enumValues.enumValueList.find { it.nameIdentifier?.text == name }
     }
 }
 
 class HareLangStructType(override val owner: PsiElement, private val structType: HareStructUnionType) : HareLangType(owner) {
-    override fun lookup(name: String): List<PsiNameIdentifierOwner> {
+    override fun lookup(name: String): List<HareNamedIdentifier> {
         return structType.structUnionFields?.structUnionFieldList?.filter { it.firstChild?.text?.startsWith(name) == true } ?: listOf()
     }
 
-    override fun exactMatch(name: String): PsiNameIdentifierOwner? {
+    override fun exactMatch(name: String): HareNamedIdentifier? {
         return structType.structUnionFields?.structUnionFieldList?.find { it.firstChild?.text == name }
     }
 }
@@ -46,8 +52,15 @@ fun PsiElement.evaluate(): HareLangType? {
         is HareType -> this.evaluate()
         is HareFunctionDeclaration -> this.evaluate()
         is HareBinding -> this.evaluate()
+        is PsiDirectory -> this.evaluate()
+        is HareImportPath -> this.evaluate()
         else -> null
     }
+}
+
+fun HareImportPath.evaluate(): HareLangType? {
+    val dir = this.importIdList.last().hareReference() as ModuleDir
+    return ModuleLastDirType(dir.psiDir)
 }
 
 fun HareType.evaluate(): HareLangType? {
@@ -59,7 +72,7 @@ fun HareType.evaluate(): HareLangType? {
     } else if (structType != null) {
         HareLangStructType(this, structType)
     } else if (aliasType != null) {
-        aliasType.symbolList.last().hareReference()?.evaluate()
+        aliasType.symbolList.last().hareReference()?.psi()?.evaluate()
     } else {
         null
     }
@@ -79,13 +92,13 @@ fun HareFunctionDeclaration.evaluate(): HareLangType? {
 
 fun HareBinding.evaluate(): HareLangType? {
     return if (type == null) {
-         expression?.planExpressionList?.firstOrNull()?.structLiteral?.symbolList?.firstOrNull()?.hareReference()?.evaluate()
+         expression?.planExpressionList?.firstOrNull()?.structLiteral?.symbolList?.firstOrNull()?.hareReference()?.psi()?.evaluate()
     } else {
         this.type?.evaluate()
     }
 }
 
-fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
+fun PsiElement.hareReference(): HareNamedIdentifier? {
     return if (this.elementType == HareTypes.SCOPE) {
         this.prevSibling?.hareReference()
     } else if (this is HareSymbol) {
@@ -96,38 +109,88 @@ fun PsiElement.hareReference(): PsiNameIdentifierOwner? {
         this.hareReference()
     } else if (this is HareStructLiteral) {
         this.hareReference()
+    } else if (this is HareImportId) {
+        this.hareReference()
     } else {
         null
     }
 }
 
-fun HareStructLiteral.hareReference(): PsiNameIdentifierOwner? {
+fun HareStructLiteral.hareReference(): HareNamedIdentifier? {
     return this.symbolList.last()?.hareReference()
 }
 
-fun HareSymbol.hareReference(): PsiNameIdentifierOwner? {
+fun HareSymbol.hareReference(): HareNamedIdentifier? {
     val ps = this.prevSibling
     return if(ps == null) {
         if (parent is HareFieldValue) {
             PsiTreeUtil.findFirstParent(this) {
                 it is HareStructLiteral
-            }?.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
+            }?.hareReference()?.psi()?.evaluate()?.exactMatch(this.firstChild.text)
         } else {
             getLocalReferences(this.firstChild.text, true).firstOrNull() ?: containingFile?.globalDeclarationsInModule()
-                ?.find { it.nameIdentifier?.text == this.firstChild.text }
+                ?.find { it.name() == this.firstChild.text }
         }
     } else {
-        ps.hareReference()?.evaluate()?.exactMatch(this.firstChild.text)
+        ps.hareReference()?.psi()?.evaluate()?.exactMatch(this.firstChild.text)
     }
 }
 
-fun HarePlanExpression.hareReference(): PsiNameIdentifierOwner? {
+fun HarePlanExpression.hareReference(): HareNamedIdentifier? {
     return this.symbol?.hareReference()
 }
 
-fun HarePostfixOp.hareReference(): PsiNameIdentifierOwner? {
+fun HarePostfixOp.hareReference(): HareNamedIdentifier? {
     if (this.callOp != null) {
         return this.prevSibling.hareReference()
     }
-    return this.prevSibling.hareReference()?.evaluate()?.exactMatch(this.fieldAccessOp?.lastChild?.text!!)
+    return this.prevSibling.hareReference()?.psi()?.evaluate()?.exactMatch(this.fieldAccessOp?.lastChild?.text!!)
+}
+
+class ModuleDir(p: Project, val f: VirtualFile): HareNamedIdentifier {
+    val psiDir = PsiDirectoryFactory.getInstance(p).createDirectory(f)
+    override fun name(): String? {
+        return f.name
+    }
+
+    override fun psi(): PsiElement {
+        return psiDir
+    }
+}
+
+class ModuleDirType(override val owner: PsiDirectory) : HareLangType(owner) {
+    override fun lookup(name: String): List<HareNamedIdentifier> {
+        val modules = owner.virtualFile.modules().filter { it.name.startsWith(name) } ?: return listOf()
+        return modules.map { ModuleDir(owner.project, it) }
+    }
+
+    override fun exactMatch(name: String): HareNamedIdentifier? {
+        val f = owner.virtualFile.modules().find { it.name == name } ?: return null
+        return ModuleDir(owner.project, f)
+    }
+}
+
+class ModuleLastDirType(override val owner: PsiDirectory) : HareLangType(owner) {
+    override fun lookup(name: String): List<HareNamedIdentifier> {
+        return owner.globalDeclarationsInModule().filter { it.name()?.startsWith(name) ?: false }
+    }
+
+    override fun exactMatch(name: String): HareNamedIdentifier? {
+        return owner.globalDeclarationsInModule().find { it.name() == name }
+    }
+}
+
+fun PsiDirectory.evaluate(): HareLangType? {
+    return ModuleDirType(this)
+}
+
+fun HareImportId.hareReference(): HareNamedIdentifier? {
+    if (this.prevSibling == null) {
+        val f = this.containingFile?.originalFile?.virtualFile?.getSourceRoot(this.project)?.modules()
+            ?.find { it.name == this.firstChild.text } ?: return null
+        return ModuleDir(this.project, f)
+    } else {
+        return PsiTreeUtil.findSiblingBackward(this, HareTypes.IMPORT_ID, null)?.hareReference()?.psi()?.evaluate()?.exactMatch(this.firstChild.text)
+    }
+
 }

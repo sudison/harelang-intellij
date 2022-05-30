@@ -8,28 +8,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.harelang.parser.psi.HareTypes.*;
-import org.harelang.reference.ImportPathMixin;
+import org.harelang.reference.ImportIdMixin;
 
-public class HareImportPathImpl extends ImportPathMixin implements HareImportPath {
+public class HareImportIdImpl extends ImportIdMixin implements HareImportId {
 
-  public HareImportPathImpl(@NotNull ASTNode node) {
+  public HareImportIdImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HareVisitor visitor) {
-    visitor.visitImportPath(this);
+    visitor.visitImportId(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof HareVisitor) accept((HareVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<HareImportId> getImportIdList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HareImportId.class);
   }
 
 }

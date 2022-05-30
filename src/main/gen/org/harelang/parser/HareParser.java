@@ -2111,19 +2111,31 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER (SCOPE IDENTIFIER)*
+  // IDENTIFIER
+  public static boolean import_id(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_id")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, m, IMPORT_ID, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // import_id (SCOPE import_id)*
   public static boolean import_path(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_path")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
+    r = import_id(b, l + 1);
     r = r && import_path_1(b, l + 1);
     exit_section_(b, m, IMPORT_PATH, r);
     return r;
   }
 
-  // (SCOPE IDENTIFIER)*
+  // (SCOPE import_id)*
   private static boolean import_path_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_path_1")) return false;
     while (true) {
@@ -2134,12 +2146,13 @@ public class HareParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // SCOPE IDENTIFIER
+  // SCOPE import_id
   private static boolean import_path_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_path_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, SCOPE, IDENTIFIER);
+    r = consumeToken(b, SCOPE);
+    r = r && import_id(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

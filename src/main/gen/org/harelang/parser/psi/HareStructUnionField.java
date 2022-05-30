@@ -5,8 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import org.harelang.reference.HareNamedIdentifier;
 
-public interface HareStructUnionField extends PsiNameIdentifierOwner {
+public interface HareStructUnionField extends PsiNameIdentifierOwner, HareNamedIdentifier {
 
   @Nullable
   HareIdentifierPath getIdentifierPath();

@@ -60,6 +60,7 @@ public interface HareTypes {
   IElementType IF_EXPRESSION = new HareElementType("IF_EXPRESSION");
   IElementType IMPORTS = new HareElementType("IMPORTS");
   IElementType IMPORT_ALIAS = new HareElementType("IMPORT_ALIAS");
+  IElementType IMPORT_ID = new HareElementType("IMPORT_ID");
   IElementType IMPORT_PATH = new HareElementType("IMPORT_PATH");
   IElementType INDEXING_OP = new HareElementType("INDEXING_OP");
   IElementType INSERT_EXPRESSION = new HareElementType("INSERT_EXPRESSION");
@@ -401,6 +402,9 @@ public interface HareTypes {
       }
       else if (type == IMPORT_ALIAS) {
         return new HareImportAliasImpl(node);
+      }
+      else if (type == IMPORT_ID) {
+        return new HareImportIdImpl(node);
       }
       else if (type == IMPORT_PATH) {
         return new HareImportPathImpl(node);

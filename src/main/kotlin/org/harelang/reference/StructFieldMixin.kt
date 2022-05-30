@@ -5,7 +5,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
 
-open class StructFieldMixin(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner {
+open class StructFieldMixin(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner, HareNamedIdentifier {
     override fun setName(name: String): PsiElement {
         TODO("Not yet implemented")
     }
@@ -19,6 +19,14 @@ open class StructFieldMixin(node: ASTNode) : ASTWrapperPsiElement(node), PsiName
 
     override fun getNameIdentifier(): PsiElement? {
         return node.firstChildNode.psi
+    }
+
+    override fun name(): String? {
+        return name
+    }
+
+    override fun psi(): PsiElement {
+        return node.psi
     }
 
 }

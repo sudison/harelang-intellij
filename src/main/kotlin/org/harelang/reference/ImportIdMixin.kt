@@ -5,9 +5,9 @@ import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiReference
 
-abstract class FieldAccessMixin(node: ASTNode) : ASTWrapperPsiElement(node) {
+abstract class ImportIdMixin(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun getReference(): PsiReference? {
-        val ref = node.psi.parent?.prevSibling?.hareReference()?.psi()?.evaluate()?.exactMatch(node.psi.lastChild.text)
+        val ref = node.psi.hareReference()
         return if (ref != null) {
             HareReference(this, ref, this::calculateDefaultRangeInElement)
         } else {
@@ -16,7 +16,6 @@ abstract class FieldAccessMixin(node: ASTNode) : ASTWrapperPsiElement(node) {
     }
 
     private fun calculateDefaultRangeInElement(): TextRange {
-        val s = this.lastChild
-        return TextRange.from(s.startOffsetInParent, s.textLength)
+        return TextRange.from(this.firstChild.startOffsetInParent, this.firstChild.textLength)
     }
 }

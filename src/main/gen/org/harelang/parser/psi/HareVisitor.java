@@ -5,6 +5,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import org.harelang.reference.HareNamedIdentifier;
 
 public class HareVisitor extends PsiElementVisitor {
 
@@ -46,6 +47,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitBinding(@NotNull HareBinding o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitBindingList(@NotNull HareBindingList o) {
@@ -78,6 +80,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitConstantBinding(@NotNull HareConstantBinding o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitConstantBindings(@NotNull HareConstantBindings o) {
@@ -126,6 +129,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitEnumValue(@NotNull HareEnumValue o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitEnumValues(@NotNull HareEnumValues o) {
@@ -186,6 +190,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitFunctionDeclaration(@NotNull HareFunctionDeclaration o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitFunctionType(@NotNull HareFunctionType o) {
@@ -194,6 +199,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitGlobalBinding(@NotNull HareGlobalBinding o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitGlobalBindings(@NotNull HareGlobalBindings o) {
@@ -216,8 +222,13 @@ public class HareVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitImportId(@NotNull HareImportId o) {
+    visitPsiElement(o);
+  }
+
   public void visitImportPath(@NotNull HareImportPath o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitImports(@NotNull HareImports o) {
@@ -254,6 +265,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitMatchCase(@NotNull HareMatchCase o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitMatchExpression(@NotNull HareMatchExpression o) {
@@ -282,6 +294,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitParameter(@NotNull HareParameter o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitParameterList(@NotNull HareParameterList o) {
@@ -354,6 +367,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitStructUnionField(@NotNull HareStructUnionField o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitStructUnionFields(@NotNull HareStructUnionFields o) {
@@ -402,6 +416,7 @@ public class HareVisitor extends PsiElementVisitor {
 
   public void visitTypeBinding(@NotNull HareTypeBinding o) {
     visitPsiNameIdentifierOwner(o);
+    // visitNamedIdentifier(o);
   }
 
   public void visitTypeBindings(@NotNull HareTypeBindings o) {

@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
 import org.harelang.parser.psi.HareTypes
 
-open class GlobalBindingMixin(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner {
+open class GlobalBindingMixin(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner, HareNamedIdentifier {
     override fun setName(name: String): PsiElement {
         TODO("Not yet implemented")
     }
@@ -20,6 +20,14 @@ open class GlobalBindingMixin(node: ASTNode) : ASTWrapperPsiElement(node), PsiNa
 
     override fun getNameIdentifier(): PsiElement? {
         return node.findChildByType(HareTypes.IDENTIFIER_PATH)?.findChildByType(HareTypes.IDENTIFIER)?.psi
+    }
+
+    override fun name(): String? {
+        return name
+    }
+
+    override fun psi(): PsiElement {
+        return node.psi
     }
 
 }

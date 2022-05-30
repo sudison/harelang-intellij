@@ -27,8 +27,11 @@ use_statement_member_list ::= USE_KW import_alias* import_path SCOPE LBR member_
 member_list ::= member (COMMA member)*
 member ::= IDENTIFIER ASSIGN IDENTIFIER | IDENTIFIER
 import_alias ::= IDENTIFIER ASSIGN
-import_path ::= IDENTIFIER (SCOPE IDENTIFIER)* {
-    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+import_id ::= IDENTIFIER {
+    mixin='org.harelang.reference.ImportIdMixin'
+}
+import_path ::= import_id (SCOPE import_id)* {
+    implements=['com.intellij.psi.PsiNameIdentifierOwner'; 'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.ImportPathMixin'
 }
 identifier_path ::= IDENTIFIER (SCOPE IDENTIFIER)*
@@ -49,7 +52,7 @@ pin=1
 }
 global_bindings ::= global_binding (COMMA global_binding)*
 global_binding ::= decl_attr? identifier_path COLON type (ASSIGN expression)? {
-    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.GlobalBindingMixin'
 }
 decl_attr ::= SYMBOL_ATTR LP string_const RP
@@ -59,19 +62,19 @@ pin=1
 constant_bindings ::= constant_binding (COMMA constant_binding)*
 constant_binding ::= identifier_path COLON type ASSIGN expression {
     pin=2
-    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.GlobalBindingMixin'
 }
 
 type_declaration ::= TYPE_KW type_bindings
 type_bindings ::= type_binding (COMMA type_binding)*
 type_binding ::= identifier_path ASSIGN type {
-    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.GlobalBindingMixin'
 }
 function_declaration ::= fndec_attr* FN_KW identifier_path prototype function_definition? {
     pin=2
-    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.GlobalBindingMixin'
 }
 private function_definition ::= ASSIGN expression {
@@ -89,7 +92,7 @@ parameter_list ::= parameters COMMA? DOTDOTDOT? COMMA?
 parameters ::= parameter (COMMA parameter)*
 parameter ::= (IDENTIFIER | UNDERSCORE) COLON type {
 pin=1
-implements=['com.intellij.psi.PsiNameIdentifierOwner']
+implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.ParameterMixin'
 }
 type ::= CONST_KW? BANG? storage_class
@@ -104,7 +107,7 @@ floating_type ::= F32_TYPE | F64_TYPE
 enum_type ::= ENUM_KW enum_storage? LBR enum_values RBR
 enum_values ::= enum_value (COMMA enum_value)* COMMA?
 enum_value ::= IDENTIFIER ASSIGN expression | IDENTIFIER {
-    implements=['com.intellij.psi.PsiNameIdentifierOwner']
+    implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.EnumValueMixin'
 }
 enum_storage ::= integer_type | RUNE_KW
@@ -116,7 +119,7 @@ pin=1
 }
 struct_union_fields ::=  struct_union_field (COMMA struct_union_field)* COMMA?
 struct_union_field ::= struct_union_field_type_def | struct_union_type | identifier_path {
-implements=['com.intellij.psi.PsiNameIdentifierOwner']
+implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.StructFieldMixin'
 }
 private struct_union_field_type_def ::= IDENTIFIER COLON type {
@@ -229,7 +232,7 @@ pin=1
 }
 match_case ::= CASE_KW ((LET_KW IDENTIFIER COLON)? type)? MATCH_OP expression_list {
 pin=1
-implements=['com.intellij.psi.PsiNameIdentifierOwner']
+implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.MatchCaseMixin'
 }
 switch_expression ::= SWITCH_KW LP expression RP LBR switch_case+ RBR
@@ -253,7 +256,7 @@ pin=2
 }
 bindings ::= binding (COMMA binding)*
 binding ::= binding1 | binding2 {
-implements=['com.intellij.psi.PsiNameIdentifierOwner']
+implements=['com.intellij.psi.PsiNameIdentifierOwner';'org.harelang.reference.HareNamedIdentifier']
     mixin='org.harelang.reference.BindingMixin'
 
 }

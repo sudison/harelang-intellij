@@ -13,10 +13,7 @@ import com.intellij.psi.util.elementType
 import com.intellij.psi.util.prevLeafs
 import com.intellij.util.ProcessingContext
 import org.harelang.parser.psi.*
-import org.harelang.reference.evaluate
-import org.harelang.reference.getLocalReferences
-import org.harelang.reference.globalDeclarationsInModule
-import org.harelang.reference.hareReference
+import org.harelang.reference.*
 
 
 val PsiElement.leftSiblings: Sequence<PsiElement>
@@ -96,14 +93,14 @@ class HareReferenceProvider : CompletionProvider<CompletionParameters>() {
     ) {
         val p = result.prefixMatcher.prefix
         parameters.position.getLocalReferences(p, false).forEach {
-            val t = createLookup(it.nameIdentifier?.text)
+            val t = createLookup(it.name())
             if (t != null) {
                 result.addElement(t)
             }
         }
         parameters.position.containingFile?.globalDeclarationsInModule()?.forEach {
-            if (it.nameIdentifier?.text?.startsWith(p) == true) {
-                val t = createLookup(it.nameIdentifier?.text)
+            if (it.name()?.startsWith(p) == true) {
+                val t = createLookup(it.name())
                 if (t != null) {
                     result.addElement(t)
                 }
@@ -119,8 +116,8 @@ class HareScopeReferenceProvider : CompletionProvider<CompletionParameters>() {
         result: CompletionResultSet
     ) {
         val p = result.prefixMatcher.prefix
-        parameters.position.parent.prevSibling?.hareReference()?.evaluate()?.lookup(p)?.forEach {
-            val t = createLookup(it.nameIdentifier?.text)
+        parameters.position.parent.prevSibling?.hareReference()?.psi()?.evaluate()?.lookup(p)?.forEach {
+            val t = createLookup(it.name())
             if (t != null) {
                 result.addElement(t)
             }
@@ -135,8 +132,8 @@ class HarePostFixProvider : CompletionProvider<CompletionParameters>() {
         result: CompletionResultSet
     ) {
         val p = result.prefixMatcher.prefix
-        parameters.position.parent.parent.prevSibling?.hareReference()?.evaluate()?.lookup(p)?.forEach {
-            val t = createLookup(it.nameIdentifier?.text)
+        parameters.position.parent.parent.prevSibling?.hareReference()?.psi()?.evaluate()?.lookup(p)?.forEach {
+            val t = createLookup(it.name())
             if (t != null) {
                 result.addElement(t)
             }
@@ -153,10 +150,36 @@ class HareStructFieldNameProvider : CompletionProvider<CompletionParameters>() {
         val p = result.prefixMatcher.prefix
         PsiTreeUtil.findFirstParent(parameters.position) {
             it is HareStructLiteral
-        }?.hareReference()?.evaluate()?.lookup(p)?.forEach {
-            val t = createLookup(it.nameIdentifier?.text)
+        }?.hareReference()?.psi()?.evaluate()?.lookup(p)?.forEach {
+            val t = createLookup(it.name())
             if (t != null) {
                 result.addElement(t)
+            }
+        }
+    }
+}
+
+class HareImportPathProvider : CompletionProvider<CompletionParameters>() {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
+        val p = result.prefixMatcher.prefix
+        if (parameters.position.parent.prevSibling == null) {
+            val sourceRoot = parameters.position.containingFile?.originalFile?.virtualFile?.getSourceRoot(parameters.position.project) ?: return
+            ModuleDir(parameters.position.project, sourceRoot).psi().evaluate()?.lookup(p)?.forEach {
+                val t = createLookup(it.name())
+                if (t != null) {
+                    result.addElement(t)
+                }
+            }
+        } else {
+            PsiTreeUtil.findSiblingBackward(parameters.position.parent, HareTypes.IMPORT_ID, null)?.hareReference()?.psi()?.evaluate()?.lookup(p)?.forEach {
+                val t = createLookup(it.name())
+                if (t != null) {
+                    result.addElement(t)
+                }
             }
         }
     }
@@ -343,6 +366,12 @@ class HareCompletionContributor : CompletionContributor() {
             CompletionType.BASIC,
             psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.SYMBOL).withParent(psiElement(HareTypes.FIELD_VALUE))),
             HareStructFieldNameProvider()
+        )
+
+        extend(
+            CompletionType.BASIC,
+            psiElement(HareTypes.IDENTIFIER).withParent(psiElement(HareTypes.IMPORT_ID)),
+            HareImportPathProvider()
         )
     }
 }
