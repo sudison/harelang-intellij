@@ -1,6 +1,7 @@
 package org.harelang.completion
 
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
+import junit.framework.TestCase
 import org.harelang.HareFileType
 import org.junit.Test
 
@@ -331,5 +332,48 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
         ).forEach {
             keywordCompletion(it.first, it.second)
         }
+    }
+
+    @Test
+    fun testModuleCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "export const fa: i32 = 0;")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use f")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.size == 1)
+        assertEquals(l[0].lookupString, "foo")
+    }
+
+    @Test
+    fun testNestedModuleCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "export const fa: i32 = 0;")
+        myFixture.addFileToProject("foo/bar/a.ha", "export const fa: i32 = 0;")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use foo::b")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.size == 1)
+        assertEquals(l[0].lookupString, "bar")
+    }
+
+    @Test
+    fun testRefModuleCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "export const fa: i32 = 0;")
+        myFixture.addFileToProject("foo/bar/a.ha", "export const fa: i32 = 0;")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use foo; const a: i32 = foo::f")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.size == 1)
+        assertEquals(l[0].lookupString, "fa")
+    }
+
+    @Test
+    fun testRefNestedModuleCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "export const fa: i32 = 0;")
+        myFixture.addFileToProject("foo/bar/a.ha", "export const fa: i32 = 0;")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use foo::bar; const a: i32 = bar::f")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.size == 1)
+        assertEquals(l[0].lookupString, "fa")
     }
 }
