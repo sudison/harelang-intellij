@@ -19,8 +19,11 @@
         <annotator
                 language="Hare"
                 implementationClass="org.harelang.syntax.SyntaxHighlighterAnnotator"/>
-        <applicationService serviceImplementation="org.jetbrains.plugins.template.services.MyApplicationService"/>
+        <applicationService serviceImplementation="org.harelang.settings.CompilerSettingService"/>
         <projectService serviceImplementation="org.jetbrains.plugins.template.services.MyProjectService"/>
+        <applicationConfigurable parentId="language" instance="org.harelang.settings.CompilerSettings"
+                                 id="org.harelang.settings.CompilerSettings"
+                                 displayName="Hare"/>
     </extensions>
 
     <applicationListeners>
