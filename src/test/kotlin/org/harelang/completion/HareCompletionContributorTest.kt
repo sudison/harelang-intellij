@@ -385,4 +385,13 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
         val l = myFixture.completeBasic()
         TestCase.assertTrue(l.isEmpty())
     }
+
+    @Test
+    fun testShouldNotRefImportCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "use abc; const fa: i32 = 0;")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use foo; const a: i32 = foo::a")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.isEmpty())
+    }
 }

@@ -35,7 +35,7 @@ tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (PsiElemen
     psiTreeWalkupInsideFnBlock(nextElement, consumer)
 }
 
-private fun PsiFile.globalDeclarationsInFile(exportedOnly: Boolean = true): List<HareNamedIdentifier> {
+private fun PsiFile.globalDeclarationsInFile(exportedOnly: Boolean = true, includeImport: Boolean = false): List<HareNamedIdentifier> {
     val types = mutableListOf<HareNamedIdentifier>()
 
     this.children.forEach {
@@ -57,8 +57,10 @@ private fun PsiFile.globalDeclarationsInFile(exportedOnly: Boolean = true): List
                 }
 
             is HareImports ->
-                it.useStatementList.forEach { uit ->
-                    uit.importPath?.let { ipit -> types.add(ipit) }
+                if (includeImport) {
+                    it.useStatementList.forEach { uit ->
+                        uit.importPath?.let { ipit -> types.add(ipit) }
+                    }
                 }
         }
     }
@@ -95,7 +97,8 @@ fun PsiFile.globalDeclarationsInModule(): List<HareNamedIdentifier> {
         }
 
         files.forEach {
-            this.manager.findFile(it)?.globalDeclarationsInFile(exportedOnly = false)?.let { it1 -> types.addAll(it1) }
+            val includeImport = this.originalFile.name == it.name
+            this.manager.findFile(it)?.globalDeclarationsInFile(exportedOnly = false, includeImport)?.let { it1 -> types.addAll(it1) }
         }
     }
 
