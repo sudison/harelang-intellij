@@ -167,11 +167,13 @@ class HareImportPathProvider : CompletionProvider<CompletionParameters>() {
     ) {
         val p = result.prefixMatcher.prefix
         if (parameters.position.parent.prevSibling == null) {
-            val sourceRoot = parameters.position.containingFile?.originalFile?.virtualFile?.getSourceRoot(parameters.position.project) ?: return
-            ModuleDir(parameters.position.project, sourceRoot).psi().evaluate()?.lookup(p)?.forEach {
-                val t = createLookup(it.name())
-                if (t != null) {
-                    result.addElement(t)
+            val roots = parameters.position.containingFile?.originalFile?.virtualFile?.rootDirs(parameters.position.project)
+            roots?.forEach { rootDir ->
+                ModuleDir(parameters.position.project, rootDir).psi().evaluate()?.lookup(p)?.forEach {
+                    val t = createLookup(it.name())
+                    if (t != null) {
+                        result.addElement(t)
+                    }
                 }
             }
         } else {

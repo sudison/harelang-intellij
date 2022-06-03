@@ -186,7 +186,7 @@ fun PsiDirectory.evaluate(): HareLangType? {
 
 fun HareImportId.hareReference(): HareNamedIdentifier? {
     if (this.prevSibling == null) {
-        val f = this.containingFile?.originalFile?.virtualFile?.getSourceRoot(this.project)?.modules()
+        val f = this.containingFile?.originalFile?.virtualFile?.rootDirs(this.project)?.flatMap { it.modules() }
             ?.find { it.name == this.firstChild.text } ?: return null
         return ModuleDir(this.project, f)
     } else {

@@ -4,6 +4,7 @@ import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.project.isDirectoryBased
@@ -12,6 +13,8 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import org.harelang.HareFileType
 import org.harelang.parser.psi.*
+import org.harelang.settings.CompilerSettingService
+import org.harelang.settings.CompilerSettings
 
 tailrec fun psiTreeWalkupInsideFnBlock(element: PsiElement, consumer: (PsiElement) -> Boolean) {
     if (element is HareFunctionDeclaration) {
@@ -67,7 +70,24 @@ private fun PsiFile.globalDeclarationsInFile(exportedOnly: Boolean = true, inclu
     return types
 }
 
+fun Project.compilerSettings(): CompilerSettingService {
+    return getService(CompilerSettingService::class.java)
+}
+
+fun Project.stdLibDir(): VirtualFile? {
+    if (compilerSettings().stdLibLocation == "") {
+        return null
+    }
+
+    val fs = LocalFileSystem.getInstance()
+    return fs.refreshAndFindFileByPath(compilerSettings().stdLibLocation)
+}
+
 fun VirtualFile.getSourceRoot(project: Project): VirtualFile? = ProjectRootManager.getInstance(project).fileIndex.getSourceRootForFile(this)
+
+fun VirtualFile.rootDirs(project: Project): List<VirtualFile> {
+    return listOfNotNull(getSourceRoot(project), project.stdLibDir())
+}
 
 fun VirtualFile.modules(): List<VirtualFile> {
     return VfsUtil.getChildren(this) {
