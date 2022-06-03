@@ -2,6 +2,12 @@
 
 # HareLang Plugin for IntelliJ Changelog
 
+## [0.1.0]
+### Added
+- Support module
+- Support std lib module
+
+
 ## [0.0.6]
 ### Added
 - Add auto-completion for local variables
