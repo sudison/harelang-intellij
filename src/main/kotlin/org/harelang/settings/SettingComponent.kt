@@ -13,8 +13,8 @@ class SettingComponent {
     private val compilerLocation = TextFieldWithBrowseButton()
     private val stdLibLocation = TextFieldWithBrowseButton()
     init {
-        compilerLocation.addBrowseFolderListener("Select Hare Compiler Location", null, null, FileChooserDescriptorFactory.createSingleFileDescriptor())
-        stdLibLocation.addBrowseFolderListener("Select Hare Stdlib Location", null, null, FileChooserDescriptorFactory.createSingleFileDescriptor())
+        compilerLocation.addBrowseFolderListener("Select Hare Compiler Location", null, null, FileChooserDescriptorFactory.createSingleFileOrExecutableAppDescriptor())
+        stdLibLocation.addBrowseFolderListener("Select Hare Stdlib Location", null, null, FileChooserDescriptorFactory.createSingleFolderDescriptor())
 
         myMainPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("Hare compiler location:"), compilerLocation, 1, false)
