@@ -27,9 +27,9 @@ public class HareLengthExpressionImpl extends ASTWrapperPsiElement implements Ha
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+    return findChildByClass(HareExpression.class);
   }
 
 }

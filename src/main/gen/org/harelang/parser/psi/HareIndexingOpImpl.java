@@ -27,9 +27,9 @@ public class HareIndexingOpImpl extends ASTWrapperPsiElement implements HareInde
   }
 
   @Override
-  @NotNull
+  @Nullable
   public HareExpression getExpression() {
-    return findNotNullChildByClass(HareExpression.class);
+    return findChildByClass(HareExpression.class);
   }
 
 }

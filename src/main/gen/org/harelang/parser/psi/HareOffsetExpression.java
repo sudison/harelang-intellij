@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface HareOffsetExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   HareExpression getExpression();
 
 }

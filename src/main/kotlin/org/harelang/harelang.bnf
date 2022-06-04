@@ -153,7 +153,9 @@ private logical_xor_expression ::= logical_and_expression (LOGICAL_XOR logical_a
 private logical_and_expression ::= equality_expression (LOGICAL_AND equality_expression)*
 private equality_expression ::= comparison_expression (equality_operator comparison_expression)*
 private equality_operator ::= EQUAL | NOT_EQUAL
-private comparison_expression ::= inclusive_or_expression (comparison_operator inclusive_or_expression)*
+private comparison_expression ::= inclusive_or_expression comparison_expression_right*
+private comparison_expression_right ::= comparison_operator inclusive_or_expression {
+}
 private comparison_operator ::= LESSER_THAN | LARGER_THAN | LESSER_EQUAL | LARGER_EQUAL
 private inclusive_or_expression ::= exclusive_or_expression (INCLUSIVE_OR exclusive_or_expression)*
 private exclusive_or_expression ::= and_expression (EXCLUSIVE_OR and_expression)*
@@ -201,7 +203,9 @@ struct_initializer ::= field_values (COMMA DOTDOTDOT)? | DOTDOTDOT
 
 tuple_items ::= expression (COMMA expression)+ COMMA?
 postfix_op ::= field_access_op | slicing_op | indexing_op | call_op | error_propagation_op
-indexing_op ::= LB expression RB
+indexing_op ::= LB expression RB {
+pin=1
+}
 slicing_op ::= LB expression? DOTDOT expression? RB
 error_propagation_op ::= QUESTION | BANG
 field_access_op ::= DOT IDENTIFIER | DOT integer_constant {
@@ -217,9 +221,15 @@ pin=1
 }
 
 measurement_expression ::= size_expression | length_expression | offset_expression
-size_expression ::= SIZE_TYPE LP type RP
-length_expression ::= LEN_KW LP expression RP
-offset_expression ::= OFFSET_KW LP expression RP
+size_expression ::= SIZE_TYPE LP type RP {
+pin=2
+}
+length_expression ::= LEN_KW LP expression RP {
+pin=2
+}
+offset_expression ::= OFFSET_KW LP expression RP {
+pin=2
+}
 
 slice_mutation_expression ::= append_expression | insert_expression | delete_expression
 append_expression ::= STATIC_KW? APPEND_KW LP expression COMMA (expression COMMA expression | expression DOTDOTDOT | expression) RP
@@ -282,7 +292,9 @@ pin=1
 }
 for_predicate ::= binding_list EOS expression EOS expression | binding_list EOS expression | expression EOS expression | expression
 
-call_op ::= LP argument_list? RP
+call_op ::= LP argument_list? RP {
+pin=1
+}
 argument_list ::= expression (COMMA expression)* DOTDOTDOT? COMMA?
 
 control_expression ::= BREAK_KW label? | CONTINUE_KW label? | RETURN_KW expression? | yield_expression

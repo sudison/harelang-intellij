@@ -719,13 +719,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean call_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call_op")) return false;
     if (!nextTokenIs(b, LP)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, CALL_OP, null);
     r = consumeToken(b, LP);
-    r = r && call_op_1(b, l + 1);
-    r = r && consumeToken(b, RP);
-    exit_section_(b, m, CALL_OP, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, call_op_1(b, l + 1));
+    r = p && consumeToken(b, RP) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // argument_list?
@@ -838,7 +839,7 @@ public class HareParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // inclusive_or_expression (comparison_operator inclusive_or_expression)*
+  // inclusive_or_expression comparison_expression_right*
   static boolean comparison_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression")) return false;
     boolean r;
@@ -849,26 +850,35 @@ public class HareParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (comparison_operator inclusive_or_expression)*
+  // comparison_expression_right*
   private static boolean comparison_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!comparison_expression_1_0(b, l + 1)) break;
+      if (!comparison_expression_right(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "comparison_expression_1", c)) break;
     }
     return true;
   }
 
-  // comparison_operator inclusive_or_expression
-  private static boolean comparison_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "comparison_expression_1_0")) return false;
+  /* ********************************************************** */
+  // comparison_operator inclusive_or_expression {
+  // }
+  static boolean comparison_expression_right(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression_right")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = comparison_operator(b, l + 1);
     r = r && inclusive_or_expression(b, l + 1);
+    r = r && comparison_expression_right_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // {
+  // }
+  private static boolean comparison_expression_right_2(PsiBuilder b, int l) {
+    return true;
   }
 
   /* ********************************************************** */
@@ -2220,13 +2230,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean indexing_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "indexing_op")) return false;
     if (!nextTokenIs(b, LB)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, INDEXING_OP, null);
     r = consumeToken(b, LB);
-    r = r && expression(b, l + 1);
-    r = r && consumeToken(b, RB);
-    exit_section_(b, m, INDEXING_OP, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, expression(b, l + 1));
+    r = p && consumeToken(b, RB) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -2352,13 +2363,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean length_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "length_expression")) return false;
     if (!nextTokenIs(b, LEN_KW)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LEN_KW, LP);
-    r = r && expression(b, l + 1);
-    r = r && consumeToken(b, RP);
-    exit_section_(b, m, LENGTH_EXPRESSION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, LENGTH_EXPRESSION, null);
+    r = consumeTokens(b, 2, LEN_KW, LP);
+    p = r; // pin = 2
+    r = r && report_error_(b, expression(b, l + 1));
+    r = p && consumeToken(b, RP) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -2822,13 +2834,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean offset_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "offset_expression")) return false;
     if (!nextTokenIs(b, OFFSET_KW)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, OFFSET_KW, LP);
-    r = r && expression(b, l + 1);
-    r = r && consumeToken(b, RP);
-    exit_section_(b, m, OFFSET_EXPRESSION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, OFFSET_EXPRESSION, null);
+    r = consumeTokens(b, 2, OFFSET_KW, LP);
+    p = r; // pin = 2
+    r = r && report_error_(b, expression(b, l + 1));
+    r = p && consumeToken(b, RP) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -3104,13 +3117,14 @@ public class HareParser implements PsiParser, LightPsiParser {
   public static boolean size_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "size_expression")) return false;
     if (!nextTokenIs(b, SIZE_TYPE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, SIZE_TYPE, LP);
-    r = r && type(b, l + 1);
-    r = r && consumeToken(b, RP);
-    exit_section_(b, m, SIZE_EXPRESSION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, SIZE_EXPRESSION, null);
+    r = consumeTokens(b, 2, SIZE_TYPE, LP);
+    p = r; // pin = 2
+    r = r && report_error_(b, type(b, l + 1));
+    r = p && consumeToken(b, RP) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */

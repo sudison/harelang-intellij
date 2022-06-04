@@ -26,8 +26,10 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
         printTree(
             """
        
-       export let i :i32= 1;
-       export let i :i32= 1;
+      export fn main() void = {
+    for (let idx = 0z; idx < len(greetings); idx += 1) {
+        fmt::println(greetings[i
+
 
             """.trimIndent()
         )

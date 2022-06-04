@@ -1,6 +1,7 @@
 package org.harelang.reference
 
 import com.intellij.codeInsight.lookup.LookupElement
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.util.TextRange
@@ -70,17 +71,17 @@ private fun PsiFile.globalDeclarationsInFile(exportedOnly: Boolean = true, inclu
     return types
 }
 
-fun Project.compilerSettings(): CompilerSettingService {
-    return getService(CompilerSettingService::class.java)
+fun getCompilerSettings(): CompilerSettingService {
+    return ApplicationManager.getApplication().getService(CompilerSettingService::class.java)
 }
 
 fun Project.stdLibDir(): VirtualFile? {
-    if (compilerSettings().stdLibLocation == "") {
+    if (getCompilerSettings().stdLibLocation == "") {
         return null
     }
 
     val fs = LocalFileSystem.getInstance()
-    return fs.refreshAndFindFileByPath(compilerSettings().stdLibLocation)
+    return fs.refreshAndFindFileByPath(getCompilerSettings().stdLibLocation)
 }
 
 fun VirtualFile.getSourceRoot(project: Project): VirtualFile? = ProjectRootManager.getInstance(project).fileIndex.getSourceRootForFile(this)
