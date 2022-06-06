@@ -1,9 +1,9 @@
-package org.jetbrains.plugins.template.services
+package org.harelang.project
 
 import com.intellij.openapi.project.Project
 import org.jetbrains.plugins.template.MyBundle
 
-class MyProjectService(project: Project) {
+class ProjectService(project: Project) {
 
     init {
         println(MyBundle.message("projectService", project.name))

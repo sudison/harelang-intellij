@@ -20,7 +20,7 @@
                 language="Hare"
                 implementationClass="org.harelang.syntax.SyntaxHighlighterAnnotator"/>
         <applicationService serviceImplementation="org.harelang.settings.CompilerSettingService"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.template.services.MyProjectService"/>
+        <projectService serviceImplementation="org.harelang.project.ProjectService"/>
         <applicationConfigurable parentId="language" instance="org.harelang.settings.CompilerSettings"
                                  id="org.harelang.settings.CompilerSettings"
                                  displayName="Hare"/>
