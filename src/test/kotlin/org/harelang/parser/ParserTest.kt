@@ -25,9 +25,7 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree(
             """
-       type sa = struct {ii:i32}; 
-       fn bar() *sa = { let i = 0; }; 
-       fn foo() void = { let i = bar(); i.i
+       use foo; fn foo() void = { let i = foo::f(); i.i
       
        
 

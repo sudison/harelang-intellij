@@ -54,8 +54,19 @@ fun PsiElement.evaluate(): HareLangType? {
         is HareBinding -> this.evaluate()
         is PsiDirectory -> this.evaluate()
         is HareImportPath -> this.evaluate()
+        is HareEnumLiteral -> this.evaluate()
         else -> null
     }
+}
+
+fun HareEnumLiteral.evaluate(): HareLangType? {
+    var tr = this.symbolList.firstOrNull()?.hareReference()
+    var t = tr?.psi()?.evaluate()
+    this.symbolList.drop(1).forEach {
+        tr = t?.exactMatch(it.firstChild.text)
+        t = tr?.psi()?.evaluate()
+    }
+    return t
 }
 
 fun HareImportPath.evaluate(): HareLangType? {
@@ -98,10 +109,13 @@ fun HareBinding.evaluate(): HareLangType? {
         val planExpression = expression?.planExpressionList?.firstOrNull()
         val structLiteral = planExpression?.structLiteral
         val symbol = planExpression?.symbol
+        val enumLiteral = planExpression?.enumLiteral
         if (structLiteral != null)
          structLiteral.symbolList.firstOrNull()?.hareReference()?.psi()?.evaluate()
         else if (symbol != null) {
             symbol.hareReference()?.psi()?.evaluate()
+        } else if (enumLiteral != null) {
+            enumLiteral.evaluate()
         } else {
             null
         }

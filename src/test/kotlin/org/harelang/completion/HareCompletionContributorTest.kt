@@ -403,4 +403,14 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
         val l = myFixture.completeBasic()
         TestCase.assertTrue(l.isEmpty())
     }
+
+    @Test
+    fun testPointerOtherFileCompletion() {
+        myFixture.addFileToProject("foo/a.ha", "export type sa = struct {ii:i32,}; export fn f() *sa = {let i = 0;};")
+        myFixture.configureByText(HareFileType, "")
+        myFixture.type("use foo; fn foo() void = { let i = foo::f(); i.i")
+        val l = myFixture.completeBasic()
+        TestCase.assertTrue(l.size == 1)
+        assertEquals(l[0].lookupString, "ii")
+    }
 }
