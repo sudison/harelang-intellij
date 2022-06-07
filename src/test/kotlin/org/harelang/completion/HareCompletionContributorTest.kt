@@ -335,6 +335,15 @@ class HareCompletionContributorTest : LightPlatformCodeInsightFixture4TestCase()
     }
 
     @Test
+    fun testPointerStructCompletion() {
+        listOf(
+            Pair("type sa = struct {ii:i32}; fn bar() *sa = { let i = 0; }; fn foo() void = { let i = bar(); i.i", "ii"),
+        ).forEach {
+            keywordCompletion(it.first, it.second)
+        }
+    }
+
+    @Test
     fun testModuleCompletion() {
         myFixture.addFileToProject("foo/a.ha", "export const fa: i32 = 0;")
         myFixture.configureByText(HareFileType, "")

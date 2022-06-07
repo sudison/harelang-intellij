@@ -65,6 +65,7 @@ fun HareImportPath.evaluate(): HareLangType? {
 
 fun HareType.evaluate(): HareLangType? {
     val enumType = this.storageClass.scalaType?.enumType
+    val pointerType = this.storageClass.scalaType?.pointerType
     val structType = this.storageClass.structUnionType
     val aliasType = this.storageClass.aliasType
     return if (enumType != null) {
@@ -73,6 +74,8 @@ fun HareType.evaluate(): HareLangType? {
         HareLangStructType(this, structType)
     } else if (aliasType != null) {
         aliasType.symbolList.last().hareReference()?.psi()?.evaluate()
+    } else if (pointerType != null) {
+        pointerType.type.evaluate()
     } else {
         null
     }
@@ -92,7 +95,16 @@ fun HareFunctionDeclaration.evaluate(): HareLangType? {
 
 fun HareBinding.evaluate(): HareLangType? {
     return if (type == null) {
-         expression?.planExpressionList?.firstOrNull()?.structLiteral?.symbolList?.firstOrNull()?.hareReference()?.psi()?.evaluate()
+        val planExpression = expression?.planExpressionList?.firstOrNull()
+        val structLiteral = planExpression?.structLiteral
+        val symbol = planExpression?.symbol
+        if (structLiteral != null)
+         structLiteral.symbolList.firstOrNull()?.hareReference()?.psi()?.evaluate()
+        else if (symbol != null) {
+            symbol.hareReference()?.psi()?.evaluate()
+        } else {
+            null
+        }
     } else {
         this.type?.evaluate()
     }

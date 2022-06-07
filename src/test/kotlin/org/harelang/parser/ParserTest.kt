@@ -25,11 +25,11 @@ class ParserTests : ParsingTestCase("", HareFileType.defaultExtension, HareParse
     fun testPrintParseImports() {
         printTree(
             """
+       type sa = struct {ii:i32}; 
+       fn bar() *sa = { let i = 0; }; 
+       fn foo() void = { let i = bar(); i.i
+      
        
-      export fn main() void = {
-    for (let idx = 0z; idx < len(greetings); idx += 1) {
-        fmt::println(greetings[i
-
 
             """.trimIndent()
         )
