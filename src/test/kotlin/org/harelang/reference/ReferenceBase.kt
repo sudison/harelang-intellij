@@ -92,7 +92,7 @@ fun PsiElement.checkedResolve(offset: Int, errorMessagePrefix: String = ""): Psi
     return resolved
 }
 
-open class ReferenceTestBase : BasePlatformTestCase() {
+abstract class ReferenceTestBase : BasePlatformTestCase() {
     fun <T : PsiElement> findElementsWithDataAndOffsetInEditor(
         psiClass: Class<T>,
         marker: String

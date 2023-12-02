@@ -21,7 +21,7 @@ val PsiElement.leftSiblings: Sequence<PsiElement>
 
 fun <T, Self : ObjectPattern<T, Self>> ObjectPattern<T, Self>.with(name: String, cond: (T) -> Boolean): Self =
     with(object : PatternCondition<T>(name) {
-        override fun accepts(t: T, context: ProcessingContext?): Boolean = cond(t)
+        override fun accepts(t: T & Any, context: ProcessingContext?): Boolean = cond(t)
     })
 
 fun <T : PsiElement, Self : PsiElementPattern<T, Self>> PsiElementPattern<T, Self>.withPrevSiblingSkipping(

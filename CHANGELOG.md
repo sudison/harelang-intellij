@@ -2,6 +2,11 @@
 
 # HareLang Plugin for IntelliJ Changelog
 
+## [Unreleased]
+### Changed
+- Update from plugin template
+- Support IntelliJ versions 2022.3 to 2023.3
+
 ## [0.1.0]
 ### Added
 - Support module
