@@ -6,6 +6,8 @@
 
     <depends>com.intellij.modules.platform</depends>
 
+    <resource-bundle>messages.Bundle</resource-bundle>
+
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Hare" implementationClass="org.harelang.HareFileType"
                   fieldName="INSTANCE" language="Hare" extensions="ha"/>
@@ -27,7 +29,7 @@
     </extensions>
 
     <applicationListeners>
-        <listener class="org.jetbrains.plugins.template.listeners.MyProjectManagerListener"
+        <listener class="org.harelang.project.ProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>

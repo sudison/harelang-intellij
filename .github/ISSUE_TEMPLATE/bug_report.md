@@ -1,23 +1,63 @@
----
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
----
+description: Create a report to help us improve
+labels: ["bug"]
+body:
 
-<!-- Please do not use this issue tracker for support or questions, use Forum or Slack listed here:
-     https://plugins.jetbrains.com/docs/intellij/getting-help.html
-     Please **always** provide link to sources if possible. -->
+- type: textarea
+  id: issue
+  attributes:
+  label: What happened?
+  description: A clear and concise description of what the bug is.
+  validations:
+  required: true
 
-**Describe the bug:**
-<!-- A clear and concise description of what the bug is. -->
+- type: textarea
+  id: logs
+  attributes:
+  label: Relevant log output or stack trace
+  description: |
+  Please copy and paste any relevant log output.
+  Add the full stack trace if available.
+  If possible, run the failing task with `--stacktrace` flag.
 
-**Steps to reproduce:** 
-<!-- Steps to reproduce the issue. -->
+      *This will be automatically formatted into code, so there is no need for backticks.*
+  render: shell
 
-**Expected behavior:**
-<!-- A clear and concise description of what you expected to happen. -->
+- type: textarea
+  id: steps
+  attributes:
+  label: Steps to reproduce
+  description: Steps to reproduce the behavior – provide your build configuration.
+  validations:
+  required: true
 
-**Additional context:**
-<!-- Add any other context about the problem here. -->
+- type: input
+  id: version
+  attributes:
+  label: Gradle IntelliJ Plugin version
+  placeholder: 1.16.0
+  validations:
+  required: true
+
+- type: input
+  id: gradle
+  attributes:
+  label: Gradle version
+  placeholder: 8.2.1
+  validations:
+  required: true
+
+- type: dropdown
+  id: os
+  attributes:
+  label: Operating System
+  options:
+  - macOS
+  - Linux
+  - Windows
+
+- type: input
+  id: url
+  attributes:
+  label: Link to build, i.e. failing GitHub Action job
+  placeholder: https://github.com/username/project/actions/runs/1234567890
